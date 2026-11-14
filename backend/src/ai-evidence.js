@@ -34,13 +34,13 @@ function evidence({ title, excerpt, date, kind, href, sources, note = '' }) {
 
 function milestoneEvidence(event, moment, note = '') {
   return evidence({
-    title: moment.title, excerpt: moment.summary, date: moment.date,
+    title: moment.title, excerpt: moment.summary, date: moment.datePrecision === 'month' ? moment.date.slice(0, 7) : moment.date,
     kind: moment.dateType === 'publication' ? 'Timeline · report date' : 'Timeline · event date',
     href: '/threads/' + encodeURIComponent(event.id), sources: asList(moment.sources), note
   });
 }
 
-function timelineEvidence(rows, question, terms, eventId) {
+function timelineEvidence(rows, question, terms, eventId, canReadFull) {
   const ranked = rows.map(row => {
     const event = parse(row.payload_json, {});
     const name = [event.title, event.shortTitle, ...asList(event.keywords)].join(' ');
@@ -51,7 +51,7 @@ function timelineEvidence(rows, question, terms, eventId) {
   const items = [];
   for (const { event, rank } of ranked) {
     if (!event.id) continue;
-    const preview = publicTimeline(event);
+    const preview = canReadFull ? event : publicTimeline(event);
     const moments = asList(preview.milestones).slice().sort((a, b) => String(b.date).localeCompare(String(a.date)));
     const selected = moments.map((moment, index) => ({
       moment,
@@ -234,16 +234,17 @@ export async function isDailyEvidencePublic(env, evidence, now) {
 export async function retrieveEvidence(env, { question, eventId, countryCode }) {
   const db = env.DB, terms = termsFor(question);
   const expectEconomy = countryCode || /\b(gdp|growth|economy|economic|cpi|inflation|prices|output)\b/i.test(question);
-  const [events, economy, news] = await Promise.all([
+  const [events, economy, news, canReadFull] = await Promise.all([
     countryCode ? null : eventId
       ? db.prepare('SELECT payload_json FROM event_payloads WHERE id=?').bind(eventId).all()
       : db.prepare('SELECT payload_json FROM event_payloads ORDER BY updated_at DESC LIMIT 24').all(),
     expectEconomy && !eventId ? db.prepare("SELECT payload_json FROM content_documents WHERE id='economy'").first() : null,
-    countryCode ? [] : newsEvidence(db, env, terms, eventId)
+    countryCode ? [] : newsEvidence(db, env, terms, eventId),
+    countryCode ? false : hasPaidAccess(env, null)
   ]);
   const candidates = [
     ...economyEvidence(parse(economy?.payload_json, {}), question, countryCode),
-    ...timelineEvidence(asList(events?.results), question, terms, eventId),
+    ...timelineEvidence(asList(events?.results), question, terms, eventId, canReadFull),
     ...news
   ].sort((a, b) => b.rank - a.rank);
   const seen = new Set();

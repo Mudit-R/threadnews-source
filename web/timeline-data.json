@@ -1302,10 +1302,285 @@
         ]
       },
       "previewTruncated": false
+    },
+    {
+      "id": "nvidia-jensen-huang",
+      "title": "NVIDIA and Jensen Huang: from graphics to the CEO transition",
+      "shortTitle": "NVIDIA and Jensen Huang",
+      "category": "Technology",
+      "region": "Global",
+      "location": "United States · Global",
+      "description": "How a graphics chipmaker became central to AI infrastructure, and how a board inquiry, U.S. export oversight and Jensen Huang’s departure unfolded.",
+      "context": "NVIDIA built a business around GPUs, developer software and networking sold as a computing platform. The November 2026 leadership transition brought corporate governance and U.S. chip-export oversight into the same story.",
+      "watch": "Watch for the independent directors’ findings, a permanent CEO appointment, congressional testimony and the November 17 earnings release. Requested appearances and scheduled releases remain upcoming until there is a record that they occurred.",
+      "limitation": "Public preview: the first 10 selected milestones, from 1993-04-05 through 2024-03-18. Later chronology may be available through the signed-in archive.",
+      "checkedThrough": "2026-11-14",
+      "coverageEnd": "2024-03-18",
+      "image": "assets/jensen-huang-2024.jpg",
+      "imageAlt": "Jensen Huang at a meeting with European Commission Vice-President Josep Borrell in May 2024",
+      "imageCredit": "Peter Dasilva / © European Union · CC BY 4.0 · cropped and resized",
+      "imagePage": "https://commons.wikimedia.org/wiki/File:Jensen_Huang_(cropped)_(2024).jpg",
+      "imageLicense": "https://creativecommons.org/licenses/by/4.0/",
+      "keywords": [
+        "NVIDIA",
+        "Nvidia CEO",
+        "Jensen Huang",
+        "Colette Kress",
+        "Megaspeed",
+        "CUDA",
+        "Blackwell",
+        "Rubin",
+        "H200",
+        "AI chips",
+        "export controls"
+      ],
+      "tracking": {
+        "version": 1,
+        "enabled": true,
+        "rules": [
+          {
+            "all": [
+              "jensen huang"
+            ],
+            "any": [
+              "nvidia",
+              "ceo",
+              "megaspeed",
+              "chips",
+              "congress"
+            ]
+          },
+          {
+            "all": [
+              "nvidia"
+            ],
+            "any": [
+              "colette kress",
+              "megaspeed",
+              "harvey jones",
+              "ceo transition",
+              "export controls",
+              "independent investigation"
+            ]
+          }
+        ]
+      },
+      "statusCheck": {
+        "date": "2026-11-14",
+        "publisher": "NVIDIA investor relations",
+        "url": "https://investor.nvidia.com/",
+        "observation": "Colette Kress was appointed interim CEO and remains CFO. The board is searching for a permanent CEO. NVIDIA retained outside counsel for its investigation and kept the November 17 earnings date.",
+        "sources": [
+          {
+            "publisher": "NVIDIA filing with the SEC",
+            "title": "Form 8-K: departure and appointment of officers and directors",
+            "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000082/nvda-20261111.htm",
+            "published": "2026-11-12",
+            "type": "Regulatory filing"
+          },
+          {
+            "publisher": "NVIDIA",
+            "title": "Statement from independent NVIDIA directors",
+            "url": "https://nvidianews.nvidia.com/news/statement-from-the-independent-members-of-the-nvidia-board",
+            "published": "2026-11-10",
+            "type": "Company statement"
+          },
+          {
+            "publisher": "NVIDIA",
+            "title": "NVIDIA announces CEO transition",
+            "url": "https://nvidianews.nvidia.com/news/nvidia-announces-ceo-transition",
+            "published": "2026-11-12",
+            "type": "Company statement"
+          }
+        ]
+      },
+      "milestones": [
+        {
+          "date": "1993-04-05",
+          "chapter": "Graphics and CUDA",
+          "title": "Huang, Malachowsky and Priem found NVIDIA",
+          "summary": "Jensen Huang, Chris Malachowsky and Curtis Priem founded the company to build graphics technology for gaming and multimedia. Huang took the chief executive role.",
+          "sources": [
+            {
+              "publisher": "NVIDIA",
+              "title": "Corporate history",
+              "url": "https://www.nvidia.com/en-us/about-nvidia/corporate-timeline/",
+              "type": "Company retrospective"
+            }
+          ],
+          "kind": "Primary record",
+          "key": true,
+          "dateType": "event"
+        },
+        {
+          "date": "1999-08-31",
+          "chapter": "Graphics and CUDA",
+          "title": "NVIDIA unveils the GeForce 256",
+          "summary": "NVIDIA introduced GeForce 256 and marketed it as a graphics processing unit, emphasizing geometry and lighting on the chip.",
+          "sources": [
+            {
+              "publisher": "NVIDIA release archived by the USPTO",
+              "title": "August 31, 1999 GeForce 256 announcement",
+              "url": "https://ptacts.uspto.gov/ptacts/public-informations/petitions/1459387/download-documents?artifactId=B-TJEHekYfsmhGLOrl9Wsf3JRzgBfDxR_amn06j-48BOWFiAgO4cUhs",
+              "published": "1999-08-31",
+              "type": "Archived company announcement"
+            }
+          ],
+          "kind": "Primary record",
+          "key": false,
+          "dateType": "publication"
+        },
+        {
+          "date": "2006-11-08",
+          "chapter": "Graphics and CUDA",
+          "title": "CUDA opens the GPU to parallel computing",
+          "summary": "NVIDIA’s GeForce 8800 technical brief described CUDA as a way for software developers to run general data-intensive computations on its GPU. It extended the hardware beyond graphics workloads.",
+          "sources": [
+            {
+              "publisher": "NVIDIA",
+              "title": "GeForce 8800 architecture technical brief",
+              "url": "https://www.nvidia.com/content/PDF/Geforce_8800/GeForce_8800_GPU_Architecture_Technical_Brief.pdf",
+              "published": "2006-11-08",
+              "type": "Technical documentation"
+            }
+          ],
+          "kind": "Primary record",
+          "key": true,
+          "dateType": "publication"
+        },
+        {
+          "date": "2012-12-03",
+          "chapter": "The AI platform",
+          "title": "AlexNet demonstrates what commodity GPUs can do for deep learning",
+          "summary": "The 2012 conference proceedings describe how Alex Krizhevsky, Ilya Sutskever and Geoffrey Hinton trained a neural network on two NVIDIA GTX 580 graphics cards for image recognition.",
+          "sources": [
+            {
+              "publisher": "NeurIPS proceedings",
+              "title": "ImageNet Classification with Deep Convolutional Neural Networks",
+              "url": "https://proceedings.neurips.cc/paper_files/paper/2012/hash/c399862d3b9d6b76c8436e924a68c45b-Abstract.html",
+              "type": "Research paper"
+            }
+          ],
+          "kind": "Primary record",
+          "key": true,
+          "dateType": "publication",
+          "datePrecision": "month",
+          "note": "The paper appeared in the December 2012 conference proceedings. This entry records the month of publication."
+        },
+        {
+          "date": "2016-04-05",
+          "chapter": "The AI platform",
+          "title": "NVIDIA unveils DGX-1 for deep learning",
+          "summary": "The DGX-1 announcement paired Tesla P100 GPUs with networking, AI libraries and training software. It showed how NVIDIA could sell an integrated system as well as processors.",
+          "sources": [
+            {
+              "publisher": "NVIDIA",
+              "title": "NVIDIA unveils the DGX-1 deep-learning system",
+              "url": "https://nvidianews.nvidia.com/news/nvidia-launches-world-s-first-deep-learning-supercomputer",
+              "published": "2016-04-05",
+              "type": "Company statement"
+            }
+          ],
+          "kind": "Primary record",
+          "key": true,
+          "dateType": "publication"
+        },
+        {
+          "date": "2017-05-10",
+          "chapter": "The AI platform",
+          "title": "Huang unveils Volta and the Tesla V100",
+          "summary": "NVIDIA introduced its Volta architecture and V100 data-center GPU, with Tensor Cores designed to accelerate operations used in machine learning.",
+          "sources": [
+            {
+              "publisher": "NVIDIA",
+              "title": "NVIDIA launches Volta GPU platform",
+              "url": "https://nvidianews.nvidia.com/news/nvidia-launches-revolutionary-volta-gpu-platform-fueling-next-era-of-ai-and-high-performance-computing",
+              "published": "2017-05-10",
+              "type": "Company statement"
+            }
+          ],
+          "kind": "Primary record",
+          "key": false,
+          "dateType": "publication"
+        },
+        {
+          "date": "2020-04-27",
+          "chapter": "The AI platform",
+          "title": "The Mellanox acquisition adds networking",
+          "summary": "NVIDIA closed its roughly $7 billion Mellanox acquisition. The deal brought high-speed networking into the same offering as its data-center processors.",
+          "sources": [
+            {
+              "publisher": "NVIDIA",
+              "title": "NVIDIA first-quarter fiscal 2021 results",
+              "url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2021",
+              "published": "2020-05-21",
+              "type": "Company statement"
+            }
+          ],
+          "kind": "Primary record",
+          "key": true,
+          "dateType": "event"
+        },
+        {
+          "date": "2022-02-07",
+          "chapter": "The AI platform",
+          "title": "NVIDIA and SoftBank call off the Arm acquisition",
+          "summary": "The companies said regulatory obstacles prevented the deal from closing. Arm stayed outside NVIDIA.",
+          "sources": [
+            {
+              "publisher": "NVIDIA",
+              "title": "Termination of the proposed Arm acquisition",
+              "url": "https://nvidianews.nvidia.com/news/nvidia-and-softbank-group-announce-termination-of-nvidias-acquisition-of-arm-limited",
+              "published": "2022-02-07",
+              "type": "Company statement"
+            }
+          ],
+          "kind": "Primary record",
+          "key": false,
+          "dateType": "publication"
+        },
+        {
+          "date": "2022-03-22",
+          "chapter": "The AI platform",
+          "title": "Hopper and the H100 arrive",
+          "summary": "NVIDIA introduced Hopper and its first Hopper GPU, the H100, aimed at AI training, inference and scientific computing.",
+          "sources": [
+            {
+              "publisher": "NVIDIA",
+              "title": "NVIDIA announces Hopper architecture",
+              "url": "https://nvidianews.nvidia.com/news/nvidia-announces-hopper-architecture-the-next-generation-of-accelerated-computing",
+              "published": "2022-03-22",
+              "type": "Company statement"
+            }
+          ],
+          "kind": "Primary record",
+          "key": true,
+          "dateType": "publication"
+        },
+        {
+          "date": "2024-03-18",
+          "chapter": "The AI platform",
+          "title": "Huang introduces Blackwell at GTC",
+          "summary": "NVIDIA announced Blackwell and the Grace Blackwell systems. The company’s rollout plans emphasized connecting large numbers of processors in racks for AI workloads.",
+          "sources": [
+            {
+              "publisher": "NVIDIA",
+              "title": "NVIDIA announces Blackwell",
+              "url": "https://nvidianews.nvidia.com/news/nvidia-blackwell-platform-arrives-to-power-a-new-era-of-computing",
+              "published": "2024-03-18",
+              "type": "Company statement"
+            }
+          ],
+          "kind": "Primary record",
+          "key": true,
+          "dateType": "publication"
+        }
+      ],
+      "previewTruncated": true
     }
   ],
   "meta": {
-    "asOf": "2026-11-04",
+    "asOf": "2026-11-14",
     "recentStart": "2026-09-03",
     "selectionNote": "Public timelines are previews. Each shows up to the first 10 selected milestones in chronological order."
   }

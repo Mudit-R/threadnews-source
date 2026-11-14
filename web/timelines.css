@@ -4,3 +4,25 @@
 @media(max-width:1000px){.expanded-timeline{grid-template-columns:1fr}.expanded-timeline .story-aside{display:grid;grid-template-columns:1fr 1fr}.expanded-timeline .story-aside .aside-question{grid-column:1/-1}.expanded-timeline .context-secondary{grid-column:1/-1;margin-top:0}.timeline-range-row{flex-wrap:nowrap}.timeline-range button,.timeline-detail button{font-size:10px}.month-divider{margin-left:93px}.timeline-month-group>summary strong{font-size:28px}}
 @media(max-width:800px){.timeline-range-row{flex-wrap:wrap}.month-divider{margin-left:73px}.expanded-timeline .timeline-intro{align-items:center;flex-wrap:wrap}.expanded-timeline .story-aside{display:block}.expanded-timeline .context-secondary{margin-top:15px}.timeline-month-group>summary strong{font-size:27px}}
 @media(max-width:620px){.expanded-timeline .timeline-intro h2{font-size:31px}.timeline-range-row{gap:12px;align-items:flex-start}.timeline-range button,.timeline-detail button{font-size:11px;padding:8px 10px}.timeline-range button>span{font-size:9px}.timeline-window-note{font-size:11px;line-height:1.8}.development-scrubber{padding:16px 13px 12px}.moment-strip>button{min-width:115px;max-width:115px;padding:10px}.moment-strip span{font-size:10px}.moment-strip strong{font-size:26px;margin:4px 0 8px}.moment-strip small{font-size:10px;min-height:30px;line-height:1.5}.month-divider{margin-left:61px;margin-bottom:17px;gap:10px}.month-divider>span{font-size:23px}.month-divider>small{font-size:6px;max-width:55px;white-space:normal;line-height:1.7}.milestone-date small{font-size:4.8px;letter-spacing:0}.recent-badge{font-size:7px;padding:3px 5px}.milestone-labels{gap:5px}.expanded-timeline .milestone-body>p{font-size:14px}.milestone-note>summary{font-size:11px}.milestone-note>p{font-size:12px;line-height:1.8}.milestone-note>summary>.icon{width:12px;height:12px}.timeline-month-group{padding-right:10px}.timeline-month-group>summary{padding:18px 6px 18px 15px}.timeline-month-group>summary strong{font-size:28px}.timeline-month-group>summary small{font-size:10px}.timeline-month-group .milestone{grid-template-columns:40px 18px minmax(0,1fr)}.timeline-month-group .milestone-body{padding:16px 12px}.timeline-month-group .milestone-body h3{font-size:24px}.timeline-month-group .milestone-body>p{font-size:13px}.timeline-month-group .milestone-labels .key-label{font-size:5px}.timeline-month-group .milestone-date small{font-size:4px}.timeline-gap{padding:30px 20px}.timeline-gap h3{font-size:30px}.timeline-gap p{font-size:14px}.timeline-gap .button{font-size:12px}.investigation-status{padding:22px 19px}.investigation-status h2{font-size:30px}.investigation-status>p{font-size:14px;line-height:1.85}.investigation-status>a{font-size:12px;line-height:1.8;align-items:flex-start}.investigation-status>a>.icon{margin-top:3px}.investigation-status .eyebrow{font-size:8px;letter-spacing:1px}}
+.timeline-chapters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 145px), 1fr));
+  gap: 8px;
+  margin: 12px 0 20px;
+}
+.timeline-chapters button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  padding: 11px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #eef2e9;
+  color: var(--green);
+  text-align: left;
+  cursor: pointer;
+}
+.timeline-chapters button:hover, .timeline-chapters button:focus-visible { background: #e1ead8; }
+.timeline-chapters button span { color: #466157; font-size: 11px; }
+.event-picture img[src*="jensen-huang-2024"] { object-position: center 30%; }
