@@ -26,6 +26,7 @@
   <link rel="stylesheet" href="coverage-status.css?v=20261103-4">
   <link rel="stylesheet" href="pwa.css?v=20261104-1">
   <link rel="stylesheet" href="ask.css?v=20261114-1">
+  <link rel="stylesheet" href="/daily-brief.css?v=20261114-1">
   <script src="app-config.js?v=20261103-4" defer></script>
   <script src="data.js?v=20261104-2" defer></script>
   <script src="news-data.js?v=20261104-1" defer></script>
@@ -43,6 +44,7 @@
   <script src="ask.js?v=20261114-1" defer></script>
   <script src="newsroom.js?v=20261114-1" defer></script>
   <script src="app.js?v=20261114-1" defer></script>
+  <script src="/daily-brief.js?v=20261114-1" defer></script>
   <script src="install.js?v=20261104-1" defer></script>
 </head>
 <body>
@@ -72,6 +74,17 @@
     <button class="button primary" type="button" data-install-close>Got it</button>
   </dialog>
   <dialog id="source-dialog" aria-labelledby="dialog-title"><div id="dialog-content"></div></dialog>
+  <button id="daily-brief-button" class="daily-brief-launcher" type="button" aria-label="Open AI daily brief" aria-haspopup="dialog" title="AI daily brief" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5c0 5.3 4.2 9.5 9.5 9.5-5.3 0-9.5 4.2-9.5 9.5 0-5.3-4.2-9.5-9.5-9.5 5.3 0 9.5-4.2 9.5-9.5Z"/></svg>
+  </button>
+  <dialog id="daily-brief" class="daily-brief" aria-labelledby="daily-brief-title">
+    <header class="daily-brief-header">
+      <div><h2 id="daily-brief-title">The daily brief</h2><p id="daily-brief-date">The last 24 hours of coverage</p></div>
+      <form method="dialog"><button class="daily-brief-close" aria-label="Close daily brief" autofocus>×</button></form>
+    </header>
+    <div id="daily-brief-content" class="daily-brief-content" aria-live="polite"></div>
+    <footer class="daily-brief-footer"><a href="/ask">Ask ThreadNews <span aria-hidden="true">↗</span></a><a href="/news">Browse the news</a></footer>
+  </dialog>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 </body>
 </html>

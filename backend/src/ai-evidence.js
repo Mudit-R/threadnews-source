@@ -111,6 +111,16 @@ function economyEvidence(payload, question, countryCode) {
   return items;
 }
 
+function articleEvidence(row) {
+  const source = parse(row.source_json, {});
+  const headline = source.basis !== 'article' || !row.summary;
+  return evidence({
+    title: row.title, excerpt: headline ? row.title : row.summary, date: row.published_at?.slice(0, 10),
+    kind: headline ? 'Headline · report date' : 'Sourced brief · report date',
+    href: '/news/' + encodeURIComponent(row.id), sources: [source, ...asList(parse(row.official_sources_json, []))]
+  });
+}
+
 async function newsEvidence(db, env, terms, eventId) {
   if (!terms.length && !eventId) return [];
   const query = buildContentQuery(new URLSearchParams(), env, { cursor: false });
@@ -126,14 +136,44 @@ async function newsEvidence(db, env, terms, eventId) {
     const headline = source.basis !== 'article' || !row.summary;
     const match = hits(row.title, terms) * 2 + hits(row.keywords, terms);
     if (!eventId && match < 2) continue;
-    const item = evidence({
-      title: row.title, excerpt: headline ? row.title : row.summary, date: row.published_at?.slice(0, 10),
-      kind: headline ? 'Headline · report date' : 'Sourced brief · report date',
-      href: '/news/' + encodeURIComponent(row.id), sources: [source, ...asList(parse(row.official_sources_json, []))]
-    });
+    const item = articleEvidence(row);
     if (item) items.push({ item, rank: (eventId ? 45 : 10) + match * 4 + Number(!headline) * 4 });
   }
   return items.sort((a, b) => b.rank - a.rank).slice(0, eventId ? 3 : 6);
+}
+
+export async function retrieveDailyEvidence(env, now) {
+  const query = buildContentQuery(new URLSearchParams(), env, { now, cursor: false });
+  const since = new Date(now.getTime() - 86400000).toISOString();
+  const rows = await env.DB.prepare(`SELECT id,title,summary,published_at,source_json,official_sources_json,category
+    FROM news${query.where} AND published_at>=?
+    ORDER BY CASE WHEN json_extract(source_json,'$.basis')='article' AND source_type='Official source' THEN 0
+      WHEN json_extract(source_json,'$.basis')='article' THEN 1 ELSE 2 END,
+      published_at DESC,id DESC LIMIT 60`).bind(...query.args, since).all();
+  const categories = new Map(), selected = [];
+  for (const row of asList(rows.results)) {
+    if ((categories.get(row.category) || 0) >= 2) continue;
+    const item = articleEvidence(row);
+    if (!item) continue;
+    const tokens = new Set(words(item.title));
+    if (selected.some(entry => {
+      const overlap = [...tokens].filter(token => entry.tokens.has(token)).length;
+      return overlap >= Math.max(3, Math.ceil(0.65 * Math.min(tokens.size, entry.tokens.size)));
+    })) continue;
+    selected.push({ item, tokens, recordId: row.id });
+    categories.set(row.category, (categories.get(row.category) || 0) + 1);
+    if (selected.length === 8) break;
+  }
+  return selected.map(({ item, recordId }, index) => ({ id: index + 1, recordId, ...item }));
+}
+
+export async function isDailyEvidencePublic(env, evidence, now) {
+  if (!evidence.length) return true;
+  const query = buildContentQuery(new URLSearchParams(), env, { now, cursor: false });
+  const ids = evidence.map(item => item.recordId);
+  const row = await env.DB.prepare(`SELECT COUNT(*) AS total FROM news${query.where}
+    AND id IN (SELECT value FROM json_each(?))`).bind(...query.args, JSON.stringify(ids)).first();
+  return row?.total === ids.length;
 }
 
 export async function retrieveEvidence(env, { question, eventId, countryCode }) {

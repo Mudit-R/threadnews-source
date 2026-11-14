@@ -23,6 +23,8 @@ flowchart LR
 - **AI answers.** The Worker retrieves a bounded set of public records, asks the model to cite those records by ID, validates the response and attaches links from the database. Readers can open the evidence directly when the model cannot answer.
 - **Limits.** Request throttling and a daily inference budget bound the cost of a public feature. Source records and model responses can have gaps. Source cards make those gaps visible.
 
+The homepage daily brief summarizes a rolling 24-hour edition. D1 stores the current brief and coordinates regeneration across concurrent requests. Each summary links back to its public source records.
+
 ## Run locally
 
 Install Node.js 24. Seed the local D1 database with published timeline previews and an economic snapshot.

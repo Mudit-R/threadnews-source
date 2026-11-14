@@ -1,5 +1,5 @@
 import { sameOriginMutation } from './auth.js';
-import { retrieveEvidence } from './ai-evidence.js';
+import { isDailyEvidencePublic, retrieveDailyEvidence, retrieveEvidence } from './ai-evidence.js';
 import { generateClaims } from './ai-provider.js';
 
 const LIMIT = 60;
@@ -86,4 +86,35 @@ export async function handleAsk(request, env, ctx) {
     headers: { 'cache-control': 'public, max-age=3600' }
   })).catch(() => {}));
   return reply(output);
+}
+
+const BRIEF_KEY = 'daily_ai_brief_v1';
+const DAILY_QUESTION = 'Brief readers on the most consequential developments in this 24-hour edition. Choose up to four distinct stories. Lead with effects on households or public policy where the evidence states them. Attribute each item, keep each to one tight sentence, and do not speculate.';
+
+export async function handleDailyBrief(request, env) {
+  if (request.method !== 'GET') return reply({ error: 'method_not_allowed' }, 405, { allow: 'GET' });
+  if (!env.DB || env.NEWS_STORAGE === 'static') return reply({ error: 'evidence_unavailable' }, 503);
+  const db = env.DB, now = new Date(), timestamp = now.getTime();
+  const stored = await db.prepare('SELECT value FROM app_state WHERE key=?').bind(BRIEF_KEY).first();
+  const entry = stored ? JSON.parse(stored.value) : null;
+  if (entry?.expiresAt > timestamp) {
+    if (!entry.brief) return reply({ status: 'preparing' }, 202, { 'retry-after': '3' });
+    if (await isDailyEvidencePublic(env, entry.brief.evidence, now)) return reply(entry.brief);
+  }
+  const lease = JSON.stringify({ expiresAt: timestamp + 30000 });
+  const lock = await db.prepare(`INSERT INTO app_state(key,value) VALUES (?,?)
+    ON CONFLICT(key) DO UPDATE SET value=excluded.value WHERE app_state.value=?
+    RETURNING key`).bind(BRIEF_KEY, lease, stored?.value || '').first();
+  if (!lock) return reply({ status: 'preparing' }, 202, { 'retry-after': '3' });
+
+  const evidence = await retrieveDailyEvidence(env, now);
+  const brief = { status: evidence.length ? 'sources' : 'insufficient', asOf: now.toISOString(), claims: [], evidence };
+  if (evidence.length && (env.GEMINI_API_KEY || env.AI) && await reserve(db)) {
+    const answer = await generateClaims(env, DAILY_QUESTION, evidence);
+    if (answer) Object.assign(brief, answer, { status: 'answered' });
+  }
+  const ttl = brief.status === 'answered' ? 3600000 : 600000;
+  await db.prepare('UPDATE app_state SET value=? WHERE key=? AND value=?')
+    .bind(JSON.stringify({ expiresAt: timestamp + ttl, brief }), BRIEF_KEY, lease).run();
+  return reply(brief);
 }
