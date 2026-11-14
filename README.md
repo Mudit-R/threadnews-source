@@ -29,7 +29,7 @@ Timeline catch-up compares a reader-selected window against the prior reviewed m
 
 Explore the [NVIDIA and Jensen Huang timeline](https://threadnews.online/threads/nvidia-jensen-huang) for a long-form example. Chapter navigation is generated from the visible milestones. The public repository includes the timeline preview and its licensed photograph.
 
-Article pages provide an at-a-glance view and on-demand AI summaries. D1 stores the result against the evidence fingerprint, coordinates concurrent requests, and removes the cache when the corresponding article expires. Headline-only summaries are explicitly labelled.
+Article pages show a source-backed summary by default, with a generated version loaded automatically when available. D1 stores the result against the evidence fingerprint, coordinates concurrent requests, and removes the cache when the corresponding article expires. Headline-only summaries are explicitly labelled.
 
 ## Run locally
 
