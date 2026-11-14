@@ -25,6 +25,8 @@ flowchart LR
 
 The homepage daily brief summarizes a rolling 24-hour edition. D1 stores the current brief and coordinates regeneration across concurrent requests. Each summary links back to its public source records.
 
+Timeline catch-up compares a reader-selected window against the prior reviewed milestone. The Worker returns reviewed developments and linked reporting with their own date types, applies the public access rules before inference, and drops claims with unsupported numbers or baseline-only evidence.
+
 ## Run locally
 
 Install Node.js 24. Seed the local D1 database with published timeline previews and an economic snapshot.

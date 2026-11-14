@@ -1,4 +1,5 @@
 import { buildContentQuery, publicTimeline } from './content.js';
+import { hasPaidAccess } from './paypal.js';
 
 const STOP = new Set('the and what when how why who where which are was were has have had did does can could would should about into this that from with for will tell show give me of in a an it is to on at latest recent new changed change last please compare versus between since update updates'.split(' '));
 const asList = value => Array.isArray(value) ? value : [];
@@ -31,6 +32,14 @@ function evidence({ title, excerpt, date, kind, href, sources, note = '' }) {
   return { title: text(title, 200), excerpt: text(excerpt, 400), date: text(date, 24), kind, href, links, note: text(note, 180) };
 }
 
+function milestoneEvidence(event, moment, note = '') {
+  return evidence({
+    title: moment.title, excerpt: moment.summary, date: moment.date,
+    kind: moment.dateType === 'publication' ? 'Timeline · report date' : 'Timeline · event date',
+    href: '/threads/' + encodeURIComponent(event.id), sources: asList(moment.sources), note
+  });
+}
+
 function timelineEvidence(rows, question, terms, eventId) {
   const ranked = rows.map(row => {
     const event = parse(row.payload_json, {});
@@ -53,12 +62,8 @@ function timelineEvidence(rows, question, terms, eventId) {
       selected[selected.length - 1] = { moment: moments.at(-1) };
     }
     for (const { moment } of selected) {
-      const item = evidence({
-        title: moment.title, excerpt: moment.summary, date: moment.date,
-        kind: moment.dateType === 'publication' ? 'Timeline · report date' : 'Timeline · event date',
-        href: '/threads/' + encodeURIComponent(event.id), sources: asList(moment.sources),
-        note: preview.previewTruncated ? `Public timeline preview through ${preview.previewCutoff}` : `Timeline coverage through ${event.coverageEnd || moment.date}`
-      });
+      const item = milestoneEvidence(event, moment, preview.previewTruncated
+        ? `Public timeline preview through ${preview.previewCutoff}` : `Timeline coverage through ${event.coverageEnd || moment.date}`);
       if (item) items.push({ item, rank: rank + 20 + Number(Boolean(eventId)) * 50 });
     }
   }
@@ -140,6 +145,56 @@ async function newsEvidence(db, env, terms, eventId) {
     if (item) items.push({ item, rank: (eventId ? 45 : 10) + match * 4 + Number(!headline) * 4 });
   }
   return items.sort((a, b) => b.rank - a.rank).slice(0, eventId ? 3 : 6);
+}
+
+export function divideMilestones(event, since, through) {
+  const ordered = asList(event.milestones)
+    .filter(moment => typeof moment?.date === 'string' && moment.date <= through)
+    .sort((a, b) => b.date.localeCompare(a.date));
+  const recent = ordered.filter(moment => moment.date >= since);
+  return {
+    baseline: ordered.filter(moment => moment.date < since)
+      .map(moment => milestoneEvidence(event, moment)).find(Boolean) || null,
+    recent: recent.map(moment => milestoneEvidence(event, moment)).filter(Boolean),
+  };
+}
+
+export async function retrieveStoryChanges(env, eventId, days, now) {
+  const db = env.DB, asOf = now.toISOString(), through = asOf.slice(0, 10);
+  const since = new Date(Date.parse(through) - (days - 1) * 86400000).toISOString().slice(0, 10);
+  const row = await db.prepare('SELECT payload_json FROM event_payloads WHERE id=?').bind(eventId).first();
+  if (!row) return null;
+  const full = parse(row.payload_json, {});
+  const event = await hasPaidAccess(env, null, Math.floor(now.getTime() / 1000)) ? full : publicTimeline(full);
+  const { baseline, recent } = divideMilestones(event, since, through);
+  const query = buildContentQuery(new URLSearchParams(), env, { now, cursor: false });
+  const reportSince = new Date(Math.max(Date.parse(since), now.getTime() - Math.min(query.feedDays, query.retentionDays) * 86400000)).toISOString();
+  const { results } = await db.prepare(`SELECT id,title,summary,published_at,source_json,official_sources_json,
+      COUNT(*) OVER() AS total FROM news${query.where} AND event_id=? AND published_at>=?
+      ORDER BY published_at DESC,id DESC LIMIT 20`).bind(...query.args, eventId, reportSince).all();
+  const records = [];
+  const seen = new Set();
+  for (const report of asList(results)) {
+    const item = articleEvidence(report);
+    if (!item) continue;
+    const key = words(item.title).join(' ');
+    if (seen.has(key)) continue;
+    seen.add(key);
+    records.push(item);
+    if (records.length === 3) break;
+  }
+  const selected = [
+    ...(baseline ? [{ ...baseline, role: 'baseline', note: 'Last reviewed milestone before this range.' }] : []),
+    ...recent.slice(0, 5).map(item => ({ ...item, role: 'milestone' })),
+    ...records.map(item => ({ ...item, role: 'report', note: 'Linked reporting · date of publication.' }))
+  ];
+  return {
+    eventTitle: text(event.title, 200), since, through, reportSince, sampledAt: asOf,
+    reviewedThrough: event.previewCutoff || event.coverageEnd || null,
+    previewTruncated: Boolean(event.previewTruncated),
+    counts: { milestones: recent.length, linkedReports: Number(results?.[0]?.total) || 0 },
+    evidence: selected.map((item, index) => ({ id: index + 1, ...item }))
+  };
 }
 
 export async function retrieveDailyEvidence(env, now) {

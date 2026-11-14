@@ -25,13 +25,18 @@ const responseSchema = {
   required: ['claims']
 };
 
-function validateClaims(raw, evidence) {
+function numericTokens(text) {
+  return (String(text || '').match(/(?<![\p{L}\d])\d+(?:,\d{3})*(?:\.\d+)?/gu) || [])
+    .map(token => Number(token.replace(/,/g, '')));
+}
+
+export function validateClaims(raw, evidence, expectChange = false) {
   let output;
   try {
     output = typeof raw === 'string' && raw.length <= 8000 ? JSON.parse(raw) : raw;
   } catch { return null; }
   if (!Array.isArray(output?.claims) || !output.claims.length || output.claims.length > 4) return null;
-  const ids = new Set(evidence.map(item => item.id));
+  const ids = new Map(evidence.map(item => [item.id, item]));
   const claims = [];
   for (const claim of output.claims) {
     const content = typeof claim?.text === 'string' ? claim.text.trim() : '';
@@ -39,9 +44,15 @@ function validateClaims(raw, evidence) {
     if (!content || content.length > 500 || /(?:https?:\/\/|www\.)/i.test(content)
       || !Array.isArray(citations) || !citations.length || citations.length > 4
       || citations.some(id => !Number.isInteger(id) || !ids.has(id))) return null;
+    const records = citations.map(id => ids.get(id));
+    if (expectChange && records.every(item => item.role === 'baseline')) continue;
+    const supportedNumbers = new Set(records.flatMap(item =>
+      numericTokens([item.title, item.excerpt, item.date].join(' '))
+    ));
+    if (numericTokens(content).some(number => !supportedNumbers.has(number))) continue;
     claims.push({ text: content, citations: [...new Set(citations)] });
   }
-  return claims;
+  return claims.length ? claims : null;
 }
 
 async function askGemini(key, input) {
@@ -91,18 +102,18 @@ async function askWorkersAI(ai, input) {
   } finally { clearTimeout(timer); }
 }
 
-export async function generateClaims(env, question, evidence) {
+export async function generateClaims(env, question, evidence, { expectChange = false } = {}) {
   if (!evidence.length) return null;
   const input = JSON.stringify({
     question,
-    evidence: evidence.map(({ id, title, excerpt, date, kind, note, links }) => ({
-      id, title, excerpt, date, kind, note, publishers: links.map(link => link.publisher)
+    evidence: evidence.map(({ id, title, excerpt, date, kind, note, links, role }) => ({
+      id, title, excerpt, date, kind, note, role, publishers: links.map(link => link.publisher)
     }))
   });
   if (env.GEMINI_API_KEY) {
     try {
       const raw = await askGemini(env.GEMINI_API_KEY, input);
-      const claims = validateClaims(raw, evidence);
+      const claims = validateClaims(raw, evidence, expectChange);
       if (claims) return { provider: 'gemini', claims };
     } catch {
       console.warn(JSON.stringify({ event: 'ask_provider_unavailable', provider: 'gemini' }));
@@ -110,7 +121,7 @@ export async function generateClaims(env, question, evidence) {
   }
   if (env.AI) {
     try {
-      const claims = validateClaims(await askWorkersAI(env.AI, input), evidence);
+      const claims = validateClaims(await askWorkersAI(env.AI, input), evidence, expectChange);
       if (claims) return { provider: 'workers-ai', claims };
     } catch {
       console.warn(JSON.stringify({ event: 'ask_provider_unavailable', provider: 'workers-ai' }));

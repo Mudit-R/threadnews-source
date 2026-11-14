@@ -5,6 +5,8 @@ import { readFileSync, readdirSync } from 'node:fs';
 import worker from '../src/worker.js';
 import { sha256 } from '../src/feed.js';
 import planConfig from '../../config/plans.json' with { type: 'json' };
+import { retrieveStoryChanges } from '../src/ai-evidence.js';
+import { validateClaims } from '../src/ai-provider.js';
 
 function database() {
   const sqlite = new DatabaseSync(':memory:');
@@ -190,4 +192,48 @@ test('after the free window, configured live billing limits unpaid readers to pr
     assert.equal((await get(seeded.env, `/api/events/${seeded.eventId}/coverage?since=2026-01-01`)).status, 403);
     assert.equal((await get(seeded.env, `/api/events/${seeded.eventId}/coverage/${seeded.oldId}/revisions`)).status, 403);
   } finally { Date.now = realNow; }
+});
+
+test('timeline catch-up separates earlier context from new evidence and excludes retracted or expired reporting', async () => {
+  const { sqlite, DB } = database();
+  const now = new Date('2026-11-14T10:00:00Z');
+  const source = { publisher: 'Fixture publisher', url: 'https://publisher.example/report', basis: 'article' };
+  const event = { id: 'fixture', title: 'Fixture timeline', coverageEnd: '2026-10-15',
+    milestones: [
+      { date: '2026-09-03', title: 'Earlier baseline', summary: 'A dated baseline.', sources: [source] },
+      { date: '2026-10-15', title: 'Reviewed change', summary: 'A reviewed milestone.', sources: [source] }
+    ]
+  };
+  sqlite.prepare('INSERT INTO event_payloads (id,title,category,region,coverage_end,updated_at,payload_json,content_hash) VALUES (?,?,?,?,?,?,?,?)')
+    .run(event.id, event.title, 'Infrastructure', 'Global', event.coverageEnd, now.toISOString(), JSON.stringify(event), 'fixture');
+  const insert = sqlite.prepare(`INSERT INTO news
+    (id,canonical_url,title,original_headline,summary,category,region,published_at,ingested_at,source_json,metadata_json,event_id,feed_id)
+    VALUES (?,?,?,?,'Reporting excerpt','Infrastructure','Global',?,?,?,?,?,'fixture')`);
+  for (const [id, date, hidden, eventId] of [
+    ['visible', '2026-11-13', false, 'fixture'],
+    ['retracted', '2026-11-13', true, 'fixture'],
+    ['expired', '2026-11-02', false, 'fixture'],
+    ['other-event', '2026-11-13', false, 'unrelated']
+  ]) {
+    insert.run(id, source.url + '/' + id, id, id, date + 'T12:00:00.000Z', now.toISOString(),
+      JSON.stringify(source), JSON.stringify({ editorialExcluded: hidden }), eventId);
+  }
+  const result = await retrieveStoryChanges({ DB }, event.id, 30, now);
+  assert.equal(result.since, '2026-10-16');
+  assert.deepEqual(result.evidence.map(item => [item.title, item.role]), [['Reviewed change', 'baseline'], ['visible', 'report']]);
+  assert.deepEqual(result.counts, { milestones: 0, linkedReports: 1 });
+});
+
+test('catch-up AI rejects baseline-only claims and numbers absent from cited records', () => {
+  const evidence = [
+    { id: 1, role: 'baseline', excerpt: 'The old target was 2024.' },
+    { id: 2, role: 'milestone', excerpt: 'The agency opened 1,200 metres in Oct 2026.' }
+  ];
+  const good = { text: 'The agency opened 1200 metres in 2026.', citations: [2] };
+  assert.deepEqual(validateClaims({ claims: [
+    good,
+    { text: 'The target was 2024.', citations: [1] },
+    { text: 'The agency opened 1600 metres in 2026.', citations: [2] }
+  ] }, evidence, true), [good]);
+  assert.equal(validateClaims({ claims: [{ ...good, citations: [3] }] }, evidence, true), null);
 });

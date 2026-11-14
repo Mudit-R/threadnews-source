@@ -9,7 +9,7 @@ import { cancelForAccountDeletion, handlePaypal, hasPaidAccess, reconcilePayPalS
 import { handlePayPalSetup } from './paypal-setup.js';
 import { handleBillingTest } from './billing-test.js';
 import { handleReaderUpdates,dispatchReaderUpdates } from './reader-updates.js';
-import { handleAsk, handleDailyBrief } from './ai.js';
+import { handleAsk, handleDailyBrief, handleStoryChanges } from './ai.js';
 
 const json = (body, status = 200, headers = {}) => Response.json(body, { status, headers: { 'x-content-type-options': 'nosniff', 'referrer-policy': 'strict-origin-when-cross-origin', ...headers } });
 const normalizedTopic = value => {
@@ -71,6 +71,7 @@ export default {
     try {
       if (path === '/api/ai/ask') return await handleAsk(request, env, ctx);
       if (path === '/api/ai/daily') return await handleDailyBrief(request, env);
+      if (path === '/api/ai/changes') return await handleStoryChanges(request, env, ctx);
       const billingTest = await handleBillingTest(request, env);
       if (billingTest) return billingTest;
       const readerUpdates = await handleReaderUpdates(request,env);
