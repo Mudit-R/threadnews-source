@@ -155,7 +155,10 @@ export function divideMilestones(event, since, through) {
   return {
     baseline: ordered.filter(moment => moment.date < since)
       .map(moment => milestoneEvidence(event, moment)).find(Boolean) || null,
-    recent: recent.map(moment => milestoneEvidence(event, moment)).filter(Boolean),
+    recent: recent.map(moment => {
+      const item = milestoneEvidence(event, moment);
+      return item ? { ...item, key: Boolean(moment.key) } : null;
+    }).filter(Boolean),
   };
 }
 
@@ -185,7 +188,8 @@ export async function retrieveStoryChanges(env, eventId, days, now) {
   }
   const selected = [
     ...(baseline ? [{ ...baseline, role: 'baseline', note: 'Last reviewed milestone before this range.' }] : []),
-    ...recent.slice(0, 5).map(item => ({ ...item, role: 'milestone' })),
+    ...recent.toSorted((a, b) => Number(b.key) - Number(a.key)).slice(0, 5)
+      .map(({ key, ...item }) => ({ ...item, role: 'milestone' })),
     ...records.map(item => ({ ...item, role: 'report', note: 'Linked reporting · date of publication.' }))
   ];
   return {
