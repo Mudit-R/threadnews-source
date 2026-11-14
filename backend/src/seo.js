@@ -227,6 +227,7 @@ function pageDocument({ title, description, canonical, content, type = 'website'
   let shell;
   if (includeApp && template) {
     shell = template
+      .replace(/\b(src|href)="((?![a-z]+:|[\/#])[^"]+\.(?:css|js)(?:\?[^"]*)?)"/gi, '$1="/$2"')
       .replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapeHtml(titleText)}</title>`)
       .replace(/<meta name="description" content="[^"]*">/i, `<meta name="description" content="${escapeHtml(description)}">`)
       .replace('</head>', `${extraHead}</head>`)

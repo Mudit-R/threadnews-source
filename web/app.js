@@ -4,7 +4,7 @@
   let newsroom, eventCoverageHandle;
   const $ = s => document.querySelector(s);
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const safeUrl = value => {try{const u=new URL(value,location.href);return /^https?:$/.test(u.protocol)?esc(u.href):'#';}catch{return '#';}};
+  const safeUrl = value => {try{const u=new URL(value,location.origin);return /^https?:$/.test(u.protocol)?esc(u.href):'#';}catch{return '#';}};
   const icons = {
     compass:'<circle cx="12" cy="12" r="9"/><path d="m16 8-3 5-5 3 3-5Z"/>',
     bookmark:'<path d="M6 4h12v17l-6-4-6 4Z"/>',

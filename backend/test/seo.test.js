@@ -4,7 +4,7 @@ import worker from '../src/worker.js';
 import { canonicalOrigin, handleSeo } from '../src/seo.js';
 
 const host = 'https://threadnews.online';
-const shell = '<!doctype html><html><head><title>ThreadNews — The whole story, unfolding</title><meta name="description" content="Old description"></head><body><main id="main" tabindex="-1"></main><script src="/app.js"></script></body></html>';
+const shell = '<!doctype html><html><head><title>ThreadNews — The whole story, unfolding</title><meta name="description" content="Old description"><link rel="stylesheet" href="styles.css?v=1"><link rel="stylesheet" href="https://example.com/font.css"></head><body><main id="main" tabindex="-1"></main><script src="app.js"></script></body></html>';
 const event = {
   id: 'story-one', title: 'A selected history', shortTitle: 'A selected history', description: 'A source-linked event chronology.',
   coverageEnd: '2026-11-02', milestones: [{ date:'2026-11-02', title:'A documented update', summary:'The primary record describes a dated development.', kind:'Official record', sources:[{publisher:'Agency',title:'Original statement',type:'Government statement',url:'https://example.gov/release'}] }]
@@ -66,6 +66,8 @@ test('timeline path returns server-rendered content, canonical metadata and the 
   assert.match(body,/A documented update/);
   assert.match(body,/https:\/\/example\.gov\/release/);
   assert.match(body,/<script src="\/app\.js"><\/script>/);
+  assert.match(body,/href="\/styles\.css\?v=1"/);
+  assert.match(body,/href="https:\/\/example\.com\/font\.css"/);
 });
 
 test('news home has meaningful HTML before client scripts execute', async () => {
