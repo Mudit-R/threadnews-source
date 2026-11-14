@@ -1,5 +1,5 @@
 import { sameOriginMutation } from './auth.js';
-import { isDailyEvidencePublic, retrieveDailyEvidence, retrieveEvidence, retrieveStoryChanges } from './ai-evidence.js';
+import { isDailyEvidencePublic, retrieveArticleSummaryEvidence, retrieveDailyEvidence, retrieveEvidence, retrieveStoryChanges } from './ai-evidence.js';
 import { generateClaims } from './ai-provider.js';
 
 const LIMIT = 60;
@@ -49,13 +49,13 @@ async function digest(data) {
   return Array.from(new Uint8Array(bytes), value => value.toString(16).padStart(2, '0')).join('');
 }
 
-async function reserve(db) {
+async function reserve(db, limit = LIMIT) {
   const day = new Date().toISOString().slice(0, 10);
   return db.prepare(`INSERT INTO ai_budget(id,day,used) VALUES (1,?,1)
     ON CONFLICT(id) DO UPDATE SET day=excluded.day,
     used=CASE WHEN ai_budget.day=excluded.day THEN ai_budget.used+1 ELSE 1 END
     WHERE ai_budget.day<>excluded.day OR ai_budget.used<?
-    RETURNING used`).bind(day, LIMIT).first();
+    RETURNING used`).bind(day, limit).first();
 }
 
 async function rateLimit(request, env) {
@@ -72,6 +72,46 @@ async function checkedRequest(request, env) {
   if (!sameOriginMutation(request, env)) return reply({ error: 'origin_not_allowed' }, 403);
   if (!env.DB || env.NEWS_STORAGE === 'static') return reply({ error: 'evidence_unavailable' }, 503);
   return rateLimit(request, env);
+}
+
+const ARTICLE_PROMPT = 'Summarize this single stored source brief in up to three short sentences. Each sentence should add a distinct point. Keep qualifications, attribution, dates, and distinctions between a proposal and a completed action. Omit speculation and information that is not in the stored brief.';
+const HEADLINE_PROMPT = 'Paraphrase the publisher headline in one short attributed sentence. Use only the headline. Preserve qualifiers and attribution, including who made any claim. Do not add background, causes, implications, or details.';
+
+export async function handleArticleSummary(request, env) {
+  const blocked = await checkedRequest(request, env);
+  if (blocked) return blocked;
+  const id = new URL(request.url).searchParams.get('id') || '';
+  if (!/^[a-zA-Z0-9][a-zA-Z0-9_.:-]{0,119}$/.test(id)) return reply({ error: 'invalid_article_id' }, 400);
+  const input = await retrieveArticleSummaryEvidence(env, id);
+  if (!input) return reply({ error: 'article_not_found' }, 404);
+  const { basis, text, publisher, evidence } = input;
+  const fallback = { status: 'source', basis, publisher, points: [text] };
+  if (!evidence.length || (!env.GEMINI_API_KEY && !env.AI)) return reply(fallback);
+
+  const prompt = basis === 'headline' ? HEADLINE_PROMPT : ARTICLE_PROMPT;
+  const db = env.DB, version = await digest(JSON.stringify([prompt, input]));
+  const stored = await db.prepare('SELECT evidence_hash,answer_json FROM article_summaries WHERE news_id=?').bind(id).first();
+  if (stored?.evidence_hash === version && stored.answer_json) return reply(JSON.parse(stored.answer_json));
+  const now = Date.now(), until = now + 25000;
+  const lock = await db.prepare(`INSERT INTO article_summaries(news_id,evidence_hash,lease_until) VALUES (?,?,?)
+    ON CONFLICT(news_id) DO UPDATE SET evidence_hash=excluded.evidence_hash, lease_until=excluded.lease_until, answer_json=NULL
+    WHERE article_summaries.evidence_hash<>excluded.evidence_hash OR
+      (article_summaries.lease_until<=? AND article_summaries.answer_json IS NULL)
+    RETURNING news_id`).bind(id, version, until, now).first();
+  if (!lock) return reply(fallback);
+  // Leave part of the shared inference allowance for reader questions and editions.
+  if (!await reserve(db, LIMIT - (basis === 'headline' ? 30 : 15))) return reply(fallback);
+  const generated = await generateClaims(env, prompt, evidence);
+  if (!generated) return reply(fallback);
+  const output = { ...fallback, status: 'answered', provider: generated.provider, points: generated.claims.slice(0, basis === 'headline' ? 1 : 3).map(claim => claim.text) };
+  const current = await retrieveArticleSummaryEvidence(env, id);
+  if (!current) return reply({ error: 'article_not_found' }, 404);
+  if (await digest(JSON.stringify([prompt, current])) !== version) {
+    return reply({ status: 'source', basis: current.basis, publisher: current.publisher, points: [current.text] });
+  }
+  await db.prepare(`UPDATE article_summaries SET answer_json=? WHERE news_id=? AND evidence_hash=? AND lease_until=?`)
+    .bind(JSON.stringify(output), id, version, until).run();
+  return reply(output);
 }
 
 export async function handleAsk(request, env, ctx) {

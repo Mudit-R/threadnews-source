@@ -28,3 +28,20 @@
 .coverage-source>small{font-size:9px;color:#8c9980}
 .source-link-unavailable{display:block;color:#8c7f68;font-size:10px}
 @media(max-width:620px){.coverage-source{grid-template-columns:1fr;gap:5px}.coverage-source>.button{white-space:normal}}
+.article-summary {
+  margin: 18px 0;
+  padding: 18px 20px;
+  border: 1px solid #d7e2d2;
+  border-radius: 12px;
+  background: #f0f4eb;
+}
+.article-summary h2 { margin: 0; color: var(--green); font: 550 28px/1.14 var(--serif); }
+.article-summary-label { display: block; margin: 5px 0 9px; color: #456155; font-size: 12px; }
+.article-summary-body p { margin: 0; }
+.article-summary-body ul { margin: 0; padding-left: 20px; }
+.article-summary-body li + li { margin-top: 5px; }
+.article-summary-body details { margin-top: 12px; font-size: 13px; }
+.article-summary-body summary { margin-bottom: 4px; cursor: pointer; }
+.article-summary-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.article-summary-actions [hidden], .article-summary-actions [role="status"]:empty { display: none; }
+.article-summary-actions [role="status"] { flex-basis: 100%; color: #456155; font-size: 12px; }

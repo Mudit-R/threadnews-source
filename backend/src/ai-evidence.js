@@ -126,6 +126,28 @@ function articleEvidence(row) {
   });
 }
 
+export async function retrieveArticleSummaryEvidence(env, id) {
+  const query = buildContentQuery(new URLSearchParams(), env, { cursor: false });
+  const row = await env.DB.prepare(`SELECT id,title,original_headline,summary,published_at,source_json,official_sources_json,metadata_json
+    FROM news${query.where} AND id=?`).bind(...query.args, id).first();
+  if (!row) return null;
+  const source = parse(row.source_json, {});
+  const basis = parse(row.metadata_json, {})?.digestBasis;
+  const summarized = source.basis === 'article' && row.summary?.trim() && ['article-reviewed','source-extract','publisher-preview','official-primary-source'].includes(basis);
+  const headline = row.original_headline || row.title;
+  const record = evidence({
+    title: headline, excerpt: summarized ? row.summary : headline, date: row.published_at.slice(0, 10),
+    kind: summarized ? 'Stored source brief' : 'Publisher headline',
+    href: '/news/' + encodeURIComponent(row.id), sources: [source]
+  });
+  return {
+    basis: summarized ? 'source_brief' : 'headline',
+    publisher: source.publisher || 'The publisher',
+    text: summarized ? row.summary : headline,
+    evidence: record ? [{ ...record, id: 1 }] : []
+  };
+}
+
 async function newsEvidence(db, env, terms, eventId) {
   if (!terms.length && !eventId) return [];
   const query = buildContentQuery(new URLSearchParams(), env, { cursor: false });
