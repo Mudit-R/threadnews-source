@@ -10,6 +10,7 @@ import { handlePayPalSetup } from './paypal-setup.js';
 import { handleBillingTest } from './billing-test.js';
 import { handleReaderUpdates,dispatchReaderUpdates } from './reader-updates.js';
 import { handleArticleSummary, handleAsk, handleDailyBrief, handleStoryChanges } from './ai.js';
+import { refreshSourceSummaries } from './source-summary.js';
 
 const json = (body, status = 200, headers = {}) => Response.json(body, { status, headers: { 'x-content-type-options': 'nosniff', 'referrer-policy': 'strict-origin-when-cross-origin', ...headers } });
 const normalizedTopic = value => {
@@ -101,6 +102,11 @@ export default {
         }, env.NEWS_STORAGE === 'static' || env.DB ? 200 : 503, { 'cache-control': 'no-store' });
       }
       if (path === '/api/editorial-policy' && request.method === 'GET') return json(EDITORIAL_POLICY,200,{'cache-control':'public, max-age=3600'});
+      if (path === '/api/admin/refresh-source-summaries') {
+        if (request.method !== 'POST') return json({error:'method_not_allowed'},405,{allow:'POST'});
+        try { await authorized(request,env); } catch(error) { return json({error:error.status===401?'Unauthorized':'Ingestion is not configured'},error.status||503,{'cache-control':'no-store'}); }
+        return json(await refreshSourceSummaries(env),200,{'cache-control':'no-store'});
+      }
       if (['/api/admin/refresh','/api/admin/refresh-economy','/api/admin/refresh-economy-source'].includes(path)) {
         if (request.method !== 'POST') return json({error:'method_not_allowed'},405,{allow:'POST'});
         try { await authorized(request,env); } catch(error) { return json({error:error.status===401?'Unauthorized':'Ingestion is not configured'},error.status||503,{'cache-control':'no-store'}); }
@@ -184,7 +190,10 @@ export default {
     if (env.NEWS_STORAGE === 'static' || !env.DB) return;
     if (controller.cron === '*/10 * * * *') ctx.waitUntil((async()=>{
       await recordScheduled('scheduled_news',env,refreshNews(env));
-      await recordScheduled('scheduled_reader_updates',env,dispatchReaderUpdates(env));
+      await Promise.all([
+        recordScheduled('scheduled_source_summaries', env, refreshSourceSummaries(env)),
+        recordScheduled('scheduled_reader_updates',env,dispatchReaderUpdates(env))
+      ]);
     })());
     if (controller.cron === '0 */2 * * *') ctx.waitUntil(recordScheduled('scheduled_economy_source',env,refreshEconomicSource(env,{now:new Date(controller.scheduledTime)})));
     if (controller.cron === '43 5 1 * *') ctx.waitUntil(recordScheduled('scheduled_annual_economy',env,refreshEconomy(env)));

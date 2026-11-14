@@ -7,6 +7,8 @@ import { sha256 } from '../src/feed.js';
 import planConfig from '../../config/plans.json' with { type: 'json' };
 import { retrieveStoryChanges } from '../src/ai-evidence.js';
 import { validateClaims } from '../src/ai-provider.js';
+import { refreshSourceSummaries } from '../src/source-summary.js';
+import { storeArticles } from '../src/content.js';
 
 function database() {
   const sqlite = new DatabaseSync(':memory:');
@@ -37,6 +39,37 @@ function database() {
   };
   return { sqlite, DB };
 }
+
+test('original releases are read and stored before the reader requests a summary; feed repeats keep the upgrade', async () => {
+  const { DB, sqlite } = database();
+  const now = new Date();
+  const env = { DB, AI: {}, APP_ORIGIN:'https://threadnews.online' };
+  const title = 'Government updates its electricity plans';
+  const article = { id:'fixture-uk-release', title, category:'Energy', publishedAt:now.toISOString(), digestBasis:'headline-only',
+    source:{ publisher:'UK Department for Energy Security and Net Zero', basis:'headline', sourceType:'Official source', url:'https://www.gov.uk/government/news/clean-power' } };
+  await storeArticles(env,[article],'uk-energy','automatic',{now});
+  const seen = [];
+  const result = await refreshSourceSummaries(env,{now,fetchImpl:async (input, options) => {
+    const url = new URL(input); seen.push(url.pathname);
+    assert.equal(options.headers.authorization,undefined);
+    if (url.pathname === '/robots.txt') return new Response('User-agent: *\nAllow: /');
+    return new Response(`<main><p>Unrelated navigation and site text that should not be treated as the content of an energy policy release.</p><div class="govspeak">
+      <p>The energy department opened a consultation on a proposed electricity grid investment programme intended to improve reliability in rural communities.</p>
+      <p>Network operators can respond in writing to the public consultation. The department has not approved the proposal and will consider submissions before a decision. It also asked local councils to describe recent outages and to estimate how often they interrupted public services in their areas.</p></div></main>`,{headers:{'content-type':'text/html'}});
+  },generate:async (_env, _prompt, evidence) => {
+    assert.equal(evidence.length,2);
+    assert.ok(evidence[0].excerpt.includes('rural communities'));
+    return {claims:[{text:'The energy department is seeking feedback on proposed grid investment to improve reliability in rural areas. Officials have yet to approve the plan.'}]};
+  }});
+  assert.equal(result.published,1,JSON.stringify(result.statuses));
+  assert.deepEqual(seen,['/robots.txt','/government/news/clean-power']);
+  await storeArticles(env,[article],'uk-energy','automatic',{now});
+  const stored = sqlite.prepare('SELECT summary,metadata_json,source_json FROM news WHERE id=?').get(article.id);
+  assert.match(stored.summary,/rural areas/);
+  assert.equal(JSON.parse(stored.metadata_json).digestBasis,'source-summary');
+  assert.equal(JSON.parse(stored.source_json).summaryMethod,'original-source-paraphrase');
+  assert.equal((await refreshSourceSummaries(env,{now})).attempted,0);
+});
 
 async function seedRecords({ sqlite, DB }, { paid = false } = {}) {
   const now = Math.floor(Date.now() / 1000);

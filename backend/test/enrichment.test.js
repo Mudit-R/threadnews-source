@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { enrichArticle, sourceParagraphs, briefFromParagraphs, robotsAllowed, decodePublicGoogleLink, policyForUrl, auditArticles } from '../src/enrichment.js';
+import { enrichArticle, sourceParagraphs, briefFromParagraphs, robotsAllowed, decodePublicGoogleLink, policyForUrl, auditArticles, readOriginalArticle } from '../src/enrichment.js';
+import { shortSourceSummary } from '../src/source-summary.js';
 import { fetchArchive, enrichArchive } from '../scripts/enrich-content.mjs';
 
 const now = new Date('2026-11-04T12:00:00Z');
@@ -88,4 +89,14 @@ test('dry-run enrichment reports exact unresolved counts and does not publish or
   assert.equal(result.published, false); assert.equal(result.changed, 1); assert.equal(result.counts.reviewedDigests, 0);
   assert.equal(result.counts.sourceExcerpts, 1); assert.equal(result.counts.headlineOnly, 1); assert.equal(result.counts.googleLinks, 1);
   assert.equal(auditArticles([unresolved], now).counts.enrichmentEligible, 0);
+});
+
+test('source summary fails closed for publisher mismatches, indexing exclusions and headline paraphrases', async () => {
+  const policyMismatch=await readOriginalArticle({...article,source:{...article.source,publisher:'Unrelated'}},{fetchImpl:()=>assert.fail('publisher mismatch must not fetch')});
+  assert.equal(policyMismatch.status,'no_approved_original');
+  const blocked=await readOriginalArticle(article,{fetchImpl:async input=>new URL(input).pathname==='/robots.txt'?new Response(''):new Response(html,{headers:{'content-type':'text/html','x-robots-tag':'nosnippet'}})});
+  assert.equal(blocked.status,'robots_disallowed');
+  const excerpts=sourceParagraphs(html);
+  assert.equal(shortSourceSummary({claims:[{text:article.title}]},article,excerpts),null);
+  assert.equal(shortSourceSummary({claims:[{text:excerpts[0]}]},article,excerpts),null);
 });

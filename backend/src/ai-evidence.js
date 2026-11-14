@@ -133,7 +133,7 @@ export async function retrieveArticleSummaryEvidence(env, id) {
   if (!row) return null;
   const source = parse(row.source_json, {});
   const basis = parse(row.metadata_json, {})?.digestBasis;
-  const summarized = source.basis === 'article' && row.summary?.trim() && ['article-reviewed','source-extract','publisher-preview','official-primary-source'].includes(basis);
+  const summarized = source.basis === 'article' && row.summary?.trim() && ['article-reviewed','source-summary','source-extract','publisher-preview','official-primary-source'].includes(basis);
   const headline = row.original_headline || row.title;
   const record = evidence({
     title: headline, excerpt: summarized ? row.summary : headline, date: row.published_at.slice(0, 10),
@@ -142,6 +142,7 @@ export async function retrieveArticleSummaryEvidence(env, id) {
   });
   return {
     basis: summarized ? 'source_brief' : 'headline',
+    publishedSummary: summarized && ['source-summary','article-reviewed'].includes(basis),
     publisher: source.publisher || 'The publisher',
     text: summarized ? row.summary : headline,
     evidence: record ? [{ ...record, id: 1 }] : []

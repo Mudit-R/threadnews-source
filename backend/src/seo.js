@@ -128,7 +128,7 @@ function digest(article) {
   if (['headline-only','headline_only'].includes(basis)) return '';
   const summary = typeof article?.summary === 'string' ? article.summary.trim() : '';
   if (!summary || /^(?:Headline-based discovery item\.|Official-source headline\.|Headline discovered through GDELT\.)/i.test(summary)) return '';
-  if (!['article-reviewed','full_text','abstract','feed-description'].includes(basis) || summary.split(/\s+/).length > 40) return '';
+  if (!['article-reviewed','source-summary','source-extract','publisher-preview','official-primary-source','full_text','abstract','feed-description'].includes(basis) || summary.split(/\s+/).length > 40) return '';
   return summary;
 }
 

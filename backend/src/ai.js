@@ -75,7 +75,6 @@ async function checkedRequest(request, env) {
 }
 
 const ARTICLE_PROMPT = 'Summarize this single stored source brief in up to three short sentences. Each sentence should add a distinct point. Keep qualifications, attribution, dates, and distinctions between a proposal and a completed action. Omit speculation and information that is not in the stored brief.';
-const HEADLINE_PROMPT = 'Paraphrase the publisher headline in one short attributed sentence. Use only the headline. Preserve qualifiers and attribution, including who made any claim. Do not add background, causes, implications, or details.';
 
 export async function handleArticleSummary(request, env) {
   const blocked = await checkedRequest(request, env);
@@ -86,9 +85,9 @@ export async function handleArticleSummary(request, env) {
   if (!input) return reply({ error: 'article_not_found' }, 404);
   const { basis, text, publisher, evidence } = input;
   const fallback = { status: 'source', basis, publisher, points: [text] };
-  if (!evidence.length || (!env.GEMINI_API_KEY && !env.AI)) return reply(fallback);
+  if (basis === 'headline' || input.publishedSummary || !evidence.length || (!env.GEMINI_API_KEY && !env.AI)) return reply(fallback);
 
-  const prompt = basis === 'headline' ? HEADLINE_PROMPT : ARTICLE_PROMPT;
+  const prompt = ARTICLE_PROMPT;
   const db = env.DB, version = await digest(JSON.stringify([prompt, input]));
   const stored = await db.prepare('SELECT evidence_hash,answer_json FROM article_summaries WHERE news_id=?').bind(id).first();
   if (stored?.evidence_hash === version && stored.answer_json) return reply(JSON.parse(stored.answer_json));
@@ -100,10 +99,10 @@ export async function handleArticleSummary(request, env) {
     RETURNING news_id`).bind(id, version, until, now).first();
   if (!lock) return reply(fallback);
   // Leave part of the shared inference allowance for reader questions and editions.
-  if (!await reserve(db, LIMIT - (basis === 'headline' ? 30 : 15))) return reply(fallback);
+  if (!await reserve(db, LIMIT - 15)) return reply(fallback);
   const generated = await generateClaims(env, prompt, evidence);
   if (!generated) return reply(fallback);
-  const output = { ...fallback, status: 'answered', provider: generated.provider, points: generated.claims.slice(0, basis === 'headline' ? 1 : 3).map(claim => claim.text) };
+  const output = { ...fallback, status: 'answered', provider: generated.provider, points: generated.claims.slice(0, 3).map(claim => claim.text) };
   const current = await retrieveArticleSummaryEvidence(env, id);
   if (!current) return reply({ error: 'article_not_found' }, 404);
   if (await digest(JSON.stringify([prompt, current])) !== version) {

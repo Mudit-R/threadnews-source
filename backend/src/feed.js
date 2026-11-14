@@ -96,7 +96,7 @@ export async function parseFeed(xml,feed,now=new Date(),maxItems=50){
       summary:brief|| (official?'Official-source headline. Open the original release for details; it has not been independently corroborated here.':'Headline-based discovery item. Open the original reporting for the full context; no article summary has been generated.'),
       digestBasis:brief?'feed-description':'headline-only',
       category:feed.category,region:feed.region,keywords:'',publishedAt:at.toISOString(),ingestedAt:now.toISOString(),
-      source:{publisher:canonicalPublisher(publisher),url,discoveryUrl:feed.discovery?url:feed.url,sourceType:feed.sourceType,basis:brief?'feed-description':'headline',feedId:feed.id,discoverySource:feed.discovery||feed.publisher,...(thumbnail?{thumbnailUrl:thumbnail}:{})},
+      source:{publisher:canonicalPublisher(publisher),url,discoveryUrl:feed.discovery?url:feed.url,sourceType:feed.sourceType,basis:brief?'feed-description':'headline',feedId:feed.id,discoverySource:feed.discovery||feed.publisher,...(!item.pubDate&&!item.published&&item.updated?{dateBasis:'updated'}:{}),...(thumbnail?{thumbnailUrl:thumbnail}:{})},
       officialSources:[],secondarySources,eventId:null});
   }
   return results.slice(0,50);

@@ -11,7 +11,7 @@ const COLS = 'id,canonical_url,title,original_headline,summary,category,region,k
 // Feed refreshes may update their own headline metadata, but must not replace a
 // stronger source-backed or reviewed record. Explicit editorial imports can
 // still correct/retract a prior record. All expressions here are fixed SQL.
-const evidenceRankSql = column => `(CASE COALESCE(json_extract(${column},'$.digestBasis'),'') WHEN 'article-reviewed' THEN 4 WHEN 'source-extract' THEN 3 WHEN 'publisher-preview' THEN 2 WHEN 'feed-description' THEN 1 ELSE 0 END)`;
+const evidenceRankSql = column => `(CASE COALESCE(json_extract(${column},'$.digestBasis'),'') WHEN 'article-reviewed' THEN 5 WHEN 'source-summary' THEN 4 WHEN 'source-extract' THEN 3 WHEN 'publisher-preview' THEN 2 WHEN 'feed-description' THEN 1 ELSE 0 END)`;
 const json = (body, status = 200, headers = {}) => Response.json(body, { status, headers: { 'cache-control': 'no-store', 'x-content-type-options': 'nosniff', ...headers } });
 class ContentError extends Error {
   constructor(message, status = 400) { super(message); this.status = status; }
@@ -139,6 +139,27 @@ function rowArticle(row) {
   return { ...parse(row.metadata_json || '{}', {}), id: row.id, title: row.title, originalHeadline: row.original_headline,
     summary: row.summary, category: row.category, region: row.region, keywords, publishedAt: row.published_at,
     ingestedAt: row.ingested_at, source: parse(row.source_json, {}), officialSources: parse(row.official_sources_json, []), eventId: row.event_id || null };
+}
+
+// Compare-and-swap: an editor, retraction or feed revision can win while the source is being read.
+export async function storeSourceSummary(env, { row, source: rawSource, summary, at }) {
+  const src = source(rawSource, env, new Date(at));
+  const short = text(summary, 'summary', 600, true);
+  const sourceJson = JSON.stringify(src);
+  const hash = await sha256(JSON.stringify([row.content_hash, short, sourceJson]));
+  const guard = `id=? AND content_hash=? AND COALESCE(json_extract(metadata_json,'$.editorialExcluded'),0)=0
+    AND ${evidenceRankSql('metadata_json')}<4`;
+  const [, result] = await env.DB.batch([
+    env.DB.prepare(`INSERT INTO article_revisions(news_id,recorded_at,content_hash,payload_json,reason)
+      SELECT id,?,content_hash,json_object('id',id,'title',title,'originalHeadline',original_headline,'summary',summary,
+      'category',category,'region',region,'publishedAt',published_at,'source',json(source_json),'officialSources',json(official_sources_json),
+      'keywords',keywords,'eventId',event_id,'metadata',json(metadata_json)),'original_source_summary' FROM news WHERE ${guard}`)
+      .bind(at,row.id,row.content_hash),
+    env.DB.prepare(`UPDATE news SET summary=?,source_json=?,content_hash=?,
+      metadata_json=json_set(metadata_json,'$.digestBasis','source-summary','$.evidenceNote','Summary based on the linked original publication.') WHERE ${guard}`)
+      .bind(short,sourceJson,hash,row.id,row.content_hash)
+  ]);
+  return result.meta.changes === 1;
 }
 
 const RELATED_STOPWORDS = new Set('a an and are as at be been being by can could for from had has have how in into is it its may of on or our says said that the their them this to was were what when where which who why will with would'.split(' '));
@@ -443,7 +464,7 @@ async function pipeline(env) {
     env.DB.prepare('SELECT id,last_attempt_at,last_success_at,error,item_count FROM feed_state ORDER BY id').all(),
     env.DB.prepare('SELECT COUNT(*) AS total,MAX(published_at) AS newestPublishedAt,MAX(ingested_at) AS lastStoredAt FROM news').first(),
     env.DB.prepare("SELECT value FROM app_state WHERE key='content_cleanup'").first(),
-    env.DB.prepare("SELECT key,value FROM app_state WHERE key IN ('economy_refresh_status','economy_source_refresh_status','event_link_status','scheduled_news','scheduled_reader_updates','scheduled_economy_source','scheduled_annual_economy','scheduled_paypal_reconciliation')").all(),
+    env.DB.prepare("SELECT key,value FROM app_state WHERE key IN ('economy_refresh_status','economy_source_refresh_status','event_link_status','scheduled_news','scheduled_source_summaries','scheduled_reader_updates','scheduled_economy_source','scheduled_annual_economy','scheduled_paypal_reconciliation')").all(),
     env.DB.prepare("SELECT updated_at,json_extract(payload_json,'$.meta.monthlyRefresh') AS monthly,json_extract(payload_json,'$.meta.annualRefresh') AS annual FROM content_documents WHERE id='economy'").first()
   ]);
   const enabled = new Set(enabledFeedIds(env));

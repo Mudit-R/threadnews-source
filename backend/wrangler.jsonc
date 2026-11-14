@@ -62,7 +62,7 @@
     "NEWS_STORAGE": "d1",
     "NEWS_FEED_DAYS": "4",
     "NEWS_RETENTION_DAYS": "30",
-    "ENABLED_FEEDS": "google-world,fed-monetary,ecb,nasa,un-news",
+    "ENABLED_FEEDS": "google-world,fed-monetary,ecb,nasa,un-news,bls-cpi,bls-ppi,bls-empsit,uk-energy",
     "GOOGLE_NEWS_ENABLED": "true",
     "GOOGLE_NEWS_TOPICS": "WORLD,BUSINESS,TECHNOLOGY,HEALTH",
     "FEED_REFRESH_SECONDS": "540",

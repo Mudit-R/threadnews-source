@@ -4,12 +4,24 @@ import { canonicalUrl, plainText, readLimited, sha256 } from './feed.js';
 // decision, not something a caller-supplied article URL can enable.
 export const ENRICHMENT_POLICIES = Object.freeze([
   { id: 'federal-reserve', hosts: ['www.federalreserve.gov', 'federalreserve.gov'],
+    publishers: ['Federal Reserve'],
     paths: /^\/newsevents\/pressreleases\//, reuse: 'public-domain-text',
     terms: 'https://www.federalreserve.gov/disclaimer.htm' },
   { id: 'ecb-institutional', hosts: ['www.ecb.europa.eu', 'ecb.europa.eu'],
+    publishers: ['European Central Bank'],
     paths: /^\/press\/(?:pr|govcdec\/otherdec)\//, reuse: 'attributed-institutional-text',
     terms: 'https://www.ecb.europa.eu/services/using-our-site/disclaimer/html/index.en.html',
-    freeAccessDisclosure: 'The underlying ECB information is available free of charge on the ECB website.' }
+    freeAccessDisclosure: 'The underlying ECB information is available free of charge on the ECB website.' },
+  { id: 'bls-release', hosts: ['www.bls.gov'], publishers: ['U.S. Bureau of Labor Statistics', 'Bureau of Labor Statistics'],
+    paths: /^\/news\.release\/archives\/(?:cpi|ppi|empsit)_\d{8}\.htm$/,
+    reuse: 'public-domain-text', terms: 'https://www.bls.gov/opub/copyright-information.htm' },
+  { id: 'uk-release', hosts: ['www.gov.uk'], publishers: ['UK Department for Energy Security and Net Zero'],
+    paths: /^\/government\/news\/[a-z0-9-]+$/, reuse: 'open-government-licence',
+    terms: 'https://www.gov.uk/help/terms-conditions',
+    freeAccessDisclosure: 'Contains public sector information licensed under the Open Government Licence v3.0.' },
+  { id: 'eurostat-release', hosts: ['ec.europa.eu'], publishers: ['Eurostat'],
+    paths: /^\/eurostat\/web\/products-euro-indicators\/w\/[0-9a-z-]+$/i, reuse: 'attributed-institutional-text',
+    terms: 'https://ec.europa.eu/eurostat/help/copyright-notice' }
 ]);
 const PUBLISHER_HOSTS = Object.freeze({
   'bbc': ['bbc.com', 'bbc.co.uk'], 'bbc news': ['bbc.com', 'bbc.co.uk'],
@@ -20,7 +32,9 @@ const PUBLISHER_HOSTS = Object.freeze({
   'nhk world-japan': ['nhk.or.jp'], 'cna': ['channelnewsasia.com'],
   'dw': ['dw.com'], 'al jazeera': ['aljazeera.com'], 'financial times': ['ft.com'],
   'un news': ['news.un.org'], 'un news - global perspective human stories': ['news.un.org'],
-  'european central bank': ['ecb.europa.eu'], 'federal reserve': ['federalreserve.gov']
+  'european central bank': ['ecb.europa.eu'], 'federal reserve': ['federalreserve.gov'],
+  'u.s. bureau of labor statistics': ['bls.gov'], 'bureau of labor statistics': ['bls.gov'],
+  'uk department for energy security and net zero': ['gov.uk'], 'eurostat': ['ec.europa.eu']
 });
 const HEADLINE_BASES = new Set(['headline-only', 'headline_only', '']);
 const USER_AGENT = 'ThreadNewsMetaBot/1.0 (+https://threadnews.online/sources)';
@@ -35,7 +49,7 @@ function publicUrl(value) {
   return url;
 }
 function decoded(value) {
-  return String(value || '').replace(/&(?:amp|quot|apos|lt|gt|#39|#x27);/gi, item => ({ '&amp;':'&','&quot;':'"','&apos;':"'",'&lt;':'<','&gt;':'>','&#39;':"'",'&#x27;':"'" }[item.toLowerCase()] || item))
+  return String(value || '').replace(/&(?:amp|nbsp|quot|apos|lt|gt|#39|#x27);/gi, item => ({ '&amp;':'&','&nbsp;':' ','&quot;':'"','&apos;':"'",'&lt;':'<','&gt;':'>','&#39;':"'",'&#x27;':"'" }[item.toLowerCase()] || item))
     .replace(/&#(\d{1,6});/g, (_, code) => Number(code) <= 0x10ffff ? String.fromCodePoint(Number(code)) : '');
 }
 function attributes(tag) {
@@ -93,10 +107,11 @@ export function robotsAllowed(text, pathname, agent = 'threadnewsmetabot') {
   return !matching.length || matching[0].allow;
 }
 
-async function requestPublic(value, { fetchImpl, allowed, maxBytes = 768 * 1024, maxRedirects = 4, accept = 'text/html, application/xhtml+xml' }) {
+async function requestPublic(value, { fetchImpl, allowed, beforeFetch, maxBytes = 768 * 1024, maxRedirects = 4, accept = 'text/html, application/xhtml+xml' }) {
   let url = publicUrl(value);
   if (!url || !allowed(url)) throw new EnrichmentError('source_not_allowed');
   for (let hop = 0; hop <= maxRedirects; hop++) {
+    if (beforeFetch) await beforeFetch(url);
     let response;
     try { response = await fetchImpl(url.href, { redirect: 'manual', signal: AbortSignal.timeout(15000), headers: { accept, 'user-agent': USER_AGENT } }); }
     catch { throw new EnrichmentError('source_unavailable'); }
@@ -107,9 +122,10 @@ async function requestPublic(value, { fetchImpl, allowed, maxBytes = 768 * 1024,
       if (!next || !allowed(next)) throw new EnrichmentError('source_redirect_not_allowed');
       url = next; continue;
     }
-    if (!response.ok) throw new EnrichmentError('source_http_' + response.status);
+    if (!response.ok) { await response.body?.cancel().catch(() => {}); throw new EnrichmentError('source_http_' + response.status); }
     const contentType = response.headers.get('content-type') || '';
-    if (accept.startsWith('text/html') && !/text\/html|application\/xhtml\+xml/i.test(contentType)) throw new EnrichmentError('unsupported_source_document');
+    if (accept.startsWith('text/html') && !/text\/html|application\/xhtml\+xml/i.test(contentType)) { await response.body?.cancel().catch(() => {}); throw new EnrichmentError('unsupported_source_document'); }
+    if (/\b(?:noai|noindex|nosnippet)\b/i.test(response.headers.get('x-robots-tag') || '')) { await response.body?.cancel().catch(() => {}); throw new EnrichmentError('robots_disallowed'); }
     let body;
     try { body = await readLimited(response, maxBytes); } catch { throw new EnrichmentError('source_document_too_large'); }
     return { url: url.href, body };
@@ -131,15 +147,24 @@ async function robotsCheck(url, { fetchImpl, robotsCache }) {
   return robotsAllowed(robotsCache.get(origin), new URL(url).pathname + new URL(url).search);
 }
 
-export function sourceParagraphs(html) {
-  if (/"isAccessibleForFree"\s*:\s*(?:false|"false")/i.test(html) || /<(?:div|section)[^>]+(?:class|id)=["'][^"']*(?:paywall|subscription-wall)/i.test(html)) return [];
+export function sourceParagraphs(html, policyId) {
+  if (/"isAccessibleForFree"\s*:\s*(?:false|"false")/i.test(html) || /<(?:div|section)[^>]+(?:class|id)=["'][^"']*(?:paywall|subscription-wall)/i.test(html) || /<meta\b[^>]+\b(?:noai|noindex|nosnippet)\b[^>]*>/i.test(html)) return [];
   const stripped = html.replace(/<!--[\s\S]*?-->|<(?:script|style)\b[^>]*>[\s\S]*?<\/(?:script|style)>/gi, ' ');
+  if (policyId === 'bls-release') {
+    const release = stripped.match(/<pre\b[^>]*>([\s\S]*?)<\/pre>/i)?.[1] || '';
+    return release.split(/\r?\n[ \t]*\r?\n/).slice(0, 12).map(part => plainText(decoded(part), 900))
+      .filter(part => part.length >= 100 && !/^(?:transmission of material|technical information|median|table [a-z0-9])/i.test(part));
+  }
   let body = stripped.match(/<article\b[^>]*>([\s\S]*?)<\/article>/i)?.[1]
     || stripped.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i)?.[1];
   // The Federal Reserve uses a div#article rather than an HTML article/main.
   // Balance nested divs so navigation/footer paragraphs cannot enter the body.
-  if (!body) {
-    const start = /<div\b[^>]*\bid=["']article["'][^>]*>/i.exec(stripped);
+  if (!body || ['uk-release','eurostat-release'].includes(policyId)) {
+    const boundary = policyId === 'uk-release' ? /<div\b[^>]*\bclass=["']govspeak["'][^>]*>/i
+      : policyId === 'eurostat-release' ? /<div\b[^>]*\bclass=["'][^"']*\bcomponent-euind-content\b[^"']*["'][^>]*>/i
+        : /<div\b[^>]*\bid=["']article["'][^>]*>/i;
+    const start = boundary.exec(stripped);
+    if (['uk-release','eurostat-release'].includes(policyId)) body = null;
     if (start) {
       const tags = /<\/?div\b[^>]*>/gi; tags.lastIndex = start.index + start[0].length;
       let depth = 1, match;
@@ -155,6 +180,27 @@ export function sourceParagraphs(html) {
     .replace(/^For release at .*?\b(?:EDT|EST|ET)\s+Share\s*/i, ''))
     .filter(value => value.length >= 80 && !/^(?:copyright|all rights reserved|for media queries|our website uses cookies|please enable javascript|share this|related topics|download the|last update|for immediate release|reproduction is permitted|this website)/i.test(value));
 }
+
+/** Returns bounded original text for a reviewed source policy. Never stores the text. */
+export async function readOriginalArticle(article, { fetchImpl = fetch, robotsCache = new Map() } = {}) {
+  const original = publicUrl(article.source?.url);
+  const direct = publicUrl(article.source?.publisherArticleUrl || article.source?.articleUrl)
+    || publicUrl(decodePublicGoogleLink(original?.href, article.source?.publisher)) || original;
+  const policy = policyForUrl(direct?.href);
+  if (!policy || !policy.publishers.includes(article.source?.publisher)) return { status: 'no_approved_original' };
+  try {
+    const page = await requestPublic(direct.href, {
+      fetchImpl, maxRedirects: 2, maxBytes: policy.id === 'bls-release' ? 2 * 1024 * 1024 : undefined,
+      allowed: url => policyForUrl(url.href)?.id === policy.id,
+      beforeFetch: async url => {
+        if (!await robotsCheck(url.href, { fetchImpl, robotsCache })) throw new EnrichmentError('robots_disallowed');
+      }
+    });
+    const paragraphs = [...new Set(sourceParagraphs(page.body, policy.id))].slice(0, 7).map(p => p.slice(0, 700));
+    if (paragraphs.length < 2 || paragraphs.join(' ').split(/\s+/).length < 65) return { status: 'source_text_unavailable' };
+    return { status: 'read', url: page.url, policy, paragraphs };
+  } catch (error) { return { status: error.code || 'source_unavailable' }; }
+}
 export function briefFromParagraphs(paragraphs) {
   const first = paragraphs.find(value => value.split(/\s+/).length >= 12);
   if (!first) return null;
@@ -167,7 +213,7 @@ export function briefFromParagraphs(paragraphs) {
 
 export function needsEnrichment(article) {
   const basis = article.digestBasis || article.metadata?.digestBasis || '';
-  if (['article-reviewed', 'source-extract'].includes(basis)) return false;
+  if (['article-reviewed', 'source-summary', 'source-extract'].includes(basis)) return false;
   return HEADLINE_BASES.has(basis) || article.source?.basis === 'headline';
 }
 
@@ -207,7 +253,8 @@ export async function enrichArticle(article, { fetchImpl = fetch, now = new Date
   if (/\.pdf(?:$|[?#])/i.test(direct)) return { status: 'unsupported_source_document', changed: false };
   try {
     if (!await robotsCheck(direct, { fetchImpl, robotsCache })) return { status: 'robots_disallowed', changed: false };
-    const page = await requestPublic(direct, { fetchImpl, allowed: url => !!policyForUrl(url.href) && policyForUrl(url.href).id === policy.id });
+    if (!['federal-reserve', 'ecb-institutional'].includes(policy.id)) return { status: 'summary_reuse_not_enabled', changed: false };
+    const page = await requestPublic(direct, { fetchImpl, allowed: url => policyForUrl(url.href)?.id === policy.id });
     const paragraphs = sourceParagraphs(page.body), brief = briefFromParagraphs(paragraphs);
     if (!brief) return { status: 'source_text_unavailable', changed: false };
     const contentHash = await sha256(paragraphs.join('\n'));
@@ -220,9 +267,10 @@ export async function enrichArticle(article, { fetchImpl = fetch, now = new Date
 }
 
 export function auditArticles(articles, at = new Date()) {
-  const counts = { total: articles.length, reviewedDigests: 0, sourceExcerpts: 0, headlineOnly: 0, googleLinks: 0, directPublisherLinks: 0, enrichmentEligible: 0 };
+  const counts = { total: articles.length, reviewedDigests: 0, sourceSummaries: 0, sourceExcerpts: 0, headlineOnly: 0, googleLinks: 0, directPublisherLinks: 0, enrichmentEligible: 0 };
   for (const article of articles) {
     if (article.digestBasis === 'article-reviewed') counts.reviewedDigests++;
+    else if (article.digestBasis === 'source-summary') counts.sourceSummaries++;
     else if (article.digestBasis === 'source-extract') counts.sourceExcerpts++;
     else if (needsEnrichment(article)) counts.headlineOnly++;
     const url = publicUrl(article.source?.publisherArticleUrl || article.source?.url);
