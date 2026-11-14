@@ -1,0 +1,11 @@
+{
+  "id": "WH-SANDBOX-SALE-001",
+  "event_type": "PAYMENT.SALE.COMPLETED",
+  "create_time": "2026-11-04T12:00:00Z",
+  "resource": {
+    "id": "SALE-SANDBOX-000001",
+    "billing_agreement_id": "I-SANDBOX-1234567890",
+    "create_time": "2026-11-04T11:59:58Z",
+    "amount": { "total": "20.00", "currency": "USD" }
+  }
+}

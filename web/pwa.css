@@ -1,0 +1,13 @@
+.footer .install-app-button{color:var(--green);text-decoration:underline;text-underline-offset:3px}
+.footer .install-app-button[hidden]{display:none!important}
+.install-app-dialog{position:fixed;width:min(460px,calc(100% - 32px));max-width:none;max-height:min(85vh,680px);padding:31px;border:1px solid var(--line);border-radius:13px;background:var(--paper);color:var(--ink);box-shadow:0 20px 80px rgba(24,60,50,.2)}
+.install-app-dialog::backdrop{background:rgba(22,39,31,.45);backdrop-filter:blur(3px)}
+.install-app-mark{width:50px;height:50px;display:grid;place-items:center;margin-bottom:20px;border-radius:14px;background:#173e35;color:#d5ed8c;font-size:16px;font-weight:700;letter-spacing:-1px}
+.install-app-dialog>.eyebrow{margin:0 38px 12px 0}
+.install-app-dialog h2{max-width:340px;margin:0 32px 10px 0;font:500 32px/1.1 var(--serif);letter-spacing:-.6px}
+.install-app-dialog>p:not(.eyebrow){color:#718071;font-size:13px;line-height:1.8}
+.install-app-steps{display:grid;gap:10px;margin:21px 0 0;padding-left:23px;color:#4f5f52;font-size:13px;line-height:1.7}
+.install-app-steps li{padding-left:4px}
+.install-app-dialog>.button{margin-top:23px}
+.install-dialog-close{position:absolute;top:15px;right:15px;display:grid;place-items:center;width:34px;height:34px;border:1px solid var(--line);border-radius:50%;color:#647064;font-size:21px;line-height:1}
+@media(max-width:620px){.install-app-dialog{padding:25px}.install-app-dialog h2{font-size:29px}.footer .install-app-button{font-size:10px}}

@@ -1,0 +1,3261 @@
+{
+  "articles": [
+    {
+      "id": "news-uk-immigration",
+      "title": "UK settlement changes draw a muted Labour response",
+      "summary": "The Home Office announced an earned-settlement model with a 10-year standard route, shorter qualifying paths for some groups and longer waits for some irregular entrants. The proposal is an announced policy, not an implemented rule.",
+      "category": "Politics",
+      "region": "Europe",
+      "countries": [
+        "United Kingdom"
+      ],
+      "keywords": [
+        "immigration",
+        "Labour",
+        "settlement"
+      ],
+      "publishedAt": "2026-11-02T21:57:04Z",
+      "source": {
+        "publisher": "BBC",
+        "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBXU0NDbUY1UlVBWXJpR1p6TExRd0lnVndRMXBFZVZLUHd1RGxVRHlsckx3N3JPLVdzQjlNRUdQeF91RXRzSWJrRk9DQkVFVk93dDJNcEJkVGdFb00?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBXU0NDbUY1UlVBWXJpR1p6TExRd0lnVndRMXBFZVZLUHd1RGxVRHlsckx3N3JPLVdzQjlNRUdQeF91RXRzSWJrRk9DQkVFVk93dDJNcEJkVGdFb00?oc=5",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "google-news",
+        "publisherHome": "https://www.bbc.com",
+        "linkKind": "google-news"
+      },
+      "officialSources": [
+        {
+          "publisher": "UK Home Office",
+          "title": "Home Secretary unveils new rules for migrants settling in the UK",
+          "url": "https://www.gov.uk/government/news/home-secretary-unveils-new-rules-for-migrants-settling-in-the-uk",
+          "publishedAt": "2026-11-02",
+          "note": "The government’s announced policy; implementation and independent impact assessment are separate questions."
+        }
+      ],
+      "rank": 1,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": [
+        {
+          "publisher": "UK Home Office",
+          "articleUrl": "https://www.gov.uk/government/speeches/home-secretary-earned-settlement-statement",
+          "sourceType": "Official statement; describes the government’s announced policy"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-emergency-app-hacks",
+      "title": "False alerts sent through Ukrainian and Russian emergency apps",
+      "summary": "The report says cyber intrusions sent false emergency alerts through systems used in Ukraine and Russia. The reporting describes the alerts and competing official reactions; it does not establish who was responsible.",
+      "category": "Infrastructure",
+      "region": "Europe",
+      "countries": [
+        "Ukraine",
+        "Russia"
+      ],
+      "keywords": [
+        "cybersecurity",
+        "emergency alerts"
+      ],
+      "publishedAt": "2026-11-02T21:45:00Z",
+      "source": {
+        "publisher": "The Washington Post",
+        "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxOQ3Y2N21HYXFTVEhxMXpodFhHQ3dNemkzQ3dTVHpqXzhoQTA0dG1fdFg1QWw0X3REUW9CZUVoWEFYMXpoZWc5OFFmbmg0X2dSaGVVS3hfSlJVTHYySkZKa2Z3dG51S09zSlQ3d1o1enB2UmZ1QXdBSVp5cGt1Q2piLTlRNnAyek02NVpBTy1lYjBocTdlWGZ3R093bzlTZFROZDljWjV2LTViN1Bxb0Y3MG5XTFlFaWhaX1hR?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxOQ3Y2N21HYXFTVEhxMXpodFhHQ3dNemkzQ3dTVHpqXzhoQTA0dG1fdFg1QWw0X3REUW9CZUVoWEFYMXpoZWc5OFFmbmg0X2dSaGVVS3hfSlJVTHYySkZKa2Z3dG51S09zSlQ3d1o1enB2UmZ1QXdBSVp5cGt1Q2piLTlRNnAyek02NVpBTy1lYjBocTdlWGZ3R093bzlTZFROZDljWjV2LTViN1Bxb0Y3MG5XTFlFaWhaX1hR?oc=5",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "google-news",
+        "publisherHome": "https://www.washingtonpost.com",
+        "publisherArticleUrl": "https://www.washingtonpost.com/world/2026/11/02/ukrainian-russian-emergency-alert-apps-send-false-warnings-after-hacks/",
+        "linkKind": "google-news"
+      },
+      "officialSources": [],
+      "eventId": "ukraine",
+      "rank": 2,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": [
+        {
+          "publisher": "Recorded Future News",
+          "articleUrl": "https://therecord.media/ukraine-hackers-russia-alert-system",
+          "sourceType": "Reporting"
+        },
+        {
+          "publisher": "Associated Press",
+          "articleUrl": "https://apnews.com/article/717372f7bbf4e8a805bc918f06f9730f",
+          "sourceType": "Reporting"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-bushby-home",
+      "title": "Karl Bushby returns home after a 28-year journey",
+      "summary": "Karl Bushby reached Hull on 2 November after a 28-year, roughly 31,000-mile walk that began in Chile. This is a human-interest milestone; the report does not describe a new policy or public-safety change.",
+      "category": "World",
+      "region": "Europe",
+      "countries": [
+        "United Kingdom"
+      ],
+      "keywords": [
+        "Karl Bushby",
+        "adventure",
+        "Hull"
+      ],
+      "publishedAt": "2026-11-02T21:12:12Z",
+      "source": {
+        "publisher": "Al Jazeera (Reuters/AFP)",
+        "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQSGlSVTJ5dDhqLWo4cTNwR3huT3NXUW9lS0Y5ak44SE1uUVpjc0J2R1I2cEsxcXl6REFjWVBaWndmRzF3SnNfaWw2SEp6bVNiLUg0cktFc2FKTVdtSEpMMi1iVVFRcktMX0tfZFd6bEd6ZVZ3UWlYeHhaMk90Zy1IeXpTeXlybF9IMUtFR0tnQVRaN2FSZEp3NG9sZmtlM1FKMkFCNFhfWmVfZzhhOU42OHBB0gG3AUFVX3lxTE5idGxndmlKTWVIMEx4bEdCTC1OS0p3UjZkNUdVdjNGRjk4TW1waFBlSEZCOTAxWmt0eHlxR2w2Z0FhZjBqRTVUZFJ3dXpzZlpIdjRZMTFfYjlLN1ZILUY0dVdHSFFzSmVyY1J5R1p3cG1NMVdleXJ0a2t6NXZwLXljRFFTZEhhNzltQmphWm1kYWlQSTdoZnFvOFdhRWNaZHFiQlNvbFNGUk5SWWV2emwwVlRWdWpaMA?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQSGlSVTJ5dDhqLWo4cTNwR3huT3NXUW9lS0Y5ak44SE1uUVpjc0J2R1I2cEsxcXl6REFjWVBaWndmRzF3SnNfaWw2SEp6bVNiLUg0cktFc2FKTVdtSEpMMi1iVVFRcktMX0tfZFd6bEd6ZVZ3UWlYeHhaMk90Zy1IeXpTeXlybF9IMUtFR0tnQVRaN2FSZEp3NG9sZmtlM1FKMkFCNFhfWmVfZzhhOU42OHBB0gG3AUFVX3lxTE5idGxndmlKTWVIMEx4bEdCTC1OS0p3UjZkNUdVdjNGRjk4TW1waFBlSEZCOTAxWmt0eHlxR2w2Z0FhZjBqRTVUZFJ3dXpzZlpIdjRZMTFfYjlLN1ZILUY0dVdHSFFzSmVyY1J5R1p3cG1NMVdleXJ0a2t6NXZwLXljRFFTZEhhNzltQmphWm1kYWlQSTdoZnFvOFdhRWNaZHFiQlNvbFNGUk5SWWV2emwwVlRWdWpaMA?oc=5",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "google-news",
+        "publisherHome": "https://www.pbs.org",
+        "publisherArticleUrl": "https://www.aljazeera.com/news/2026/11/2/british-adventurer-karl-bushby-returns-home-after-28-year-walk-around-world",
+        "linkKind": "google-news"
+      },
+      "officialSources": [],
+      "rank": 3,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": [
+        {
+          "publisher": "The Washington Post (Associated Press)",
+          "articleUrl": "https://www.washingtonpost.com/world/2026/11/02/karl-bushby-world-walk-hull-england/3f155eac-d6bd-11f1-930a-e08f8086f5ac_story.html",
+          "sourceType": "Syndicated AP reporting"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-south-africa-trade",
+      "title": "US announces plan to end South Africa’s AGOA eligibility in 2027",
+      "summary": "The U.S. Trade Representative announced an intention to remove South Africa and Rwanda from AGOA effective 1 January 2027. The change is proposed for a future date; it has not yet taken effect.",
+      "category": "Trade",
+      "region": "Africa",
+      "countries": [
+        "South Africa",
+        "United States"
+      ],
+      "keywords": [
+        "AGOA",
+        "trade",
+        "tariffs"
+      ],
+      "publishedAt": "2026-11-02T21:01:03Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQTFRqMVNkZnhKUEh5MFhnY3NwbDlqMWN2cXM1U2JuZzBYNWNQejFVb1VkVTB4M1BmQzJLOGUzZmNaLThZaV9QRXRwaGVqOUhQT1dxZnpiYnNzYXhRcHBja01jTTRkMzMyVWFzNEpnQTZPVlZsYUVvb2ZSblNWdjVCcnZmc3VYMHR1b1Fsd3gwZmhrOWpG?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQTFRqMVNkZnhKUEh5MFhnY3NwbDlqMWN2cXM1U2JuZzBYNWNQejFVb1VkVTB4M1BmQzJLOGUzZmNaLThZaV9QRXRwaGVqOUhQT1dxZnpiYnNzYXhRcHBja01jTTRkMzMyVWFzNEpnQTZPVlZsYUVvb2ZSblNWdjVCcnZmc3VYMHR1b1Fsd3gwZmhrOWpG?oc=5",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "google-news",
+        "publisherHome": "https://www.nytimes.com",
+        "publisherArticleUrl": "https://apnews.com/article/5b18b1db8995fec67b28b9680d9d8424",
+        "linkKind": "google-news"
+      },
+      "officialSources": [],
+      "rank": 4,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": [
+        {
+          "publisher": "Office of the U.S. Trade Representative",
+          "articleUrl": "https://www.ustr.gov/about/policy-offices/press-office/press-releases/2026/november/ambassador-greer-issues-statement-president-trumps-intent-terminate-rwanda-and-south-africa-agoa",
+          "sourceType": "Official statement"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-spain-train-crash",
+      "title": "Spain train crash leaves US students among the injured",
+      "summary": "Spanish authorities reported 69 deaths in the train crash; separate reports identified American and Canadian victims and two injured California Polytechnic students. Casualty and identity details are attributed to authorities and the university.",
+      "category": "Infrastructure",
+      "region": "Europe",
+      "countries": [
+        "Spain",
+        "United States"
+      ],
+      "keywords": [
+        "rail",
+        "train crash",
+        "Cal Poly"
+      ],
+      "publishedAt": "2026-11-03T00:25:11Z",
+      "source": {
+        "publisher": "SFGATE",
+        "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQeG9oQjFQS0xDcEdMTW5Bd0JmaFBLcVVVakdCYklOakJGT1UxUGZYZWttQ0hYQWwtbHlwampBTGloemtLRjZEeExNZDRSU1FjRktPLXFsSnFack94S1RsWk1Da2Fkb2s5NkJUNFVLSXpUalZsTEcwRXJfeGZmR1ZnSWFUTDI?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQeG9oQjFQS0xDcEdMTW5Bd0JmaFBLcVVVakdCYklOakJGT1UxUGZYZWttQ0hYQWwtbHlwampBTGloemtLRjZEeExNZDRSU1FjRktPLXFsSnFack94S1RsWk1Da2Fkb2s5NkJUNFVLSXpUalZsTEcwRXJfeGZmR1ZnSWFUTDI?oc=5",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "google-news",
+        "publisherHome": "https://www.sfgate.com",
+        "publisherArticleUrl": "https://www.sfgate.com/bayarea/article/spain-train-crash-cal-poly-22507398.php",
+        "linkKind": "google-news"
+      },
+      "officialSources": [],
+      "rank": 5,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": [
+        {
+          "publisher": "Associated Press",
+          "articleUrl": "https://apnews.com/article/475ed2f1d806a76229fe7e5551920884",
+          "sourceType": "Reporting"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-ukraine-aid-attack",
+      "title": "Ukraine aid-site strike: officials raise toll to 31 as rescue search continues",
+      "summary": "Ukrainian officials and rescue services cited by AP put deaths at 31 and roughly 45 people missing after a strike hit an aid-distribution site. Those are evolving local counts; the same report describes attacks on energy infrastructure in several regions.",
+      "category": "World",
+      "region": "Europe",
+      "countries": [
+        "Ukraine",
+        "Russia"
+      ],
+      "keywords": [
+        "Ukraine",
+        "aid centre",
+        "Zaporizhzhia"
+      ],
+      "publishedAt": "2026-11-03T09:35:41Z",
+      "source": {
+        "publisher": "AP News",
+        "url": "https://apnews.com/article/264da8725dc2bb1f0039a698a59af9fc",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOOXNCcFZ3enhVSFJfdHQyZ1N3bjdWWVVQMk5seXRsWW42X2Z5Yi1sbFN4ZmJRRlhqa0FCbkZOemN5b0Q0eVdvWmpaN1h0TjZXdmkzd0VkdVQ1VnY2TEVibHNTbmJDSnlDSzZLbDRBRnNvdUFmUklDUFlrblJYMkZheE5PNkE4WmxwX0N0ZVNNTHZCMENneHZiTVhYeWktcE5jODNzN3ZzS2tpZ9IBrwFBVV95cUxNcXhuNzZpVXhhdE5PMDRIbkFKSlFENEZNcVJSZWNyTVU5RFc2a1BiODJfMmNldWNGanNERVdNdEJRdi1ncWZnRWxQWUJ3VGZkWVpuWnJabDlDS1RYY0JZUWZ0X3U1N1F2Z0JHbkJ6X0RpQWFFQXQtR1dxU1lTSWEzYS1qcnBpMXdSWnprckVGQjdsMnREck1jWmtqS1ZTLW9GUktBUGNPOXhJN1J3SDVz?oc=5",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "original",
+        "publisherHome": "https://apnews.com",
+        "publisherArticleUrl": "https://apnews.com/article/264da8725dc2bb1f0039a698a59af9fc",
+        "linkKind": "original"
+      },
+      "officialSources": [],
+      "eventId": "ukraine",
+      "evidenceNote": "The Google News item carried an earlier Al Jazeera casualty figure. This digest uses a later AP report; reported tolls may change.",
+      "rank": 6,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": [
+        {
+          "publisher": "Ukrinform",
+          "articleUrl": "https://www.ukrinform.net/rubric-ato/4180863-death-toll-from-komyshuvakha-airstrike-rises-to-31-nearly-50-people-missing.html",
+          "sourceType": "Ukrainian state news agency reporting official accounts"
+        },
+        {
+          "publisher": "Interfax-Ukraine",
+          "articleUrl": "https://en.interfax.com.ua/news/general/1230412-amp.html",
+          "sourceType": "Reporting"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-caribbean-reparations",
+      "title": "Caribbean campaigners revisit the case for reparations",
+      "summary": "Caribbean campaigners renewed calls for reparations around the Commonwealth meeting. UK leaders have expressed openness to an apology and debt-related measures while rejecting reparations; campaigners seek material remedies and negotiations.",
+      "category": "World",
+      "region": "Americas",
+      "countries": [
+        "United Kingdom"
+      ],
+      "keywords": [
+        "Caribbean",
+        "reparations",
+        "history"
+      ],
+      "publishedAt": "2026-11-02T13:33:06Z",
+      "source": {
+        "publisher": "Reuters (syndicated by StreetInsider)",
+        "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxOSFRxZjhnMEszdmFsOHpnUUlOazlqd0cwZzRZOVU0UHdJLTFFWmNWb2l2TkhXYXhrcXFqX25HRnRORXZ1MUtNQ2hMRlVzZ29wa1ozT3J6WTk5dlpVckc5MndWU2pqVjRQNE5uRGFIYml1Wmk0QTA3cHBIeFp6MTRYdU96TlhkTjVMTVhoZk11YU02aW9DWm15SUkycm9Wcmc3Q3k4Vi14UVhERHhoQzYwVFlDMUxqMjdYem5EaFNiNGVDVk81R084bGdYY2U1YUwyV1hZSi1R?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxOSFRxZjhnMEszdmFsOHpnUUlOazlqd0cwZzRZOVU0UHdJLTFFWmNWb2l2TkhXYXhrcXFqX25HRnRORXZ1MUtNQ2hMRlVzZ29wa1ozT3J6WTk5dlpVckc5MndWU2pqVjRQNE5uRGFIYml1Wmk0QTA3cHBIeFp6MTRYdU96TlhkTjVMTVhoZk11YU02aW9DWm15SUkycm9Wcmc3Q3k4Vi14UVhERHhoQzYwVFlDMUxqMjdYem5EaFNiNGVDVk81R084bGdYY2U1YUwyV1hZSi1R?oc=5",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "google-news",
+        "publisherHome": "https://www.reuters.com",
+        "publisherArticleUrl": "https://new.streetinsider.com/Reuters/As%2Breparations%2Bdebate%2Bgrows%2C%2BCaribbean%2Bcampaigners%2Bpoint%2Bto%2Bone%2BBritish%2Bfamily%27s%2Bexample/27270365.html",
+        "linkKind": "google-news"
+      },
+      "officialSources": [],
+      "rank": 7,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": [
+        {
+          "publisher": "The Guardian",
+          "articleUrl": "https://www.theguardian.com/world/2026/nov/01/uk-was-vehement-slavery-reparations-should-not-be-on-commonwealth-summit-agenda",
+          "sourceType": "Reporting"
+        },
+        {
+          "publisher": "Associated Press",
+          "articleUrl": "https://apnews.com/article/4ad76f1cf2b591ce92c7835f094f97cd",
+          "sourceType": "Reporting on Commonwealth agenda"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-western-sahara-mission",
+      "title": "UN Security Council fails to agree on MINURSO mandate before expiry",
+      "summary": "The Security Council did not adopt either of two competing draft resolutions before MINURSO’s mandate expired on 31 October. The UN statement records the procedural failure; it does not settle Western Sahara’s political status.",
+      "category": "World",
+      "region": "Africa",
+      "countries": [
+        "Western Sahara",
+        "Morocco"
+      ],
+      "keywords": [
+        "MINURSO",
+        "United Nations",
+        "peacekeeping"
+      ],
+      "publishedAt": "2026-11-01T00:00:00Z",
+      "source": {
+        "publisher": "United Nations MINURSO",
+        "url": "https://peacekeeping.un.org/en/news/western-sahara-un-stands-ready-to-keep-supporting-peace-efforts-as-minurso",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQWmczUVl2SzZreVJ0UzRYanhPQlFMNGFnWi1iNU5kaGFHU0k0RWszdG45WFhCOFRFb3FOU3NPRGRReDNZX01qOVd5X1NsU1FxNXN1cGRpMk55Z1hUcGdaUGdacU5qb3hBbFdZb0FITFVtMzRwZW9LUVYwd0pwTE1tSVdLRDROWWZa?oc=5",
+        "sourceType": "Official release",
+        "basis": "article",
+        "linkType": "original",
+        "publisherHome": "https://peacekeeping.un.org",
+        "publisherArticleUrl": "https://minurso.unmissions.org/en/node/137236",
+        "linkKind": "original"
+      },
+      "officialSources": [
+        {
+          "publisher": "United Nations MINURSO",
+          "title": "Statement attributable to the Spokesperson for the Secretary-General on Western Sahara",
+          "url": "https://minurso.unmissions.org/en/node/137236",
+          "publishedAt": "2026-10-31",
+          "note": "UN statement on the Council vote and mandate expiry; not an independent account of the parties’ claims."
+        }
+      ],
+      "datePrecision": "day",
+      "rank": 8,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": [
+        {
+          "publisher": "Associated Press",
+          "articleUrl": "https://apnews.com/article/3267317ce19e61bd0f41d90012504c92",
+          "sourceType": "Reporting"
+        },
+        {
+          "publisher": "Security Council Report",
+          "articleUrl": "https://www.securitycouncilreport.org/whatsinblue/2026/10/western-sahara-vote-on-a-draft-resolution-renewing-minursos-mandate-4.php?print=true",
+          "sourceType": "Independent procedural analysis"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-iran-qatar-talks",
+      "title": "Iranian delegation leaves Qatar as negotiations continue",
+      "summary": "Iran’s delegation left Doha after talks, while intermediaries continued circulating proposals. The reporting describes positions and contacts, not an agreed deal or a reopening of the Strait of Hormuz.",
+      "category": "World",
+      "region": "Middle East",
+      "countries": [
+        "Iran",
+        "Qatar"
+      ],
+      "keywords": [
+        "Iran",
+        "Qatar",
+        "diplomacy"
+      ],
+      "publishedAt": "2026-11-02T16:02:18Z",
+      "source": {
+        "publisher": "PBS NewsHour",
+        "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxPZDhDMmNsQ2tpZmxyZnVvc0tXTmstOUlXRWxWSHh4ZG8wTV95VlVDc29MemRtbVNGSXQzRHU5SFAtOTBMOW9hRXVQa0VPanRCWmloOUFFVF9jU1RiNmpEU2xIdHNqZHpKeFRvN0R3UC1JWE1OU2NkS1hxLXk3c3hpTndoOHJXTVZXZHpjV1JWTDUxZE5pd3hveGFQeWhmMHI3VGhjZkpUNl9RSE53MzQ4bk1DbjFaeHJfdlE2YmFOVGY0TFYtR00tV9IBzgFBVV95cUxOdXRFVVVob2hRQUlFWUZOVW9TTktGdWFPLUUxRkEyVjdSRnN4dlozbmdqaG1YTTRzVENmcmtnSXY2ellxU21YeV9NUHNEUUdqd3pYYjBSMjVWUlcwcnMyQkhlU09HbnJrMkFtVk96MzktdzNsdDlSUW1lUDJBRTk5UTJCVTlsa2MxaWY1bWdpd2puWmdsXzNHSnI4VDJoY1dUZkEwekVNZFp0Vnl2TVdpRWJBZ1oxWkJGUm1XMEJUZFRpWi1lbDl0Q1Rnb2ZpUQ?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxPZDhDMmNsQ2tpZmxyZnVvc0tXTmstOUlXRWxWSHh4ZG8wTV95VlVDc29MemRtbVNGSXQzRHU5SFAtOTBMOW9hRXVQa0VPanRCWmloOUFFVF9jU1RiNmpEU2xIdHNqZHpKeFRvN0R3UC1JWE1OU2NkS1hxLXk3c3hpTndoOHJXTVZXZHpjV1JWTDUxZE5pd3hveGFQeWhmMHI3VGhjZkpUNl9RSE53MzQ4bk1DbjFaeHJfdlE2YmFOVGY0TFYtR00tV9IBzgFBVV95cUxOdXRFVVVob2hRQUlFWUZOVW9TTktGdWFPLUUxRkEyVjdSRnN4dlozbmdqaG1YTTRzVENmcmtnSXY2ellxU21YeV9NUHNEUUdqd3pYYjBSMjVWUlcwcnMyQkhlU09HbnJrMkFtVk96MzktdzNsdDlSUW1lUDJBRTk5UTJCVTlsa2MxaWY1bWdpd2puWmdsXzNHSnI4VDJoY1dUZkEwekVNZFp0Vnl2TVdpRWJBZ1oxWkJGUm1XMEJUZFRpWi1lbDl0Q1Rnb2ZpUQ?oc=5",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "google-news",
+        "publisherHome": "https://www.pbs.org",
+        "publisherArticleUrl": "https://www.pbs.org/newshour/world/irans-delegation-has-left-negotiations-in-qatar-after-a-tense-weekend-heres-where-things-stand",
+        "linkKind": "google-news"
+      },
+      "officialSources": [],
+      "eventId": "hormuz",
+      "rank": 9,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": [
+        {
+          "publisher": "Reuters (syndicated by StreetInsider)",
+          "articleUrl": "https://new.streetinsider.com/Reuters/Iranians%2Bhave%2Bleft%2BDoha%2Btalks%2C%2Bdraft%2Bproposal%2Bfor%2BUS%2Bdeal%2Bbeing%2Bcirculated%2C%2Bofficial%2Bsays/27268268.html",
+          "sourceType": "Reporting"
+        },
+        {
+          "publisher": "Doha News",
+          "articleUrl": "https://dohanews.co/iranian-delegation-concludes-qatar-visit-as-tehran-awaits-u-s-response-on-hormuz-plan/",
+          "sourceType": "Regional reporting"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-israel-leadership",
+      "title": "Israel election leaves rival blocs short of a majority",
+      "summary": "Final seat counts reported after Israel’s election left Netanyahu’s bloc with 53 seats and Eisenkot’s alliance with 48; Arab parties held 19. President Herzog began consultations, and government formation remained unresolved.",
+      "category": "Politics",
+      "region": "Middle East",
+      "countries": [
+        "Israel"
+      ],
+      "keywords": [
+        "Netanyahu",
+        "Eisenkot",
+        "government"
+      ],
+      "publishedAt": "2026-11-02T10:30:54Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNam5ieDJudjhFckV1ay1jVlMwbGtIRGxMUURpNDIxdm9mcnROc1BGOHd1VExVR05rN05LaUl0TGV6bXNvaHZ0TUUwNVlYUTc5eFlEQkp3VlVvazl3bFM3T1FHY0ZTR2NmUlloeHRXM2d2X0M2Ujd6U2YzUDN1MkdPVW9uUDZjVzFleXk3T19KWXQ?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNam5ieDJudjhFckV1ay1jVlMwbGtIRGxMUURpNDIxdm9mcnROc1BGOHd1VExVR05rN05LaUl0TGV6bXNvaHZ0TUUwNVlYUTc5eFlEQkp3VlVvazl3bFM3T1FHY0ZTR2NmUlloeHRXM2d2X0M2Ujd6U2YzUDN1MkdPVW9uUDZjVzFleXk3T19KWXQ?oc=5",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "google-news",
+        "publisherHome": "https://www.nytimes.com",
+        "publisherArticleUrl": "https://apnews.com/article/3a793c0d07fdfe515390524b849d8674",
+        "linkKind": "google-news"
+      },
+      "officialSources": [],
+      "rank": 10,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": [
+        {
+          "publisher": "The Times of Israel",
+          "articleUrl": "https://www.timesofisrael.com/with-all-votes-counted-netanyahus-bloc-at-53-seats-eisenkots-48-arab-parties-19/amp/",
+          "sourceType": "Reporting on final count"
+        },
+        {
+          "publisher": "President of Israel",
+          "articleUrl": "https://www.gov.il/en/pages/president-herzog-to-begin-consultations-with-knesset-factions-2-nov-2026",
+          "sourceType": "Official consultation schedule"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-ukraine-peace-talks",
+      "title": "US, Russia and Ukraine plan another round of talks",
+      "summary": "A U.S. official told Axios that trilateral U.S.–Russia–Ukraine talks were planned in Abu Dhabi for 10–11 November. The meeting was prospective; reporting identified major disagreements and no negotiated settlement.",
+      "category": "World",
+      "region": "Europe",
+      "countries": [
+        "Ukraine",
+        "Russia",
+        "United States",
+        "United Arab Emirates"
+      ],
+      "keywords": [
+        "peace talks",
+        "Abu Dhabi",
+        "Witkoff"
+      ],
+      "publishedAt": "2026-11-03T03:12:58Z",
+      "source": {
+        "publisher": "Axios",
+        "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQa09zVHBJLUx0cFhYX1paZnhnT1RqYWx6bF9idUtVNFZ3TVpvd0R0OFE2WTdYWW1MeXFpWGhBR3FWS1c0ZjNlWW8xQW5ZYWlFV2pwR0NISTdiSFh2alU5V05kYUdNVjBFTXQxbFFPZ0RpMnZDVVczbzRESFNTWENLeWo3Mm81STZJVEluXzgtU2RrUQ?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQa09zVHBJLUx0cFhYX1paZnhnT1RqYWx6bF9idUtVNFZ3TVpvd0R0OFE2WTdYWW1MeXFpWGhBR3FWS1c0ZjNlWW8xQW5ZYWlFV2pwR0NISTdiSFh2alU5V05kYUdNVjBFTXQxbFFPZ0RpMnZDVVczbzRESFNTWENLeWo3Mm81STZJVEluXzgtU2RrUQ?oc=5",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "google-news",
+        "publisherHome": "https://www.axios.com",
+        "publisherArticleUrl": "https://www.axios.com/2026/11/03/us-russia-ukraine-peace-talks-uae-trump-witkoff-kushner",
+        "linkKind": "google-news"
+      },
+      "officialSources": [],
+      "eventId": "ukraine",
+      "rank": 11,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": [
+        {
+          "publisher": "Reuters (syndicated by ThePrint)",
+          "articleUrl": "https://theprint.in/world/us-to-hold-trilateral-talks-with-ukraine-russia-in-abu-dhabi-next-week-us-official-says/3088763/",
+          "sourceType": "Reporting"
+        },
+        {
+          "publisher": "Radio Free Europe/Radio Liberty",
+          "articleUrl": "https://www.rferl.org/amp/us-russia-ukraine-peace-talks-abu-dhabi-ceasefire/33889451.html",
+          "sourceType": "Reporting"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-commonwealth-antigua",
+      "title": "Commonwealth leaders gather in Antigua and Barbuda",
+      "summary": "Commonwealth leaders met in Antigua and Barbuda on 3–4 November, with climate finance, trade and reparations among the contested issues. The meeting is a forum; its agenda does not imply agreement by all members.",
+      "category": "Politics",
+      "region": "Americas",
+      "countries": [
+        "Antigua and Barbuda"
+      ],
+      "keywords": [
+        "Commonwealth",
+        "CHOGM",
+        "summit"
+      ],
+      "publishedAt": "2026-11-02T11:42:00Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxQd051TjFESS1TaUdnY09zQmtsTG1tUFlPMTJEa1BTNjZXZjBZVEFKT29MNnFGMGVOOFpvNVhvcFZkMURENE1ET0RnUHNKMl9NSnJIWTRJaFZOQmdjYkVJUk5ZZ2hsQ2tLUGxPQWpuM3BJTERzcVZOdEhSS2lGLTA4d3ZCSVlWaTZBTHkxMVB0VUFKQklnb3ZMVkdYREhzZEpwNUZRZHdZUVd1akNQMUZKTjlOSUpfOE9MR0Fpd1p6eEpVQlhR?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMixAFBVV95cUxQd051TjFESS1TaUdnY09zQmtsTG1tUFlPMTJEa1BTNjZXZjBZVEFKT29MNnFGMGVOOFpvNVhvcFZkMURENE1ET0RnUHNKMl9NSnJIWTRJaFZOQmdjYkVJUk5ZZ2hsQ2tLUGxPQWpuM3BJTERzcVZOdEhSS2lGLTA4d3ZCSVlWaTZBTHkxMVB0VUFKQklnb3ZMVkdYREhzZEpwNUZRZHdZUVd1akNQMUZKTjlOSUpfOE9MR0Fpd1p6eEpVQlhR?oc=5",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "google-news",
+        "publisherHome": "https://nypost.com",
+        "publisherArticleUrl": "https://apnews.com/article/4ad76f1cf2b591ce92c7835f094f97cd",
+        "linkKind": "google-news"
+      },
+      "officialSources": [
+        {
+          "publisher": "The Commonwealth",
+          "title": "Commonwealth Heads of Government Meeting 2026",
+          "url": "https://thecommonwealth.org/chogm-2026",
+          "publishedAt": null,
+          "note": "Official event schedule: 1–4 November 2026."
+        },
+        {
+          "publisher": "Kenya Ministry of Foreign Affairs",
+          "title": "Cricket Diplomacy Opens CHOGM 2026 as Commonwealth Leaders Take the Field in Antigua and Barbuda",
+          "url": "https://www.mfa.go.ke/index.php/cricket-diplomacy-opens-chogm-2026-commonwealth-leaders-take-field-antigua-and-barbuda",
+          "publishedAt": "2026-11-01",
+          "note": "Official account of the opening programme."
+        }
+      ],
+      "rank": 12,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": [
+        {
+          "publisher": "The Commonwealth",
+          "articleUrl": "https://thecommonwealth.org/events/chogm-antigua-and-barbuda-2026",
+          "sourceType": "Official event information"
+        },
+        {
+          "publisher": "Associated Press",
+          "articleUrl": "https://apnews.com/article/ac8ce871cba16436beb80f6aae11a32c",
+          "sourceType": "Reporting on the King’s address"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-gaza-strikes",
+      "title": "Gaza hospitals report deaths from Israeli strikes",
+      "summary": "Gaza hospitals reported eight people killed in Israeli strikes, including a child; the Israeli military said it targeted militants. The casualty account is attributed to Gaza’s health authorities and hospital officials, while responsibility and target claims remain attributed to each side.",
+      "category": "World",
+      "region": "Middle East",
+      "countries": [
+        "Israel",
+        "Palestinian territories"
+      ],
+      "keywords": [
+        "Gaza",
+        "civilian casualties",
+        "Israel"
+      ],
+      "publishedAt": "2026-11-01T17:06:32Z",
+      "source": {
+        "publisher": "BBC",
+        "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1oYUlQV0d4S2pyYTVTV3N2dVdONWJaUlpmUmktdGYyUHAyakZFeS1MUF92Mm92LV9hRi1VYnFKTHVycDhDaF9WTjFoRUN0Zml3LVlhUVlET01IejA?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1oYUlQV0d4S2pyYTVTV3N2dVdONWJaUlpmUmktdGYyUHAyakZFeS1MUF92Mm92LV9hRi1VYnFKTHVycDhDaF9WTjFoRUN0Zml3LVlhUVlET01IejA?oc=5",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "google-news",
+        "publisherHome": "https://www.bbc.com",
+        "linkKind": "google-news"
+      },
+      "officialSources": [],
+      "rank": 13,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": [
+        {
+          "publisher": "Associated Press",
+          "articleUrl": "https://apnews.com/article/b918f44d8f212d7daf7f2f9a98c91a0b",
+          "sourceType": "Reporting citing hospitals and Israeli military"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-bulgaria-election",
+      "title": "Iliana Yotova wins Bulgaria’s presidential election",
+      "summary": "Bulgaria’s Central Election Commission declared Iliana Yotova elected president after the runoff, with 57.57% of valid votes. The result is certified; the campaign’s political implications are analysis, not part of the count.",
+      "category": "Politics",
+      "region": "Europe",
+      "countries": [
+        "Bulgaria"
+      ],
+      "keywords": [
+        "Yotova",
+        "election",
+        "president"
+      ],
+      "publishedAt": "2026-11-02T18:23:18Z",
+      "source": {
+        "publisher": "Deutsche Welle",
+        "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPU1RFV1pFbUpPdWN1RDdzQUNsQl9tTXhZTnl6NVBsT0JiblRmeUpvNjhXcGlvdXdTenFZczMtdjVzZGFzeGlVdGtwdGNrdjNEME01S2tnMl9fYzhYQW9HWWhBeWNMWTAtSWlOcEU4cHU2ZmJBQmR4RGdXajVRNFNCaEt1T2RaT0Q1TWRIZHdmMjBMZmNJcWxZ0gGXAUFVX3lxTE5yeGRpRU41UHprOTFCM3FYWjBPbEkwbGlWclZqTnVxa1N4QTZEYzNtUDFkUmZSSzdEY2JIRkp4TS1xUTA3a3ZJSFVMa0tOSXhMcjE5RjZfekpfNGRXdzNMM1Iyek1FLXRCU2E2dmU0RzJ1TmVmNmg5Y0s3OWNSWWtIamx5MXFKUGF2ZXAyZWllS011eE1xaDA?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPU1RFV1pFbUpPdWN1RDdzQUNsQl9tTXhZTnl6NVBsT0JiblRmeUpvNjhXcGlvdXdTenFZczMtdjVzZGFzeGlVdGtwdGNrdjNEME01S2tnMl9fYzhYQW9HWWhBeWNMWTAtSWlOcEU4cHU2ZmJBQmR4RGdXajVRNFNCaEt1T2RaT0Q1TWRIZHdmMjBMZmNJcWxZ0gGXAUFVX3lxTE5yeGRpRU41UHprOTFCM3FYWjBPbEkwbGlWclZqTnVxa1N4QTZEYzNtUDFkUmZSSzdEY2JIRkp4TS1xUTA3a3ZJSFVMa0tOSXhMcjE5RjZfekpfNGRXdzNMM1Iyek1FLXRCU2E2dmU0RzJ1TmVmNmg5Y0s3OWNSWWtIamx5MXFKUGF2ZXAyZWllS011eE1xaDA?oc=5",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "google-news",
+        "publisherHome": "https://www.dw.com",
+        "publisherArticleUrl": "https://amp.dw.com/en/bulgarias-yotova-wins-presidential-runoff/a-79820449",
+        "linkKind": "google-news"
+      },
+      "officialSources": [],
+      "rank": 14,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": [
+        {
+          "publisher": "Bulgarian National Television",
+          "articleUrl": "https://bntnews.bg/news/central-election-commission-announces-final-results-of-the-presidential-elections-declares-iliana-iotova-and-kiril-valch-1420427news.html",
+          "sourceType": "Reporting the commission’s final results"
+        },
+        {
+          "publisher": "Bulgarian National Radio",
+          "articleUrl": "https://www.bnrnews.bg/en/post/551886/iliana-iotova-is-bulgarias-7th-president-and-first-woman-elected-to-the-post",
+          "sourceType": "Reporting"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-serbia-movement",
+      "title": "Serbia’s emerging movement prepares for government",
+      "summary": "Student-backed political organizers were preparing for talks after the election, but no new cabinet had been formed in the reports reviewed. Coverage also describes pressure for judicial and institutional changes; those plans remain political proposals.",
+      "category": "Politics",
+      "region": "Europe",
+      "countries": [
+        "Serbia"
+      ],
+      "keywords": [
+        "Serbia",
+        "government",
+        "movement"
+      ],
+      "publishedAt": "2026-11-01T16:12:16Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxObnJKRWFTZkhoajJxSHA2c3Y2cFpKMzB3T1Vpd09oVWY0cHBwNHJRc2J1a20xQ1RZdVV5aEM0RUtSUllNMFpQdUpYTkw5UmRDU0U2Wm52VkVBdldFNV83dW1keVA0dTJ6N3o2RDBiYk1abHdheGM0SDZrRkNTSURZQkh3WE4?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMihAFBVV95cUxObnJKRWFTZkhoajJxSHA2c3Y2cFpKMzB3T1Vpd09oVWY0cHBwNHJRc2J1a20xQ1RZdVV5aEM0RUtSUllNMFpQdUpYTkw5UmRDU0U2Wm52VkVBdldFNV83dW1keVA0dTJ6N3o2RDBiYk1abHdheGM0SDZrRkNTSURZQkh3WE4?oc=5",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "google-news",
+        "publisherHome": "https://www.ft.com",
+        "publisherArticleUrl": "https://apnews.com/article/d2720a5db90ab515720cc75060000873",
+        "linkKind": "google-news"
+      },
+      "officialSources": [],
+      "rank": 15,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": [
+        {
+          "publisher": "The Guardian",
+          "articleUrl": "https://www.theguardian.com/world/2026/oct/26/serbia-student-list-preparing-for-talks-on-forming-government-despite-no-clear-leader",
+          "sourceType": "Reporting"
+        },
+        {
+          "publisher": "Associated Press",
+          "articleUrl": "https://apnews.com/article/c9dd3fc430a94f0897a2d6f94f093798",
+          "sourceType": "Explainer"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-afghan-deportations",
+      "title": "US judge temporarily blocks Afghan deportations from detention",
+      "summary": "A U.S. judge temporarily blocked plans to deport detained Afghans to Afghanistan or Pakistan. The ruling is an interim court order; the administration said flights would not resume before the end of the week.",
+      "category": "World",
+      "region": "Asia",
+      "countries": [
+        "Afghanistan",
+        "United States"
+      ],
+      "keywords": [
+        "Afghanistan",
+        "deportations",
+        "Taliban"
+      ],
+      "publishedAt": "2026-11-02T23:40:28Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQaU9ja2xoR0tyVTRqTmF5YWJ6a3BXWFZsSnZxX3lLSkhyWkMxMV9sM05vZk51TXJqMUZFdmlEYjA0X1NNS19vUnRBa0hCdnc2OWFyQm81VDMzRU1NOWJmaWtOYnRkUTV5eF9kcXNiNWdwTmN6ZjVJVjVVcnZTLS1mRTZEMXprVDdCLTlzaV9wTGp4V0xfLVRGN25LTERQY2RnTFlxcW55c05hN2UwZm5B?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQaU9ja2xoR0tyVTRqTmF5YWJ6a3BXWFZsSnZxX3lLSkhyWkMxMV9sM05vZk51TXJqMUZFdmlEYjA0X1NNS19vUnRBa0hCdnc2OWFyQm81VDMzRU1NOWJmaWtOYnRkUTV5eF9kcXNiNWdwTmN6ZjVJVjVVcnZTLS1mRTZEMXprVDdCLTlzaV9wTGp4V0xfLVRGN25LTERQY2RnTFlxcW55c05hN2UwZm5B?oc=5",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "google-news",
+        "publisherHome": "https://www.pbs.org",
+        "publisherArticleUrl": "https://apnews.com/article/a419fbb329b96480d806d9ffbd52ccb4",
+        "linkKind": "google-news"
+      },
+      "officialSources": [],
+      "rank": 16,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": [
+        {
+          "publisher": "PBS NewsHour",
+          "articleUrl": "https://pr.pbs.org/video/deporting-afghans-1793647606/",
+          "sourceType": "Earlier reporting on deportation risks"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-poland-constitution",
+      "title": "Poland faces a constitutional standoff",
+      "summary": "The dispute concerns the Polish president’s refusal to swear in judges selected by parliament and a Constitutional Tribunal decision on the appointments. The sides dispute the legal interpretation; reporting does not establish that one side’s term ‘coup’ is a neutral description.",
+      "category": "Politics",
+      "region": "Europe",
+      "countries": [
+        "Poland"
+      ],
+      "keywords": [
+        "Warsaw",
+        "constitution",
+        "government"
+      ],
+      "publishedAt": "2026-11-02T07:32:40Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOdVl1WW5na2c5NzhmVEJ2Q2x1U3NXRmtiT05nVG9lb1MzcGtrcGI0U1hET0tzSVZJOFdyX3A4VFk4c20ySmctTHlKWmhzeFJoaW5OOUszV3lYS3U1emZIa3pRZjBPQ2p1c0ZMcjFTQ09ReFZlbG1CZVMySWprSWFDNkk2cmtzRlpLRnp0VEJXQkZVUGxYWnl0MFFfYzhCX3lf?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOdVl1WW5na2c5NzhmVEJ2Q2x1U3NXRmtiT05nVG9lb1MzcGtrcGI0U1hET0tzSVZJOFdyX3A4VFk4c20ySmctTHlKWmhzeFJoaW5OOUszV3lYS3U1emZIa3pRZjBPQ2p1c0ZMcjFTQ09ReFZlbG1CZVMySWprSWFDNkk2cmtzRlpLRnp0VEJXQkZVUGxYWnl0MFFfYzhCX3lf?oc=5",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "google-news",
+        "publisherHome": "https://www.euronews.com",
+        "publisherArticleUrl": "https://apnews.com/article/36dc9777ed575ab67e3d8313f1eb528b",
+        "linkKind": "google-news"
+      },
+      "officialSources": [],
+      "rank": 17,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": [
+        {
+          "publisher": "Euronews",
+          "articleUrl": "https://www.euronews.com/2026/11/02/donald-tusk-calls-on-polish-president-to-confirm-judges-as-constitutional-court-crisis-rum",
+          "sourceType": "Reporting"
+        },
+        {
+          "publisher": "Polskie Radio",
+          "articleUrl": "https://www.polskieradio.pl/395/7784/Artykul/3748407,polish-pm-says-court-standoff-can-be-resolved-without-changing-the-constitution",
+          "sourceType": "Reporting on the prime minister’s position"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-nepal-helicopters",
+      "title": "Helicopters collide near Mount Everest",
+      "summary": "Two helicopters collided in Nepal’s Everest region. AP reported one death and two injuries from local authorities; some early reports gave different injury counts, so the casualty total should remain attributed and provisional.",
+      "category": "World",
+      "region": "Asia",
+      "countries": [
+        "Nepal"
+      ],
+      "keywords": [
+        "Everest",
+        "helicopter",
+        "aviation"
+      ],
+      "publishedAt": "2026-11-03T07:16:24Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOSWV4UENQS0lWeXRkeUI0WWZaX1NuMGM5MHNrSlF1LW9PM0c2azhhZ3huOHljNXh3bnZ0SUZPRWh6VlM5Y3BqUGNycWE4b251MG1GYndkYmVCLUNIVUhMcHRMdF8zanpuZXVmZUtOX0J6WjhoME1icFhYYk5Wd3BMdFpxRmp3VWVqSk16bVYtekltaHoxWUR4dUNMZlo1ZzJDamdlOHpJemt4TkXSAbABQVVfeXFMUEJ6TDMxZVl3U054TUlvd05KNGVleHFWZTE0d05pc3BrYkp3S2d1VzE4U1dFek9Ua2IyM1pfSWI3eFpqeVBOQUtCbFNXSm1ZVzMxTzA0UUU4TDRTOW81SEtUV25NRWlHbDNNUEZaMFN1RGd4X1ZSaE0wa0EwcDhkTEtyLU9VeFJVSkItTW9tcE1TdGJDeTBDTFNVQktpem5XS3VCcUsxck9Ca28wUm0wZnU?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOSWV4UENQS0lWeXRkeUI0WWZaX1NuMGM5MHNrSlF1LW9PM0c2azhhZ3huOHljNXh3bnZ0SUZPRWh6VlM5Y3BqUGNycWE4b251MG1GYndkYmVCLUNIVUhMcHRMdF8zanpuZXVmZUtOX0J6WjhoME1icFhYYk5Wd3BMdFpxRmp3VWVqSk16bVYtekltaHoxWUR4dUNMZlo1ZzJDamdlOHpJemt4TkXSAbABQVVfeXFMUEJ6TDMxZVl3U054TUlvd05KNGVleHFWZTE0d05pc3BrYkp3S2d1VzE4U1dFek9Ua2IyM1pfSWI3eFpqeVBOQUtCbFNXSm1ZVzMxTzA0UUU4TDRTOW81SEtUV25NRWlHbDNNUEZaMFN1RGd4X1ZSaE0wa0EwcDhkTEtyLU9VeFJVSkItTW9tcE1TdGJDeTBDTFNVQktpem5XS3VCcUsxck9Ca28wUm0wZnU?oc=5",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "google-news",
+        "publisherHome": "https://www.aljazeera.com",
+        "publisherArticleUrl": "https://apnews.com/article/a8bb5b34b494ca7b94aada5e93ea1c51",
+        "linkKind": "google-news"
+      },
+      "officialSources": [],
+      "rank": 18,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": [
+        {
+          "publisher": "The Kathmandu Post",
+          "articleUrl": "https://kathmandupost.com/national/2026/11/03/mid-air-collision-in-everest-region-raises-fresh-questions-over-helicopter-safety",
+          "sourceType": "Reporting"
+        },
+        {
+          "publisher": "The Washington Post",
+          "articleUrl": "https://www.washingtonpost.com/world/2026/11/03/mount-everest-helicopter-crash/3f97b5f4-d745-11f1-930a-e08f8086f5ac_story.html",
+          "sourceType": "Reporting"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-germany-protests",
+      "title": "Large youth protests turn violent in Germany",
+      "summary": "Youth-led demonstrations over education, affordability, climate and military policy took place in German cities; some locations saw arrests and violence. Organizers’ nationwide turnout figure and police incident counts are distinct claims and should stay attributed.",
+      "category": "Politics",
+      "region": "Europe",
+      "countries": [
+        "Germany"
+      ],
+      "keywords": [
+        "Gen Z",
+        "protests",
+        "Germany"
+      ],
+      "publishedAt": "2026-11-02T00:28:40Z",
+      "source": {
+        "publisher": "The Washington Post",
+        "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQYmIyNllhTkFrTXZlQ3ZqZkhUczVpY0ZqZzlONFdfUXdpWU95VkxfMy1oazdjclhEYlJSRVRac0MtcTAyak5GNGNsNXBER0Y2Vk1uRm95aDBZX292LVJDb0dlVzJLR1k0VW04Q01Cb0FaR05ZUG81WnFHZ2tWbW16YjBraU5pcVZKV0IzNGxIZzZ4MmVzRG5KeXN1YzlmN2MwdURPVXJMUDRlT1NfSExn?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQYmIyNllhTkFrTXZlQ3ZqZkhUczVpY0ZqZzlONFdfUXdpWU95VkxfMy1oazdjclhEYlJSRVRac0MtcTAyak5GNGNsNXBER0Y2Vk1uRm95aDBZX292LVJDb0dlVzJLR1k0VW04Q01Cb0FaR05ZUG81WnFHZ2tWbW16YjBraU5pcVZKV0IzNGxIZzZ4MmVzRG5KeXN1YzlmN2MwdURPVXJMUDRlT1NfSExn?oc=5",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "google-news",
+        "publisherHome": "https://www.washingtonpost.com",
+        "publisherArticleUrl": "https://www.washingtonpost.com/world/2026/11/01/violence-arrests-frankfurt-other-german-cities-after-protests/",
+        "linkKind": "google-news"
+      },
+      "officialSources": [],
+      "rank": 19,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": [
+        {
+          "publisher": "Associated Press",
+          "articleUrl": "https://apnews.com/article/362a7cb69871ab21bd894290dad639f5",
+          "sourceType": "Reporting"
+        },
+        {
+          "publisher": "Euronews",
+          "articleUrl": "https://www.euronews.com/2026/11/01/germany-gen-z-protests-turn-violent-as-shops-looted",
+          "sourceType": "Reporting"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-hormuz-tanker-claims",
+      "title": "Iranian navy claims tankers hit mines in Hormuz",
+      "summary": "Iran’s Revolutionary Guard Navy said tankers struck mines in the Strait of Hormuz. Reuters said it could not independently verify the claim; separate maritime-source reports describe a tanker damaged by limpet mines, a distinct incident.",
+      "category": "World",
+      "region": "Middle East",
+      "countries": [
+        "Iran",
+        "Oman"
+      ],
+      "keywords": [
+        "Hormuz",
+        "tankers",
+        "mines",
+        "shipping"
+      ],
+      "publishedAt": "2026-11-01T20:12:33Z",
+      "source": {
+        "publisher": "Reuters",
+        "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNZmk2dmxjdk1sOW96UkZiaUlJVXhzc1pJMjZJUnY2WGtvaXd4aXRJY3d4UTNoUmFJdUVQQjlkb0JPSmxEc2YzS1JOZ2NSWmpTUnhzYzBiU1hfeXBvb2F2WEp2NHc5YkFfUUNKSHc2NW1PMUVKT0xqUTdOa0tfUmZpQWE2SDFtdzJ5TmZleWpLd0Zid1JWR2Z0d0dOeVMwekFzNTNTYndHMmMyV0poZ2h0UmFOVWc2M3o3Z2h6TUR2SQ?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNZmk2dmxjdk1sOW96UkZiaUlJVXhzc1pJMjZJUnY2WGtvaXd4aXRJY3d4UTNoUmFJdUVQQjlkb0JPSmxEc2YzS1JOZ2NSWmpTUnhzYzBiU1hfeXBvb2F2WEp2NHc5YkFfUUNKSHc2NW1PMUVKT0xqUTdOa0tfUmZpQWE2SDFtdzJ5TmZleWpLd0Zid1JWR2Z0d0dOeVMwekFzNTNTYndHMmMyV0poZ2h0UmFOVWc2M3o3Z2h6TUR2SQ?oc=5",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "google-news",
+        "publisherHome": "https://www.reuters.com",
+        "publisherArticleUrl": "https://www.al-monitor.com/originals/2026/10/irans-irgc-navy-says-four-tankers-catch-fire-strait-hormuz",
+        "linkKind": "google-news"
+      },
+      "officialSources": [],
+      "eventId": "hormuz",
+      "evidenceNote": "Claim attributed to an involved armed actor through Reuters. The feed headline alone does not independently verify the incident or responsibility.",
+      "rank": 20,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": [
+        {
+          "publisher": "Associated Press",
+          "articleUrl": "https://apnews.com/article/c11dac838a072af25ba8d0eb81d01035",
+          "sourceType": "Reporting attributed to Iranian state media"
+        },
+        {
+          "publisher": "Reuters (syndicated by MarketScreener)",
+          "articleUrl": "https://uk.marketscreener.com/news/tanker-in-strait-of-hormuz-hit-by-limpet-mines-security-sources-say-ce785fdbda8ef420",
+          "sourceType": "Separate incident reporting from maritime sources"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-haiti-gang-dialogue",
+      "title": "Haitian gang leader says he sought UN dialogue",
+      "summary": "Gang leader Wilson Joseph said he had written to the UN seeking dialogue. That is his own account; claims about the fate of other missing people in related reporting were not independently verified.",
+      "category": "World",
+      "region": "Americas",
+      "countries": [
+        "Haiti"
+      ],
+      "keywords": [
+        "Haiti",
+        "United Nations",
+        "gang violence"
+      ],
+      "publishedAt": "2026-11-03T00:49:00Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQeFFIaW1Ya0Q0cVFzUkVrYWNQRzBZYktPQlpOVm1yeEVZYzhNT0RJNVdKVGMwbXUtZ1dtZHZBUXI2emF0d0tFSGU5NEoxd1diLUdJSERoNEw0d2twVHpNejI2ZXNzeC0zMGRlcC1BdkQ4MUk1WkNQQklReXF6bml3aGVOOEpmOG40MC1XV3FnLXp1d1JCVXNZRHFlYzVndGlxMFlDaElfU2lzYXRKZ1E?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQeFFIaW1Ya0Q0cVFzUkVrYWNQRzBZYktPQlpOVm1yeEVZYzhNT0RJNVdKVGMwbXUtZ1dtZHZBUXI2emF0d0tFSGU5NEoxd1diLUdJSERoNEw0d2twVHpNejI2ZXNzeC0zMGRlcC1BdkQ4MUk1WkNQQklReXF6bml3aGVOOEpmOG40MC1XV3FnLXp1d1JCVXNZRHFlYzVndGlxMFlDaElfU2lzYXRKZ1E?oc=5",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "google-news",
+        "publisherHome": "https://apnews.com",
+        "publisherArticleUrl": "https://apnews.com/article/374dfb531e5c919c3139649c7d63cefe",
+        "linkKind": "google-news"
+      },
+      "officialSources": [],
+      "rank": 21,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": [
+        {
+          "publisher": "Associated Press",
+          "articleUrl": "https://apnews.com/article/fefbf2e40c1eef1cac6b0281cef961d0",
+          "sourceType": "Related reporting on missing aviation workers"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-sudan-power-grid",
+      "title": "Drone attacks threaten Sudan’s power supply",
+      "summary": "Drone strikes on substations disrupted electricity and water in parts of Sudan, according to AP’s reporting. Sudanese officials blamed the RSF; that attribution is reported as the government’s claim, not independent confirmation of each strike.",
+      "category": "Infrastructure",
+      "region": "Africa",
+      "countries": [
+        "Sudan"
+      ],
+      "keywords": [
+        "Sudan",
+        "electricity",
+        "RSF",
+        "drone strikes"
+      ],
+      "publishedAt": "2026-11-01T17:36:41Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://apnews.com/article/3d8369aa7479b594a72bc8439d08a0a2",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOR204cU9sWDQxUDlFcXJCd0FnQW94Q1dUd1ZNb2Zmdi1wUVRmWkFJVmtCYVNKVGNDOUZHOVBTMG10cXdENjRwYWJUb2tfVmtlWndyQ2JTckt1SWdOVHc4Q0pheWViTWs5SkdVUHJ3RkttSkRsN1daaTlHYXdYS2paVHBEZXJyYy1rV0VLeHpTTDUyVF9rbzlOZ2JaVG12ZHA1RXZQcFBacDZ1Zw?oc=5",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "original",
+        "publisherHome": "https://apnews.com",
+        "publisherArticleUrl": "https://ny1.com/nyc/all-boroughs/ap-top-news/2026/11/01/sudans-power-grid-nears-collapse-as-drone-strikes-blamed-on-rsf-target-electric-stations",
+        "linkKind": "original"
+      },
+      "officialSources": [
+        {
+          "publisher": "United Nations in Sudan",
+          "title": "Statement attributable to the Spokesperson for the Secretary-General on escalating drone attacks in Sudan",
+          "url": "https://sudan.un.org/en/325567-statement%C2%A0attributable%C2%A0-spokesperson-secretary-general%C2%A0-escalating-drone-attacks-sudan",
+          "publishedAt": "2026-10-31",
+          "note": "Earlier official statement provides context on escalating attacks; it does not independently confirm each incident in the AP report."
+        }
+      ],
+      "rank": 22,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": [
+        {
+          "publisher": "Al Jazeera",
+          "articleUrl": "https://www.aljazeera.com/news/2026/11/2/drone-attacks-extend-campaign-targeting-sudans-power-system",
+          "sourceType": "Regional reporting citing local media; attribution and individual strike reports remain contested"
+        }
+      ],
+      "evidenceNote": "AP and Al Jazeera report separate parts of a widening strike campaign. Al Jazeera says it could not independently verify some local-media strike reports. RSF responsibility is attributed to Sudanese officials and a rights group, not independently established for every attack.",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-yemen-houthi-advance",
+      "title": "Sources report Houthi advances toward Aden",
+      "summary": "Reuters cited four military sources who said Houthi forces had advanced toward Aden. The movement and distance were not independently confirmed in the report; no official mapping or public verification is attached.",
+      "category": "World",
+      "region": "Middle East",
+      "countries": [
+        "Yemen"
+      ],
+      "keywords": [
+        "Houthis",
+        "Aden",
+        "Yemen"
+      ],
+      "publishedAt": "2026-11-02T20:23:43Z",
+      "source": {
+        "publisher": "Reuters (syndicated by MarketScreener)",
+        "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQYlRCZUUyWF9VckZ3NWJGbUV2Z3luSldoNGZIVk1zTkN4MEZ1ajdSZm4zYmNLYjhVbU5TQU9yYTU2YVVrSFY3QzNPU21wT2EwVlFlRG9mMGxkeG84RHptSzlsOUw3Zmd6SHRqZGdzM1UxQnpWZlZ4MFJSYTFTZ296c2U1T1NGZFBqd3hnazg3clVMUFJ4SWNzYUtjOVoxY2FHMHpzY3RKZkNudw?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQYlRCZUUyWF9VckZ3NWJGbUV2Z3luSldoNGZIVk1zTkN4MEZ1ajdSZm4zYmNLYjhVbU5TQU9yYTU2YVVrSFY3QzNPU21wT2EwVlFlRG9mMGxkeG84RHptSzlsOUw3Zmd6SHRqZGdzM1UxQnpWZlZ4MFJSYTFTZ296c2U1T1NGZFBqd3hnazg3clVMUFJ4SWNzYUtjOVoxY2FHMHpzY3RKZkNudw?oc=5",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "google-news",
+        "publisherHome": "https://www.reuters.com",
+        "publisherArticleUrl": "https://www.marketscreener.com/news/yemen-s-houthis-advance-to-within-80-km-of-aden-sources-say-ce785fd9d981f020",
+        "linkKind": "google-news"
+      },
+      "officialSources": [],
+      "evidenceNote": "The report relies on four military sources. No independent public confirmation or official map was found in the sources reviewed, so the advance and distance remain attributed to Reuters’ sources.",
+      "rank": 23,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": [],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-belgium-resignation",
+      "title": "Belgian prime minister offers resignation after failed budget talks",
+      "summary": "Belgian Prime Minister Bart De Wever offered his resignation after coalition budget talks failed. The king had not accepted it at the time of reporting, so the government’s status was unresolved.",
+      "category": "Politics",
+      "region": "Europe",
+      "countries": [
+        "Belgium"
+      ],
+      "keywords": [
+        "Belgium",
+        "budget",
+        "prime minister"
+      ],
+      "publishedAt": "2026-11-02T11:40:00Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQejZQTk9uS2tNZXUyeDA0WUFCaUpXNGZkN1VCX2xVY2pqUWE4LXExczlDS3pXRlNFSHZIT2VLektDTXBZYVB4NzFaY2RjY3kzaFgzOURYRkE3RFpLdFR6c2ZHbXlPaDgycXRHaTh4TVk1MTBOd0YtMFZwNGJxSm1mdGZ5TjlNRTBiNThKMzRiN2c0NmJiYlJ5T2RyY0RJTjlBUXhVaUV2YzhLQnhR?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQejZQTk9uS2tNZXUyeDA0WUFCaUpXNGZkN1VCX2xVY2pqUWE4LXExczlDS3pXRlNFSHZIT2VLektDTXBZYVB4NzFaY2RjY3kzaFgzOURYRkE3RFpLdFR6c2ZHbXlPaDgycXRHaTh4TVk1MTBOd0YtMFZwNGJxSm1mdGZ5TjlNRTBiNThKMzRiN2c0NmJiYlJ5T2RyY0RJTjlBUXhVaUV2YzhLQnhR?oc=5",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "google-news",
+        "publisherHome": "https://apnews.com",
+        "publisherArticleUrl": "https://apnews.com/article/d6e28f97ddcf13c3b358201c4d45cf7e",
+        "linkKind": "google-news"
+      },
+      "officialSources": [],
+      "rank": 24,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": [
+        {
+          "publisher": "Euronews",
+          "articleUrl": "https://www.euronews.com/2026/11/02/belgiums-pm-bart-de-wever-to-offer-resignation-to-king-after-overnight-budget-talks-fail",
+          "sourceType": "Reporting"
+        },
+        {
+          "publisher": "Agence France-Presse",
+          "articleUrl": "https://origin-zh9p7m-www.afp.com/en/belgian-pm-offers-quit-over-budget-impasse",
+          "sourceType": "Reporting"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-somali-vessel-seizure",
+      "title": "India says navy rescued 20 crew after pirate seizure off Somalia",
+      "summary": "India’s Defence Ministry says the Navy freed the Iranian fishing vessel Azini and rescued 20 crew without injuries after an operation lasting more than 48 hours. An earlier local report gave a different crew count; the discrepancy is unresolved.",
+      "category": "World",
+      "region": "Africa",
+      "countries": [
+        "Somalia",
+        "Iran"
+      ],
+      "keywords": [
+        "piracy",
+        "shipping",
+        "Somalia"
+      ],
+      "publishedAt": "2026-11-01T14:25:00Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPUmU1NldCWF9CYTZDM0FDZi02UDZ1MUY1VjdJaWd6ZEE2OTlsaEIxSVo2LXFsQWVjLWtPeGFmbVk0eDRJVy1Xb3I2Nk92QzY0NTVyMDVxVGRpd3ljS0NGWHhFZzNNNUl1QjBnT1VqRGdTdUM2ZzZkdF8tblJsaTZBQ3Y2ZDBjU2w3UmNzQy05WTFQWC13UTV3TzBqX2kwdnJNRzZFcUZRVFBYdjl6?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPUmU1NldCWF9CYTZDM0FDZi02UDZ1MUY1VjdJaWd6ZEE2OTlsaEIxSVo2LXFsQWVjLWtPeGFmbVk0eDRJVy1Xb3I2Nk92QzY0NTVyMDVxVGRpd3ljS0NGWHhFZzNNNUl1QjBnT1VqRGdTdUM2ZzZkdF8tblJsaTZBQ3Y2ZDBjU2w3UmNzQy05WTFQWC13UTV3TzBqX2kwdnJNRzZFcUZRVFBYdjl6?oc=5",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "google-news",
+        "publisherHome": "https://apnews.com",
+        "publisherArticleUrl": "https://apnews.com/article/126cc7e5af41ac328a3a51fd340c12a3",
+        "linkKind": "google-news"
+      },
+      "officialSources": [],
+      "rank": 25,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": [
+        {
+          "publisher": "Press Information Bureau / Ministry of Defence",
+          "articleUrl": "https://www.pib.gov.in/PressReleseDetailm.aspx?PRID=2331872&lang=1&reg=3",
+          "sourceType": "Official Indian account; reports 20 rescued"
+        },
+        {
+          "publisher": "Associated Press",
+          "articleUrl": "https://apnews.com/article/dd4d404235781a3b871668c353540e4c",
+          "sourceType": "Earlier seizure report with a different local crew count"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-4d58eb50b6d1",
+      "title": "Australia raises its policy interest rate",
+      "summary": "The Reserve Bank of Australia raised its cash-rate target by 25 basis points to 4.85%, an 18-year high, in a 6–3 vote. The decision records the Board’s assessment; the effect on household borrowing varies by lender and loan.",
+      "category": "Economy",
+      "region": "Oceania",
+      "keywords": [
+        "Australia",
+        "RBA",
+        "interest rates",
+        "inflation"
+      ],
+      "publishedAt": "2026-11-03T03:30:00Z",
+      "source": {
+        "publisher": "Reserve Bank of Australia",
+        "url": "https://www.rba.gov.au/media-releases/2026/mr-26-30.html",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMiigFBVV95cUxQOVF0RkNGUTNUYmFYajhocUI2NlZIREUwR0NIMWZkQUZKX0JDUzlmVUF5MjVHSXBkRFdTN2ZfNEhFNWZPTlVwOGhsVVdQVXFLWlFucll1eERYV1U1RFAxbDB4TWdSZXluajhFak1Va3RONnhfMlFpTWNXSDc3dUJTYlNITENPQUM3OVHSAY8BQVVfeXFMUGxxTzhhSzZVajEwWVM0VXpjb0ZySmFoS2oyRmtXWl9GcHVsdm0tVXNYQkNVQkdxeU93a2JEQjZ4aHYyeWhMVHdXdHJSR3h5cmZLbnRreHlyUGdwNi0tbDFNdk0yYnoyekJIaVgtSl9kbkdCU2s0VHJIalVvcW5RcWpqdzhwVEVMUVFhRks1OTA?oc=5",
+        "feedUrl": "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=en-US&gl=US&ceid=US:en",
+        "publisherUrl": "https://www.rba.gov.au",
+        "sourceType": "Official release",
+        "basis": "article",
+        "linkKind": "original",
+        "title": "Statement by the Monetary Policy Board: Monetary Policy Decision",
+        "publisherArticleUrl": "https://www.rba.gov.au/media-releases/2026/mr-26-30.html"
+      },
+      "evidenceNote": "Primary central-bank decision. The release records a six-to-three vote; it is an institutional assessment, not investment advice.",
+      "secondarySources": [
+        {
+          "publisher": "ABC News Australia",
+          "articleUrl": "https://www.abc.net.au/news/2026-11-03/rba-lifts-interest-rates-november-2026-highest-rate-in-18-years/107340050",
+          "sourceType": "Reporting"
+        },
+        {
+          "publisher": "Reuters (syndicated by Investing.com)",
+          "articleUrl": "https://www.investing.com/news/economy-news/australias-central-bank-lifts-rates-to-18year-high-split-vote-points-to-pause-ahead-4993466",
+          "sourceType": "Reporting"
+        }
+      ],
+      "officialSources": [
+        {
+          "publisher": "Reserve Bank of Australia",
+          "url": "https://www.rba.gov.au/media-releases/2026/mr-26-30.html",
+          "title": "Statement by the Monetary Policy Board: Monetary Policy Decision",
+          "publishedAt": "2026-11-03T03:30:00Z",
+          "sourceType": "Official release",
+          "basis": "article",
+          "publicationDate": "2026-11-03"
+        }
+      ],
+      "publishedAtBasis": "Publisher publication timestamp",
+      "rank": 26,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-0607e2de92c2",
+      "title": "Marvell and Lumentum agree to a $115 billion stock merger",
+      "summary": "Marvell and Lumentum signed a merger agreement valuing Lumentum at an implied $115 billion enterprise value. The transaction still requires shareholder and regulatory approvals; it has not closed.",
+      "category": "Finance",
+      "region": "North America",
+      "keywords": [
+        "Marvell",
+        "Lumentum",
+        "semiconductors",
+        "acquisition"
+      ],
+      "publishedAt": "2026-11-02T21:09:22Z",
+      "source": {
+        "publisher": "Axios",
+        "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPV2FXN0VKVjBIUDlmNF8xMXBEcE9BQkRrQk5GR2k1dmNLMjlBMVlCSmRLc19PNXVCTUNZVUZRY3pQNzEtZGJuQlNwcnMxQWdqME8xa1FtOVkyendLS0RFSTV3cjNwQXJaYmVxTy1fREcyNk81S29pYWRGOTdLN3ljXzVVX1pIaDlTMXRGTHB1ck1qNEZnSUlsUkJIMWFJSmpHT1U5UjkyMEs?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPV2FXN0VKVjBIUDlmNF8xMXBEcE9BQkRrQk5GR2k1dmNLMjlBMVlCSmRLc19PNXVCTUNZVUZRY3pQNzEtZGJuQlNwcnMxQWdqME8xa1FtOVkyendLS0RFSTV3cjNwQXJaYmVxTy1fREcyNk81S29pYWRGOTdLN3ljXzVVX1pIaDlTMXRGTHB1ck1qNEZnSUlsUkJIMWFJSmpHT1U5UjkyMEs?oc=5",
+        "feedUrl": "https://news.google.com/rss/search?q=%28site%3Abbc.com%20OR%20site%3Acnn.com%20OR%20site%3Achannelnewsasia.com%20OR%20site%3Anhk.or.jp%20OR%20site%3Abloomberg.com%20OR%20site%3Aeconomist.com%29%20%28technology%20OR%20business%20OR%20science%20OR%20health%29%20after%3A2026-10-30%20before%3A2026-11-04&hl=en-US&gl=US&ceid=US:en",
+        "publisherUrl": "https://www.bloomberg.com",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkKind": "google-news",
+        "publisherArticleUrl": "https://www.axios.com/2026/11/02/marvell-lumentum-merger"
+      },
+      "publishedAtBasis": "Google News RSS timestamp",
+      "rank": 27,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "officialSources": [],
+      "secondarySources": [
+        {
+          "publisher": "U.S. Securities and Exchange Commission",
+          "articleUrl": "https://www.sec.gov/Archives/edgar/data/1633978/000119312526442758/d163169dex991.htm",
+          "sourceType": "Company merger-agreement filing"
+        },
+        {
+          "publisher": "Reuters (syndicated by Investing.com)",
+          "articleUrl": "https://www.investing.com/news/stock-market-news/marvell-to-buy-lumentum-in-115-billion-deal-in-ai-datacenter-bet-4991167",
+          "sourceType": "Reporting"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-517d7d8e7f33",
+      "title": "Disney reportedly plans thousands of job cuts",
+      "summary": "Bloomberg Law, citing people familiar with internal discussions, reported that Disney was considering thousands of job cuts and a 20% management-cost reduction. Disney had not confirmed a final number or announced a completed plan.",
+      "category": "Economy",
+      "region": "North America",
+      "keywords": [
+        "Disney",
+        "employment",
+        "layoffs",
+        "media"
+      ],
+      "publishedAt": "2026-11-03T00:20:00Z",
+      "source": {
+        "publisher": "Bloomberg Law",
+        "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOQkpQc0R6TlgtZXBVR0tYaEdfMVlqMWxUTTlHWUJxU2xuTDBtdldOeHhQMGtfSXBrZ3dReHB4SHdJUEdPVDBjV1dxVFRiUDZ3aFBMSGQxS2FJUmI0NWNrSXhHdFRHalZjNzlTbFJMZG9WZC1DVHo1cmgxUkxRVEQzc2xGWGRVZ3p2WjN4Ml81MXl0TlVvS0J1UTZHX2l0bGpCLTJrbHhQa09JWllKS0MwalhuSQ?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOQkpQc0R6TlgtZXBVR0tYaEdfMVlqMWxUTTlHWUJxU2xuTDBtdldOeHhQMGtfSXBrZ3dReHB4SHdJUEdPVDBjV1dxVFRiUDZ3aFBMSGQxS2FJUmI0NWNrSXhHdFRHalZjNzlTbFJMZG9WZC1DVHo1cmgxUkxRVEQzc2xGWGRVZ3p2WjN4Ml81MXl0TlVvS0J1UTZHX2l0bGpCLTJrbHhQa09JWllKS0MwalhuSQ?oc=5",
+        "feedUrl": "https://news.google.com/rss/search?q=%28site%3Abbc.com%20OR%20site%3Acnn.com%20OR%20site%3Achannelnewsasia.com%20OR%20site%3Anhk.or.jp%20OR%20site%3Abloomberg.com%20OR%20site%3Aeconomist.com%29%20%28technology%20OR%20business%20OR%20science%20OR%20health%29%20after%3A2026-10-30%20before%3A2026-11-04&hl=en-US&gl=US&ceid=US:en",
+        "publisherUrl": "https://www.bloomberg.com",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkKind": "google-news",
+        "publisherArticleUrl": "https://news.bloomberglaw.com/delaware-brief/disney-plans-thousands-of-layoffs-targeting-20-cost-savings"
+      },
+      "publishedAtBasis": "Google News RSS timestamp",
+      "rank": 28,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "officialSources": [],
+      "secondarySources": [
+        {
+          "publisher": "UPI",
+          "articleUrl": "https://www.upi.com/Top_News/US/2026/11/03/disney-layoffs-coming/5511793736423/",
+          "sourceType": "Reporting on Bloomberg’s account"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-4b90f2dc5a32",
+      "title": "OPEC+ keeps December production targets unchanged",
+      "summary": "Seven OPEC+ countries kept their required December 2026 production levels at September’s levels. This was a decision by the named subgroup, not a new quota decision by every member of the wider OPEC+ alliance.",
+      "category": "Energy",
+      "region": "Middle East",
+      "keywords": [
+        "OPEC",
+        "oil",
+        "energy",
+        "production"
+      ],
+      "publishedAt": "2026-11-01T09:41:30Z",
+      "source": {
+        "publisher": "Organization of the Petroleum Exporting Countries",
+        "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxOSFVmTWdFTkNIc3lLYmNub3lxZDFJV2N1NVdPQUNrdVp5eWhWUkt2bzFqWU9pcnBLQm5aTi1QTS1CTWhEWUxsWjVOTk0tYUlrcGhBNk9FYUdBbnJrY3RxdlRWQ2d0MFh6YnhYandUVWtyWjdjeFdFME56ZTNhbWFXSXJzaGoxSXVyZ3RENEdiN0hVNVppWEVYNHR2dktVUldtZEdIdlpUMy1hN01lQVNZa09UZEpNQVVha0E?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMiugFBVV95cUxOSFVmTWdFTkNIc3lLYmNub3lxZDFJV2N1NVdPQUNrdVp5eWhWUkt2bzFqWU9pcnBLQm5aTi1QTS1CTWhEWUxsWjVOTk0tYUlrcGhBNk9FYUdBbnJrY3RxdlRWQ2d0MFh6YnhYandUVWtyWjdjeFdFME56ZTNhbWFXSXJzaGoxSXVyZ3RENEdiN0hVNVppWEVYNHR2dktVUldtZEdIdlpUMy1hN01lQVNZa09UZEpNQVVha0E?oc=5",
+        "feedUrl": "https://news.google.com/rss/search?q=site%3Achannelnewsasia.com%20%28business%20OR%20technology%20OR%20science%20OR%20health%20OR%20sport%29%20after%3A2026-10-30%20before%3A2026-11-04&hl=en-US&gl=US&ceid=US:en",
+        "publisherUrl": "https://www.channelnewsasia.com",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkKind": "google-news",
+        "publisherArticleUrl": "https://www.opec.org/pr-detail/620-1-november-2026.html"
+      },
+      "publishedAtBasis": "Google News RSS timestamp",
+      "rank": 29,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "officialSources": [],
+      "secondarySources": [
+        {
+          "publisher": "Reuters (syndicated by MarketScreener)",
+          "articleUrl": "https://www.marketscreener.com/news/opec-set-to-keep-oil-output-targets-steady-sources-say-ce785fd8da8cf22d",
+          "sourceType": "Reporting ahead of the official decision"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-62c7de221ab6",
+      "title": "Asian markets mixed after Wall Street technology losses",
+      "summary": "AP’s 3 November market report described mixed Asian trading, including a 3.6% fall in South Korea’s Kospi, after a technology-led Wall Street sell-off. Index moves are a dated snapshot, not a forecast or explanation of household economic conditions.",
+      "category": "Finance",
+      "region": "Asia",
+      "keywords": [
+        "Asia",
+        "markets",
+        "stocks",
+        "technology"
+      ],
+      "publishedAt": "2026-11-03T03:51:00Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxOekRxNGUzaWpTRy1SLXpVUmlsbkNPVWMyQ3Q4WWx2eHFvRjhvUzViNUtXcGlxLVlmdlphQUc2bk5CX2ZwVmp5RnJQNTJxaVdjd0dra051ZUJNaVpQcVFVQjBPa1MtY0tEZ0N3MG9VMGJWWXZ4cXoyRzhKSm02NHJLbDdlYUpVbE4tbnhuOEZodFlmX0k?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMikwFBVV95cUxOekRxNGUzaWpTRy1SLXpVUmlsbkNPVWMyQ3Q4WWx2eHFvRjhvUzViNUtXcGlxLVlmdlphQUc2bk5CX2ZwVmp5RnJQNTJxaVdjd0dra051ZUJNaVpQcVFVQjBPa1MtY0tEZ0N3MG9VMGJWWXZ4cXoyRzhKSm02NHJLbDdlYUpVbE4tbnhuOEZodFlmX0k?oc=5",
+        "feedUrl": "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=en-US&gl=US&ceid=US:en",
+        "publisherUrl": "https://apnews.com",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkKind": "google-news",
+        "publisherArticleUrl": "https://apnews.com/article/0d235af127a92c68da0cc2c45c028cef"
+      },
+      "evidenceNote": "AP reports a 3.6% Kospi drop; Reuters reported 3.2% at a separate market snapshot. Read the timestamps and market session before comparing the figures; they are not household economic indicators.",
+      "publishedAtBasis": "Google News RSS timestamp",
+      "rank": 30,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "officialSources": [],
+      "secondarySources": [
+        {
+          "publisher": "Reuters (syndicated by The Edge Malaysia)",
+          "articleUrl": "https://theedgemalaysia.com/node/824327",
+          "sourceType": "Independent market reporting; reports a 3.2% Kospi decline at its cited snapshot"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-6ee843c9c38f",
+      "title": "IndiGo targets long-haul business travellers",
+      "summary": "IndiGo plans a three-class A350 cabin for long-haul routes, including lie-flat business seats on its first ten aircraft. The reported first deliveries are expected in 2028; plans and delivery dates can change.",
+      "category": "Economy",
+      "region": "Asia",
+      "keywords": [
+        "India",
+        "IndiGo",
+        "aviation",
+        "travel"
+      ],
+      "publishedAt": "2026-11-02T07:37:00Z",
+      "source": {
+        "publisher": "Moneycontrol (Bloomberg reporting)",
+        "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNbzJrY04tbnhyWGR0dTFrVFV3YjRsN3hHSW9QSXY1SVd4TWJmVFM2Mnl1UV94QklNcDdDSXRpc0phdVRmbzdGT244R0RDTWlXV1lPdm1YSjdKVndQaFZFTWdCOHRQazZxSmF0SUg5TnRnZVBlVTFKSEVQUE1xR29CM3ZaVkRSRG82cmRsYTRWbW02bVFHeW5JYnNPenFwVGg3amQtWnpDNXp4Z3R5TDEwSmgxTlo?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNbzJrY04tbnhyWGR0dTFrVFV3YjRsN3hHSW9QSXY1SVd4TWJmVFM2Mnl1UV94QklNcDdDSXRpc0phdVRmbzdGT244R0RDTWlXV1lPdm1YSjdKVndQaFZFTWdCOHRQazZxSmF0SUg5TnRnZVBlVTFKSEVQUE1xR29CM3ZaVkRSRG82cmRsYTRWbW02bVFHeW5JYnNPenFwVGg3amQtWnpDNXp4Z3R5TDEwSmgxTlo?oc=5",
+        "feedUrl": "https://news.google.com/rss/search?q=%28site%3Abbc.com%20OR%20site%3Acnn.com%20OR%20site%3Achannelnewsasia.com%20OR%20site%3Anhk.or.jp%20OR%20site%3Abloomberg.com%20OR%20site%3Aeconomist.com%29%20%28technology%20OR%20business%20OR%20science%20OR%20health%29%20after%3A2026-10-30%20before%3A2026-11-04&hl=en-US&gl=US&ceid=US:en",
+        "publisherUrl": "https://www.bloomberg.com",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkKind": "google-news",
+        "publisherArticleUrl": "https://www.moneycontrol.com/news/business/companies/indigo-to-offer-lie-flat-beds-to-lure-long-haul-business-fliers-14066476.html"
+      },
+      "publishedAtBasis": "Google News RSS timestamp",
+      "rank": 31,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "officialSources": [],
+      "secondarySources": [
+        {
+          "publisher": "The Indian Express",
+          "articleUrl": "https://indianexpress.com/article/explained/explained-economics/why-indigo-lie-flat-business-class-seats-10947312/",
+          "sourceType": "Explainer"
+        },
+        {
+          "publisher": "Business Traveller",
+          "articleUrl": "https://www.businesstraveller.com/news/indigo-a350-a321xlr-lie-flat-business-class/",
+          "sourceType": "Reporting"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-db09f8753c8e",
+      "title": "Cyberattacks disrupt supermarket refrigeration systems across Europe",
+      "summary": "Supermarkets in several European countries reported refrigeration or IT disruptions that spoiled some food. Investigators had not established a common attacker or linked all incidents; retailers and authorities described affected stores separately.",
+      "category": "Infrastructure",
+      "region": "Europe",
+      "keywords": [
+        "Europe",
+        "supermarkets",
+        "cyberattack",
+        "retail"
+      ],
+      "publishedAt": "2026-11-03T03:00:38Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1xdHlBbWJ1Y3djbHpUaHR4ZnExUmFSUzFyeFAwM0daMlNMWmR1UG95allncVRNNThsSlg4NUszcU1FU1UtZms1NVc0V3ZTd3J2UEE1aXVYTWVreUZLLUREMG9ONA?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1xdHlBbWJ1Y3djbHpUaHR4ZnExUmFSUzFyeFAwM0daMlNMWmR1UG95allncVRNNThsSlg4NUszcU1FU1UtZms1NVc0V3ZTd3J2UEE1aXVYTWVreUZLLUREMG9ONA?oc=5",
+        "feedUrl": "https://news.google.com/rss/search?q=site%3Anhk.or.jp%20%28economy%20OR%20business%20OR%20technology%20OR%20science%29%20after%3A2026-10-30%20before%3A2026-11-04&hl=en-US&gl=US&ceid=US:en",
+        "publisherUrl": "https://www3.nhk.or.jp",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkKind": "google-news",
+        "publisherArticleUrl": "https://apnews.com/article/b6abfab3f5cdd65c19476b9032eb7a9d"
+      },
+      "publishedAtBasis": "Google News RSS timestamp",
+      "rank": 32,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "officialSources": [],
+      "secondarySources": [
+        {
+          "publisher": "Reuters (syndicated by Investing.com)",
+          "articleUrl": "https://www.investing.com/news/stock-market-news/european-supermarkets-rush-to-patch-vulnerabilities-after-regionwide-fridge-hack-4995896",
+          "sourceType": "Reporting"
+        },
+        {
+          "publisher": "The European Commission",
+          "articleUrl": "https://audiovisual.ec.europa.eu/en/media/video/I-297083",
+          "sourceType": "Official briefing; does not attribute every incident"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-064b801d3a47",
+      "title": "New York reports a child’s measles death",
+      "summary": "New York health officials reported a child’s measles-associated death in Lewis County, the state’s first such death in more than 30 years. The case and vaccination information should be read in the public-health department’s account.",
+      "category": "Health",
+      "region": "North America",
+      "keywords": [
+        "United States",
+        "New York",
+        "measles",
+        "public health"
+      ],
+      "publishedAt": "2026-11-03T05:48:00Z",
+      "source": {
+        "publisher": "New York State Department of Health",
+        "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOUktvLXA4bEZ0cTlYdlM3VGQ1SWtLSnhNaVcwX2tXMkU0OS1hM1pobjh0TVJBQkRZUTBSXzNsUklmWGIyRENicFVseTdpNmpEcS1EdDlRYng0RzZMejJVXzJMOEJOSkpLRkpySFZKM1JPRU1sUFNOVlVLLVFtclpkUkgyQUF6Zzh5eG1qRzViSWRJMFFzdFc2ZGZ3?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOUktvLXA4bEZ0cTlYdlM3VGQ1SWtLSnhNaVcwX2tXMkU0OS1hM1pobjh0TVJBQkRZUTBSXzNsUklmWGIyRENicFVseTdpNmpEcS1EdDlRYng0RzZMejJVXzJMOEJOSkpLRkpySFZKM1JPRU1sUFNOVlVLLVFtclpkUkgyQUF6Zzh5eG1qRzViSWRJMFFzdFc2ZGZ3?oc=5",
+        "feedUrl": "https://news.google.com/rss/headlines/section/topic/HEALTH?hl=en-US&gl=US&ceid=US:en",
+        "publisherUrl": "https://www.theguardian.com",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkKind": "google-news",
+        "publisherArticleUrl": "https://healthweb-back.health.ny.gov/press/releases/2026/2026-11-02_measles"
+      },
+      "publishedAtBasis": "Google News RSS timestamp",
+      "rank": 33,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "officialSources": [],
+      "secondarySources": [
+        {
+          "publisher": "Associated Press",
+          "articleUrl": "https://apnews.com/article/4032239653c89f9f454e0ec630852930",
+          "sourceType": "Reporting"
+        },
+        {
+          "publisher": "The Guardian",
+          "articleUrl": "https://www.theguardian.com/society/mmr",
+          "sourceType": "Background coverage index"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-3ff852d9c8fc",
+      "title": "Washington reports a bird-flu death",
+      "summary": "Washington state officials reported a human death associated with avian influenza. Public-health authorities described the exposure and judged risk to the general public low; this assessment does not mean the infection is harmless to the affected person.",
+      "category": "Health",
+      "region": "North America",
+      "keywords": [
+        "United States",
+        "Washington",
+        "bird flu",
+        "public health"
+      ],
+      "publishedAt": "2026-11-02T14:09:58Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9VaENkNHpqVUYzUnRGcDU3UWw0SS1vR3NzTmJ3VWxOenhrOFN6UWx0N3hPSEtKUEg5WFNDVGw5Z0R0X1ZMb3ZUaTF4OUxvUEJhaGlfTVpTbDMtdGRSaEx5UkJ0SWR0Wnli?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9VaENkNHpqVUYzUnRGcDU3UWw0SS1vR3NzTmJ3VWxOenhrOFN6UWx0N3hPSEtKUEg5WFNDVGw5Z0R0X1ZMb3ZUaTF4OUxvUEJhaGlfTVpTbDMtdGRSaEx5UkJ0SWR0Wnli?oc=5",
+        "feedUrl": "https://news.google.com/rss/search?q=%28site%3Abbc.com%20OR%20site%3Acnn.com%20OR%20site%3Achannelnewsasia.com%20OR%20site%3Anhk.or.jp%20OR%20site%3Abloomberg.com%20OR%20site%3Aeconomist.com%29%20%28technology%20OR%20business%20OR%20science%20OR%20health%29%20after%3A2026-10-30%20before%3A2026-11-04&hl=en-US&gl=US&ceid=US:en",
+        "publisherUrl": "https://www.cnn.com",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkKind": "google-news",
+        "publisherArticleUrl": "https://apnews.com/article/c170f95d65a5ffe966ec52d7dae56f3d"
+      },
+      "publishedAtBasis": "Google News RSS timestamp",
+      "rank": 34,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "officialSources": [],
+      "secondarySources": [
+        {
+          "publisher": "The Washington Post",
+          "articleUrl": "https://www.washingtonpost.com/health/2026/11/02/bird-flu-death-yakima-washington/3d5d5f42-d6f4-11f1-930a-e08f8086f5ac_story.html",
+          "sourceType": "Reporting"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-4c9a9fe0ddc1",
+      "title": "DR Congo Ebola outbreak death toll draws concern",
+      "summary": "DR Congo’s outbreak totals rose as health authorities reported more than 10,000 cases and 5,000 deaths. Counts are from the official response and distinguish confirmed from probable cases; WHO and CDC updates can use different cut-off dates.",
+      "category": "Health",
+      "region": "Africa",
+      "keywords": [
+        "Democratic Republic of Congo",
+        "Ebola",
+        "outbreak",
+        "public health"
+      ],
+      "publishedAt": "2026-10-31T15:16:20Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5jNU5SVHJ6R1hPT1VhOS02QU9URWQwR0htNnBXeEg1UXNWOGV3T25BbTVhZXJXVDdhV3hRVy01RWItVTR4eWRSWGdWWlNTdjd5QnB4MlA5Wmw1M28?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5jNU5SVHJ6R1hPT1VhOS02QU9URWQwR0htNnBXeEg1UXNWOGV3T25BbTVhZXJXVDdhV3hRVy01RWItVTR4eWRSWGdWWlNTdjd5QnB4MlA5Wmw1M28?oc=5",
+        "feedUrl": "https://news.google.com/rss/search?q=%28site%3Abbc.com%20OR%20site%3Acnn.com%20OR%20site%3Achannelnewsasia.com%20OR%20site%3Anhk.or.jp%20OR%20site%3Abloomberg.com%20OR%20site%3Aeconomist.com%29%20%28technology%20OR%20business%20OR%20science%20OR%20health%29%20after%3A2026-10-30%20before%3A2026-11-04&hl=en-US&gl=US&ceid=US:en",
+        "publisherUrl": "https://www.bbc.com",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkKind": "google-news",
+        "publisherArticleUrl": "https://apnews.com/article/cb7e79534ec9f3ab3c8f3bd03b3e1ad0"
+      },
+      "publishedAtBasis": "Google News RSS timestamp",
+      "rank": 35,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "officialSources": [],
+      "secondarySources": [
+        {
+          "publisher": "World Health Organization",
+          "articleUrl": "https://www.who.int/emergencies/situations/ebola-outbreak---drc-2026",
+          "sourceType": "Official situation updates"
+        },
+        {
+          "publisher": "U.S. Centers for Disease Control and Prevention",
+          "articleUrl": "https://www.cdc.gov/ebola/situation-summary/index.html",
+          "sourceType": "Official situation summary; dates and case classifications matter"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-661658bbb83a",
+      "title": "UK launches a study of persistent chemicals in people",
+      "summary": "UKHSA began a study measuring PFAS and other chemicals in blood and urine samples to establish population exposure levels. Initial results are expected in 2027; the agency does not recommend routine PFAS blood tests at present.",
+      "category": "Health",
+      "region": "Europe",
+      "keywords": [
+        "United Kingdom",
+        "PFAS",
+        "chemicals",
+        "research"
+      ],
+      "publishedAt": "2026-11-03T07:19:27Z",
+      "source": {
+        "publisher": "UK Health Security Agency",
+        "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1abjZDdWswUk93cEs3LUw1NGI1VnRSTGRhcTBQREVHaG1ibnhjRkFDZlcwQmt6Zl9WbTdWblppR28yTk9USFBsUWFRSlJWT0tCOURTMGtaaUNYUEU?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1abjZDdWswUk93cEs3LUw1NGI1VnRSTGRhcTBQREVHaG1ibnhjRkFDZlcwQmt6Zl9WbTdWblppR28yTk9USFBsUWFRSlJWT0tCOURTMGtaaUNYUEU?oc=5",
+        "feedUrl": "https://news.google.com/rss/search?q=%28site%3Abbc.com%20OR%20site%3Acnn.com%20OR%20site%3Achannelnewsasia.com%20OR%20site%3Anhk.or.jp%20OR%20site%3Abloomberg.com%20OR%20site%3Aeconomist.com%29%20%28technology%20OR%20business%20OR%20science%20OR%20health%29%20after%3A2026-10-30%20before%3A2026-11-04&hl=en-US&gl=US&ceid=US:en",
+        "publisherUrl": "https://www.bbc.com",
+        "sourceType": "Official release",
+        "basis": "headline",
+        "linkKind": "google-news",
+        "publisherArticleUrl": "https://www.gov.uk/government/news/ukhsa-launches-human-biomonitoring-study"
+      },
+      "evidenceNote": "The UKHSA notice establishes the study design and expected 2027 findings. BusinessGreen also reports the launch; neither source contains study results. UKHSA says routine individual PFAS blood testing is not currently recommended.",
+      "publishedAtBasis": "Google News RSS timestamp",
+      "rank": 36,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "officialSources": [],
+      "secondarySources": [
+        {
+          "publisher": "BusinessGreen",
+          "articleUrl": "https://www.businessgreen.com/news/4538306/government-launches-investigation-publics-exposure-forever-chemicals",
+          "sourceType": "Independent reporting on the UKHSA announcement; the study has not yet reported results"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-eb1ef02c7a9a",
+      "title": "Lower-cost HIV-prevention injection receives approval",
+      "summary": "The FDA granted tentative approval to a lower-cost generic lenacapavir injection for HIV prevention in eligible lower- and middle-income countries. Tentative approval does not itself mean immediate U.S. marketing or that the product is already available everywhere.",
+      "category": "Health",
+      "region": "Global",
+      "keywords": [
+        "HIV",
+        "lenacapavir",
+        "medicine",
+        "access"
+      ],
+      "publishedAt": "2026-11-02T14:26:47Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPUGxjQmlxellpclpOUTJkTHVSQkZ2NHhMWHJBTXdYenpzRHBxczFXMUNTOWUzT3EzNlQxVW80Qk80NVUwY0lwaVpOUmNTenRoT1A5dWdLandlU2JvV0pvaS1vYllkQ0ZaeHVMVW0xeVZER1BCR2tVdE9hWU5GUU5iYlF4Nll6RjBwMU9GTDdEeHNTVTBoam1aNXdtRl90UGhTeHJmcko0b1dKRDltQ3Iw0gG0AUFVX3lxTE5FUkxYZTlwSHBMYTFUa244V1REbUJXUHduaTQwTGNuMkRfVllkLUpScFJzcUxxbFo5LWFWX0xjZzFJT0NUbFZaRUZ5djBYRU1YUVVXbHdTTzlEWDkwOEhoM21EN3RKVl85YmZidzBlaHVla3V3MWhKbnRxcnlkWU5SU1RFeE54UC0yWE0tZXJDMmNqWUQxZnZ6NkY3U1ByM2QteDhxanZvNTFIMmVyYkRjWVVydQ?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPUGxjQmlxellpclpOUTJkTHVSQkZ2NHhMWHJBTXdYenpzRHBxczFXMUNTOWUzT3EzNlQxVW80Qk80NVUwY0lwaVpOUmNTenRoT1A5dWdLandlU2JvV0pvaS1vYllkQ0ZaeHVMVW0xeVZER1BCR2tVdE9hWU5GUU5iYlF4Nll6RjBwMU9GTDdEeHNTVTBoam1aNXdtRl90UGhTeHJmcko0b1dKRDltQ3Iw0gG0AUFVX3lxTE5FUkxYZTlwSHBMYTFUa244V1REbUJXUHduaTQwTGNuMkRfVllkLUpScFJzcUxxbFo5LWFWX0xjZzFJT0NUbFZaRUZ5djBYRU1YUVVXbHdTTzlEWDkwOEhoM21EN3RKVl85YmZidzBlaHVla3V3MWhKbnRxcnlkWU5SU1RFeE54UC0yWE0tZXJDMmNqWUQxZnZ6NkY3U1ByM2QteDhxanZvNTFIMmVyYkRjWVVydQ?oc=5",
+        "feedUrl": "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=en-US&gl=US&ceid=US:en",
+        "publisherUrl": "https://abcnews.com",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkKind": "google-news",
+        "publisherArticleUrl": "https://apnews.com/article/c3537796e84c54d60179eba3c56561e6"
+      },
+      "publishedAtBasis": "Google News RSS timestamp",
+      "rank": 37,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "officialSources": [],
+      "secondarySources": [
+        {
+          "publisher": "Clinton Health Access Initiative",
+          "articleUrl": "https://www.clintonhealthaccess.org/news/us-fda-approves-first-generic-injectable-lenacapavir-for-hiv-prevention/",
+          "sourceType": "Access-program announcement; involved organization"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-204583a2c31f",
+      "title": "Europe reviews infrastructure lessons from climate extremes",
+      "summary": "The European Environment Agency says 2026 heat, drought, wildfire and storms exposed vulnerabilities in critical infrastructure. Its estimate that heat cost the EU at least 1% of GDP is the agency’s analysis and methodology, not a finalized national-accounts revision.",
+      "category": "Infrastructure",
+      "region": "Europe",
+      "keywords": [
+        "Europe",
+        "climate",
+        "adaptation",
+        "infrastructure"
+      ],
+      "publishedAt": "2026-11-03T07:00:00Z",
+      "source": {
+        "publisher": "European Environment Agency",
+        "url": "https://www.eea.europa.eu/en/newsroom/news/what-2026s-climate-extremes-teach-europe-about-resilient-infrastructure",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPQmVFbXZ1Qk1vVk14bzBQTGlBQ0VoOXlCZkpQWHJtUUFLQkJidnNvMmdpN3dBamtQU3VqY3dURHlWRHhiUGx3YXh3WEtNcjFVMjdta2RvWkpBUF9ZbE9XY3ZsR01QVDg1OF9RNEtmWFJVR3dTd01TUWo0V29pUHdTa19QRHJFdEkybjhqWC1ycEpyYmVlbmpWRG8zcDRpM2VWS0FWMW5hUEpKeEtpZ1h0ZVJvTmM?oc=5",
+        "feedUrl": "https://news.google.com/rss/search?q=climate%20after%3A2026-10-30%20before%3A2026-11-04&hl=en-US&gl=US&ceid=US:en",
+        "publisherUrl": "https://www.eea.europa.eu",
+        "sourceType": "Official release",
+        "basis": "article",
+        "linkKind": "original",
+        "title": "What climate extremes of 2026 teach Europe about resilient infrastructure",
+        "publisherArticleUrl": "https://www.eea.europa.eu/en/newsroom/news/what-2026s-climate-extremes-teach-europe-about-resilient-infrastructure"
+      },
+      "evidenceNote": "Official briefing reviewed. The page HTML explicitly states publication on 3 November 2026 at 07:00 UTC.",
+      "secondarySources": [
+        {
+          "publisher": "European Environment Agency",
+          "articleUrl": "https://www.eea.europa.eu/en/analysis/publications/europes-critical-infrastructure-under-climate-stress-lessons-from-2026",
+          "sourceType": "Underlying institutional analysis"
+        }
+      ],
+      "officialSources": [
+        {
+          "publisher": "European Environment Agency",
+          "url": "https://www.eea.europa.eu/en/newsroom/news/what-2026s-climate-extremes-teach-europe-about-resilient-infrastructure",
+          "title": "What climate extremes of 2026 teach Europe about resilient infrastructure",
+          "publishedAt": "2026-11-03T07:00:00Z",
+          "sourceType": "Official release",
+          "basis": "article",
+          "publicationDate": "2026-11-03"
+        }
+      ],
+      "publishedAtBasis": "Publisher publication timestamp",
+      "rank": 38,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-03b73497bf7d",
+      "title": "AIIB expands support for infrastructure project preparation",
+      "summary": "The Asian Infrastructure Investment Bank announced additional project-preparation fund commitments, reporting about $213 million in total commitments across 45 projects in 13 member economies. These are the bank’s own funding figures, not completed infrastructure spending.",
+      "category": "Infrastructure",
+      "region": "Asia",
+      "keywords": [
+        "AIIB",
+        "infrastructure",
+        "finance",
+        "Asia"
+      ],
+      "publishedAt": "2026-11-03T07:11:56Z",
+      "source": {
+        "publisher": "Asian Infrastructure Investment Bank",
+        "url": "https://www.aiib.org/en/news-events/news/2026/aiib-expands-project-preparation-special-fund-to-strengthen-infrastructure-pipeline.html",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMizwFBVV95cUxQNy1Wei1BLW1aMkpMSDNobjhCNm9mYUdwYzhXZ2ZaZzFvRUpmUHI2RVMweGpfUWpkYmRjQlF5VUh0dEFFRkJWQ2tmc2pmUG9BVUtvUTZrb25qOVhDbTgtSmppZDlwbHdzUldDbGdSYURCaVo5UWFDalhXa2c1VVVpOUxoMDZBdmc0U1l6MW1zOERiSmlHV2tTQW05LTZhM0Q4bm8xYThEeEhLRVFVWE56cGxEaGJWdnl1bVpTbnQ2VDdJRGs2Y2xfbXRPbTBFcUE?oc=5",
+        "feedUrl": "https://news.google.com/rss/search?q=railway%20OR%20infrastructure%20after%3A2026-10-30%20before%3A2026-11-04&hl=en-IN&gl=IN&ceid=IN:en",
+        "publisherUrl": "https://www.aiib.org",
+        "sourceType": "Official release",
+        "basis": "article",
+        "linkKind": "original",
+        "title": "AIIB Expands Project Preparation Special Fund to Strengthen Infrastructure Pipeline",
+        "publisherArticleUrl": "https://www.aiib.org/en/news-events/news/2026/aiib-expands-project-preparation-special-fund-to-strengthen-infrastructure-pipeline.html"
+      },
+      "evidenceNote": "The linked item is the bank’s own release and supplies the commitment totals; the reviewed search did not locate separate independent reporting on this announcement. Commitments are not equivalent to completed project spending.",
+      "secondarySources": [],
+      "officialSources": [
+        {
+          "publisher": "Asian Infrastructure Investment Bank",
+          "url": "https://www.aiib.org/en/news-events/news/2026/aiib-expands-project-preparation-special-fund-to-strengthen-infrastructure-pipeline.html",
+          "title": "AIIB Expands Project Preparation Special Fund to Strengthen Infrastructure Pipeline",
+          "publishedAt": "2026-11-03T07:11:56Z",
+          "sourceType": "Official release",
+          "basis": "article",
+          "publicationDate": "2026-11-03"
+        }
+      ],
+      "publishedAtBasis": "Google News RSS timestamp",
+      "rank": 39,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-fff1e7480b40",
+      "title": "Central Railway reports Kavach assessment across three divisions",
+      "summary": "Central Railway said safety assessment of Kavach 4.0 covered 337 route-kilometres across Pune, Solapur and Nagpur divisions. An assessment is not the same as system commissioning or operational coverage on every assessed kilometre.",
+      "category": "Infrastructure",
+      "region": "Asia",
+      "keywords": [
+        "India",
+        "railway",
+        "Kavach",
+        "safety"
+      ],
+      "publishedAt": "2026-11-03T05:06:06Z",
+      "source": {
+        "publisher": "ET Infra",
+        "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE50bElkN3d6MkFoSXRwWlNlUlQyMzZka0NVN01NMTZCMHl5c1o1elE5Z3dJMWdIM0lwR191SXp0NGN4TlZuaWw1cUVuVjNIZHpPWUpBU21FV3VRZEpxZTZjejV0ZXVkZmJLWnFzS1huaTlpRTBDNDBKcFdtUQ?oc=5",
+        "discoveryUrl": "https://news.google.com/rss/articles/CBMie0FVX3lxTE50bElkN3d6MkFoSXRwWlNlUlQyMzZka0NVN01NMTZCMHl5c1o1elE5Z3dJMWdIM0lwR191SXp0NGN4TlZuaWw1cUVuVjNIZHpPWUpBU21FV3VRZEpxZTZjejV0ZXVkZmJLWnFzS1huaTlpRTBDNDBKcFdtUQ?oc=5",
+        "feedUrl": "https://news.google.com/rss/search?q=railway%20OR%20infrastructure%20after%3A2026-10-30%20before%3A2026-11-04&hl=en-IN&gl=IN&ceid=IN:en",
+        "publisherUrl": "https://metrorailnews.in",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkKind": "google-news",
+        "publisherArticleUrl": "https://infra.economictimes.indiatimes.com/news/railways/kavach-4-0-safety-assessment-completed-for-340-km-of-tracks/135445756"
+      },
+      "publishedAtBasis": "Google News RSS timestamp",
+      "rank": 40,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "officialSources": [],
+      "secondarySources": [
+        {
+          "publisher": "Financial Express",
+          "articleUrl": "https://www.financialexpress.com/business/railways-central-railway-extends-special-trains-on-these-key-routes-4369591/",
+          "sourceType": "Separate reporting; cites assessment on one section"
+        },
+        {
+          "publisher": "Ministry of Railways",
+          "articleUrl": "https://indianrailways.gov.in/documents/press-release?page=2&size=10",
+          "sourceType": "Official press-release index; broader Kavach records"
+        }
+      ],
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-cyclone-murasu",
+      "title": "Murasu weakens over Andhra Pradesh; officials report deaths and preliminary crop losses",
+      "summary": "The Indian Express reported that Andhra Pradesh officials had preliminarily counted two cyclone-related deaths, 12,230 people in shelters and about ₹344 crore in damage, including crop damage across 52,459 hectares. These are preliminary state estimates. IMD’s 4 November morning bulletin said Murasu’s remnant had weakened to a depression near Khammam; that bulletin gives storm status, not a final impact assessment.",
+      "category": "World",
+      "region": "Asia",
+      "countries": [
+        "India"
+      ],
+      "keywords": [
+        "Cyclone Murasu",
+        "Andhra Pradesh",
+        "flooding",
+        "evacuation",
+        "crop damage"
+      ],
+      "publishedAt": "2026-11-03T22:00:00Z",
+      "source": {
+        "publisher": "The Indian Express",
+        "url": "https://indianexpress.com/article/india/cyclone-murasu-andhra-pradesh-odisha-impact-10949483/",
+        "publisherArticleUrl": "https://indianexpress.com/article/india/cyclone-murasu-andhra-pradesh-odisha-impact-10949483/",
+        "publisherHome": "https://indianexpress.com",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkKind": "original"
+      },
+      "officialSources": [
+        {
+          "publisher": "India Meteorological Department",
+          "title": "Sea Area Bulletin: Murasu remnant over Telangana and adjoining Coastal Andhra Pradesh",
+          "url": "https://mausam.imd.gov.in/Forecast/seaarea_bulletin_new.php",
+          "publishedAt": "2026-11-04",
+          "note": "The 4 November 08:30 IST bulletin records the remnant as a depression near Khammam and forecasts further weakening. It does not confirm the casualty or damage estimates reported by the state authority."
+        }
+      ],
+      "secondarySources": [
+        {
+          "publisher": "Associated Press",
+          "articleUrl": "https://apnews.com/article/c8d1899f4344625f63d6d456dc3805fb",
+          "sourceType": "Reporting on landfall, evacuations and service disruption"
+        }
+      ],
+      "eventId": "murasu",
+      "evidenceNote": "The casualty count and loss estimates are preliminary figures attributed to Andhra Pradesh officials by the report. The IMD record supports only the storm’s status.",
+      "rank": 41,
+      "ingestedAt": "2026-11-04T09:56:17Z",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04"
+    },
+    {
+      "id": "news-oman-vessel-attack",
+      "title": "One Indian sailor killed in attack on vessel off Oman; 13 rescued",
+      "summary": "India’s government said an unidentified aerial object struck a commercial vessel off Oman, killing one Indian national; 13 others were rescued. No perpetrator was publicly identified in the reports reviewed.",
+      "category": "World",
+      "region": "Middle East",
+      "countries": [
+        "India",
+        "Oman"
+      ],
+      "keywords": [
+        "Oman",
+        "commercial shipping",
+        "seafarer",
+        "Hormuz",
+        "maritime security"
+      ],
+      "publishedAt": "2026-11-03T10:20:40Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://apnews.com/article/9ae5cec3d1f9cde02652f52f7f80fbce",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkKind": "original",
+        "publisherArticleUrl": "https://apnews.com/article/9ae5cec3d1f9cde02652f52f7f80fbce"
+      },
+      "officialSources": [
+        {
+          "publisher": "Ministry of External Affairs, India",
+          "title": "Statement on attack on commercial vessel off Oman",
+          "url": "https://ddnews.gov.in/en/india-condemns-attack-on-commercial-vessel-off-oman-coast-one-indian-killed-13-rescued/",
+          "publishedAt": "2026-11-03",
+          "note": "Indian government account of the casualty and rescue; it did not identify the attacker."
+        }
+      ],
+      "secondarySources": [
+        {
+          "publisher": "Reuters (syndicated by Yahoo News)",
+          "articleUrl": "https://malaysia.news.yahoo.com/one-indian-killed-attack-ship-062804480.html",
+          "sourceType": "Reporting"
+        },
+        {
+          "publisher": "Times of Oman",
+          "articleUrl": "https://m.timesofoman.com/article/178713-india-calls-for-immediate-de-escalation-diplomatic-solution-after-indian-seafarer-killed-in-vessel-attack",
+          "sourceType": "Regional reporting"
+        }
+      ],
+      "eventId": "hormuz",
+      "evidenceNote": "The attacker and weapon type remain unconfirmed in the sources linked here.",
+      "rank": 42,
+      "ingestedAt": "2026-11-04T00:00:00Z",
+      "digestBasis": "article-reviewed"
+    },
+    {
+      "id": "news-ukraine-economy",
+      "title": "Ukraine’s central bank forecasts 2026 contraction as attacks hit industry and exports",
+      "summary": "The National Bank of Ukraine cut its 2026 GDP forecast to a 0.4% contraction, citing port restrictions and attacks on production and logistics. It estimated a 0.5% third-quarter decline; the figure is a forecast, not a final annual GDP result.",
+      "category": "Economy",
+      "region": "Europe",
+      "countries": [
+        "Ukraine"
+      ],
+      "keywords": [
+        "Ukraine",
+        "GDP",
+        "economic forecast",
+        "steel",
+        "exports",
+        "war"
+      ],
+      "publishedAt": "2026-11-03T05:10:49Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://apnews.com/article/5e4d70d0e3421d678db58133f95bd2e9",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkKind": "original",
+        "publisherArticleUrl": "https://apnews.com/article/5e4d70d0e3421d678db58133f95bd2e9"
+      },
+      "officialSources": [
+        {
+          "publisher": "National Bank of Ukraine",
+          "title": "Governor’s October 29 monetary-policy briefing",
+          "url": "https://www.bis.org/speeches/20261102-national-bank-ukraine-press-briefing-monetary-policy-decisions",
+          "publishedAt": "2026-10-29",
+          "note": "BIS hosts the NBU Governor’s official briefing transcript; GDP figures are the central bank’s forecast."
+        }
+      ],
+      "secondarySources": [
+        {
+          "publisher": "Ukrinform",
+          "articleUrl": "https://www.ukrinform.net/rubric-economy/4179383-national-bank-revises-2026-real-gdp-forecast-downward.html",
+          "sourceType": "Reporting on NBU estimates"
+        },
+        {
+          "publisher": "Interfax-Ukraine",
+          "articleUrl": "https://en.interfax.com.ua/news/economic/1228123.html",
+          "sourceType": "Reporting on the NBU forecast"
+        }
+      ],
+      "eventId": "ukraine",
+      "evidenceNote": "The 2026 contraction figure is an NBU forecast. AP discusses the effects on steelmaking and grain logistics.",
+      "rank": 43,
+      "ingestedAt": "2026-11-04T00:00:00Z",
+      "digestBasis": "article-reviewed"
+    },
+    {
+      "id": "news-hormuz-us-strikes",
+      "title": "US says it carried out defensive strikes on Iranian targets near Hormuz",
+      "summary": "U.S. officials described limited strikes near the Strait as defensive; Iranian state media reported explosions on Qeshm and Hengam. The accounts differ on the action’s context, and the linked reporting does not establish a wider resumption of war.",
+      "category": "World",
+      "region": "Middle East",
+      "countries": [
+        "Iran",
+        "United States"
+      ],
+      "keywords": [
+        "Strait of Hormuz",
+        "Qeshm",
+        "US strikes",
+        "Iran",
+        "shipping"
+      ],
+      "publishedAt": "2026-11-03T09:57:33Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://apnews.com/article/183b3d32d9bf5241f744abb917e6713e",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkKind": "original",
+        "publisherArticleUrl": "https://apnews.com/article/183b3d32d9bf5241f744abb917e6713e"
+      },
+      "officialSources": [],
+      "secondarySources": [
+        {
+          "publisher": "The Washington Post",
+          "articleUrl": "https://www.washingtonpost.com/national/2026/11/03/iran-us-strikes-strait-hormuz/1aed601e-d76d-11f1-930a-e08f8086f5ac_story.html",
+          "sourceType": "Reporting"
+        },
+        {
+          "publisher": "CBS News",
+          "articleUrl": "https://www.cbsnews.com/news/u-s-strikes-iran-targets/",
+          "sourceType": "Reporting"
+        }
+      ],
+      "eventId": "hormuz",
+      "evidenceNote": "The U.S. characterization is attributed to officials; Iranian media separately reported explosions. These reports do not independently establish a complete battle-damage picture.",
+      "rank": 44,
+      "ingestedAt": "2026-11-04T00:00:00Z",
+      "digestBasis": "article-reviewed"
+    },
+    {
+      "id": "news-azini-rescue",
+      "title": "Indian Navy says it rescued all 20 crew from hijacked vessel off Somalia",
+      "summary": "India’s Defence Ministry said the Navy freed the Iranian fishing vessel Azini and rescued 20 crew after more than 48 hours. A prior local report cited 23 crew; the official rescue statement does not explain the difference.",
+      "category": "World",
+      "region": "Africa",
+      "countries": [
+        "Somalia",
+        "India",
+        "Iran"
+      ],
+      "keywords": [
+        "Azini",
+        "Somalia",
+        "piracy",
+        "Indian Navy",
+        "seafarers"
+      ],
+      "publishedAt": "2026-11-03T12:21:20Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://apnews.com/article/126cc7e5af41ac328a3a51fd340c12a3",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkKind": "original",
+        "publisherArticleUrl": "https://apnews.com/article/126cc7e5af41ac328a3a51fd340c12a3"
+      },
+      "officialSources": [
+        {
+          "publisher": "Press Information Bureau / Ministry of Defence",
+          "title": "Indian Navy successfully rescues hijacked fishing vessel Azini off Somalia",
+          "url": "https://www.pib.gov.in/PressReleseDetailm.aspx?PRID=2331872&lang=1&reg=3",
+          "publishedAt": "2026-11-03",
+          "note": "Indian government account reports 20 crew rescued without injuries; the earlier reported crew count differs."
+        }
+      ],
+      "secondarySources": [
+        {
+          "publisher": "Associated Press",
+          "articleUrl": "https://apnews.com/article/dd4d404235781a3b871668c353540e4c",
+          "sourceType": "Earlier report on the seizure; cites a different local crew count"
+        }
+      ],
+      "eventId": "azini-piracy",
+      "evidenceNote": "Rescue count follows the Indian government’s release; earlier reported crew totals conflict and remain unresolved.",
+      "rank": 45,
+      "ingestedAt": "2026-11-04T00:00:00Z",
+      "digestBasis": "article-reviewed"
+    },
+    {
+      "id": "news-lumajang-floods-2026-11-03",
+      "title": "Lumajang floods affect 1,567 households; official casualty updates conflict",
+      "summary": "ANTARA reported that 1,567 households in Lumajang were affected and quoted a BNPB spokesperson as saying two people had died. A BNPB release published ten minutes earlier reported the same household count but said there were no deaths as of its update, so the fatality count is unresolved. ANTARA also reported disruption to roads, electricity and agricultural land.",
+      "category": "World",
+      "region": "Asia",
+      "countries": [
+        "Indonesia"
+      ],
+      "keywords": [
+        "Lumajang",
+        "floods",
+        "landslides",
+        "Semeru",
+        "disaster response"
+      ],
+      "publishedAt": "2026-11-03T11:15:00Z",
+      "source": {
+        "publisher": "ANTARA News",
+        "url": "https://www.antaranews.com/berita/5829295/bnpb-korban-bencana-hidrometeorologi-di-lumajang-bertambah-1567-kk",
+        "publisherArticleUrl": "https://www.antaranews.com/berita/5829295/bnpb-korban-bencana-hidrometeorologi-di-lumajang-bertambah-1567-kk",
+        "publisherHome": "https://www.antaranews.com",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkKind": "original"
+      },
+      "officialSources": [
+        {
+          "publisher": "Indonesia National Disaster Management Agency (BNPB)",
+          "title": "Hydrometeorological disasters occur in several regions; BNPB emphasizes preparedness",
+          "url": "https://www.bnpb.go.id/berita/bencana-hidrometeorologi-terjadi-di-sejumlah-wilayah-bnpb-tekankan-kesiapsiagaan",
+          "publishedAt": "2026-11-03",
+          "note": "The 18:05 WIB release records 1,567 affected households and 13 damaged homes in Lumajang, and says no deaths had been reported as of that update. ANTARA’s 18:15 WIB report quotes a BNPB spokesperson giving a different fatality count."
+        }
+      ],
+      "evidenceNote": "Both sources agree on 1,567 affected households; their same-evening casualty statements differ. Do not present a settled death toll until reconciled.",
+      "ingestedAt": "2026-11-04T09:56:17Z",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "rank": 46,
+      "secondarySources": []
+    },
+    {
+      "id": "news-myanmar-civilian-strikes-2026-11-02",
+      "title": "Reports say Myanmar strikes hit a school and maternity clinic; toll remains attributed",
+      "summary": "The Straits Times reported at least 15 deaths across weekend strikes in Rakhine and Kayah, attributing the counts to an ethnic armed group, an aid worker and rights monitors; the military-backed government had not immediately commented. UNICEF separately said it was alarmed by reports that three children were killed and five injured in a Loikaw school strike on 31 October, and that a Rakhine strike reportedly hit a temporary clinic, killing a newborn and health workers. The broader toll and responsibility remain reported claims.",
+      "category": "World",
+      "region": "Asia",
+      "countries": [
+        "Myanmar"
+      ],
+      "keywords": [
+        "Myanmar",
+        "airstrikes",
+        "civilian casualties",
+        "schools",
+        "healthcare"
+      ],
+      "publishedAt": "2026-11-02T10:32:00Z",
+      "source": {
+        "publisher": "The Straits Times (Reuters)",
+        "url": "https://www.straitstimes.com/asia/se-asia/newborn-among-15-killed-as-myanmar-military-strikes-maternity-clinic-and-school-sources-say/",
+        "publisherArticleUrl": "https://www.straitstimes.com/asia/se-asia/newborn-among-15-killed-as-myanmar-military-strikes-maternity-clinic-and-school-sources-say/",
+        "publisherHome": "https://www.straitstimes.com",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkKind": "original"
+      },
+      "officialSources": [
+        {
+          "publisher": "UNICEF East Asia and Pacific",
+          "title": "UNICEF statement on reports of children killed and injured in airstrikes in Myanmar",
+          "url": "https://www.unicef.org/asia-pacific/press-releases/unicef-statement-children-killed-and-injured-airstrikes-rakhine-myanmar",
+          "publishedAt": "2026-11-03",
+          "note": "UNICEF describes the deaths and injuries as reports it is assessing; its statement is not an independent investigation of every strike or of responsibility."
+        }
+      ],
+      "evidenceNote": "The 15-death figure and responsibility are attributed to named non-government sources in the report. UNICEF separately refers to reports about the school and clinic strikes.",
+      "ingestedAt": "2026-11-04T09:56:17Z",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "rank": 47,
+      "secondarySources": []
+    },
+    {
+      "id": "news-indonesia-singapore-electricity-2026-11-03",
+      "title": "Indonesia says any planned electricity exports to Singapore depend on price and domestic supply",
+      "summary": "Indonesia’s energy minister said on 2 November that electricity exports were not possible in the near term while domestic needs remained, and that any future sale would depend on buyers accepting the government’s price. The remarks put the proposed low-carbon electricity trade with Singapore into question; no operating import was reported. The statements are an attributed policy position, not a cancellation of the project or a change to household tariffs.",
+      "category": "Energy",
+      "region": "Asia",
+      "countries": [
+        "Indonesia",
+        "Singapore"
+      ],
+      "keywords": [
+        "electricity exports",
+        "Singapore",
+        "Indonesia",
+        "energy security",
+        "renewable energy"
+      ],
+      "publishedAt": "2026-11-03T02:20:00Z",
+      "source": {
+        "publisher": "The Straits Times",
+        "url": "https://www.straitstimes.com/asia/se-asia/indonesia-will-not-export-electricity-to-singapore-unless-price-is-right-says-bahlil",
+        "publisherArticleUrl": "https://www.straitstimes.com/asia/se-asia/indonesia-will-not-export-electricity-to-singapore-unless-price-is-right-says-bahlil",
+        "publisherHome": "https://www.straitstimes.com",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkKind": "original"
+      },
+      "officialSources": [
+        {
+          "publisher": "Indonesia Ministry of Energy and Mineral Resources",
+          "title": "Minister says electricity exports to Singapore must be mutually beneficial",
+          "url": "https://www.esdm.go.id/id/media-center/arsip-berita/ekspor-listrik-ke-singapura-menteri-esdm-tegaskan-harus-saling-menguntungkan",
+          "publishedAt": "2026-07-07",
+          "note": "Earlier official account says price negotiations for the proposed green-power export were ongoing; it provides context, not confirmation of the minister’s 2 November remarks."
+        },
+        {
+          "publisher": "Singapore Energy Market Authority",
+          "title": "Regional power grids and low-carbon electricity imports",
+          "url": "https://www.ema.gov.sg/our-energy-story/energy-supply/regional-power-grids",
+          "publishedAt": "2026-10-26",
+          "note": "EMA lists conditional approvals for low-carbon electricity imports, including from Indonesia. These are conditional projects, not evidence that electricity exports are operating."
+        }
+      ],
+      "secondarySources": [
+        {
+          "publisher": "ANTARA News",
+          "articleUrl": "https://www.antaranews.com/berita/5827351/bahlil-ekspor-listrik-bisa-berlanjut-asal-ikuti-harga-indonesia",
+          "sourceType": "Reporting with the minister’s 2 November remarks"
+        },
+        {
+          "publisher": "Channel NewsAsia",
+          "articleUrl": "https://www.channelnewsasia.com/asia/indonesia-unlikely-export-electricity-near-future-domestic-demand-6515631",
+          "sourceType": "Reporting"
+        }
+      ],
+      "evidenceNote": "The proposed cross-border supply is conditional and not described as operational. The minister’s latest comments are attributed reporting; official sources establish project context and approvals, not implementation.",
+      "ingestedAt": "2026-11-04T09:56:17Z",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "rank": 48
+    },
+    {
+      "id": "news-indonesia-october-inflation-2026",
+      "title": "Indonesia's October inflation eases to 3.23% year on year",
+      "summary": "Bank Indonesia's release, citing BPS data, reports headline CPI inflation of 3.23% year on year in October 2026, down from 3.28% in September; prices rose 0.22% month on month. It reports core inflation at 2.56% year on year, while volatile-food inflation rose to 5.81%, citing lower output of red and bird's-eye chillies in major production areas. BI says headline inflation remained inside its target range; that is the central bank's assessment. The release also links monthly administered-price inflation partly to a 40% fuel surcharge on domestic economy-class airfares.",
+      "category": "Economy",
+      "region": "Asia",
+      "countries": [
+        "Indonesia"
+      ],
+      "keywords": [
+        "inflation",
+        "consumer prices",
+        "food prices",
+        "airfares",
+        "Bank Indonesia"
+      ],
+      "publishedAt": "2026-11-02",
+      "source": {
+        "publisher": "Bank Indonesia",
+        "url": "https://www.bi.go.id/en/publikasi/ruang-media/news-release/Pages/sp_2823826.aspx",
+        "sourceType": "Official release",
+        "basis": "official-statistics-and-policy-statement",
+        "title": "CPI Inflation in October 2026 Remains Under Control",
+        "publisherHome": "https://www.bi.go.id",
+        "publisherArticleUrl": "https://www.bi.go.id/en/publikasi/ruang-media/news-release/Pages/sp_2823826.aspx",
+        "linkKind": "original"
+      },
+      "officialSources": [
+        {
+          "publisher": "Bank Indonesia",
+          "title": "CPI Inflation in October 2026 Remains Under Control",
+          "url": "https://www.bi.go.id/en/publikasi/ruang-media/news-release/Pages/sp_2823826.aspx",
+          "publishedAt": "2026-11-02",
+          "note": "The central bank says the headline figures are based on BPS data. Separate BI policy commentary and causal explanations are attributed to BI."
+        }
+      ],
+      "secondarySources": [
+        {
+          "publisher": "Reuters (syndicated by MarketScreener)",
+          "articleUrl": "https://uk.marketscreener.com/news/indonesia-october-inflation-eases-slightly-to-3-23-y-y-ce785fd8dd80fe26",
+          "sourceType": "Reporting"
+        }
+      ],
+      "evidenceNote": "The official release cites BPS data. BI's target-range characterization and its explanations for food and airfare movements are clearly attributed to the central bank.",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "ingestedAt": "2026-11-04T09:56:17Z",
+      "rank": 49
+    },
+    {
+      "id": "news-us-midterms-congress-2026",
+      "title": "AP reports Democrats take control of both chambers in US midterms",
+      "summary": "The Associated Press reports that Democrats won control of both the U.S. House and Senate in the 3 November midterm elections. Its coverage cites high prices and the Iran war among voter concerns and notes that some Alaska ballots were still outstanding, leaving individual races unresolved.",
+      "category": "Politics",
+      "region": "North America",
+      "countries": [
+        "United States"
+      ],
+      "keywords": [
+        "midterm elections",
+        "Congress",
+        "affordability",
+        "election results"
+      ],
+      "publishedAt": "2026-11-04",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://apnews.com/article/ef6199e25927a9ac9f4c18eae0e497cd",
+        "publisherArticleUrl": "https://apnews.com/article/ef6199e25927a9ac9f4c18eae0e497cd",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "publisher",
+        "publisherHome": "https://apnews.com",
+        "linkKind": "publisher"
+      },
+      "officialSources": [],
+      "secondarySources": [
+        {
+          "publisher": "Reuters (syndicated by Investing.com)",
+          "title": "Democrats seize Congress in sweeping midterm repudiation of Trump",
+          "articleUrl": "https://www.investing.com/news/politics-news/democrats-seize-congress-in-sweeping-midterm-repudiation-of-trump-4997528",
+          "sourceType": "Reuters reporting, syndicated by Investing.com",
+          "publishedAt": "2026-11-04"
+        }
+      ],
+      "evidenceNote": "AP's live coverage states the chamber-control result; this is reporting, not final national certification. The page exposes the publication date but not a precise timestamp.",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "ingestedAt": "2026-11-04T09:56:17Z",
+      "rank": 50
+    },
+    {
+      "id": "news-ethiopia-civilian-attacks-health-2026",
+      "title": "WHO warns attacks in northern Ethiopia are straining health services",
+      "summary": "AP reports that WHO Director-General Tedros Adhanom Ghebreyesus said attacks in Amhara and Tigray reportedly killed civilians, including children, while hospitals face shortages of staff, medicines and equipment. Tedros gave no casualty totals or dates for the cited attacks and did not identify who was responsible.",
+      "category": "Health",
+      "region": "Africa",
+      "countries": [
+        "Ethiopia"
+      ],
+      "keywords": [
+        "Ethiopia",
+        "Tigray",
+        "Amhara",
+        "civilian protection",
+        "health services"
+      ],
+      "publishedAt": "2026-11-02T13:05:20Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://apnews.com/article/ethiopia-tedros-tigray-amhara-drone-strikes-violence-70bee2b7fe23dd348c5ac8adf833332a",
+        "publisherArticleUrl": "https://apnews.com/article/ethiopia-tedros-tigray-amhara-drone-strikes-violence-70bee2b7fe23dd348c5ac8adf833332a",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "publisher",
+        "publisherHome": "https://apnews.com",
+        "linkKind": "publisher"
+      },
+      "officialSources": [
+        {
+          "publisher": "UN News",
+          "title": "Ethiopia: Violence in the north is pushing health system to the brink, WHO chief warns",
+          "url": "https://www.un.org/en/ethiopia-violence-north-pushing-health-system-brink-who-chief-warns",
+          "publishedAt": "2026-11-02",
+          "note": "UN News reports the WHO Director-General's call for civilian protection after deadly drone strikes; the statement did not provide casualty counts or identify perpetrators."
+        }
+      ],
+      "evidenceNote": "AP says the WHO Director-General did not provide attack dates or casualty totals, did not identify perpetrators, and that an Ethiopian government response was not immediately available.",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "ingestedAt": "2026-11-04T09:56:17Z",
+      "rank": 51,
+      "secondarySources": []
+    },
+    {
+      "id": "news-south-africa-local-elections-services-2026",
+      "title": "South African local elections center on service delivery and water concerns",
+      "summary": "The Guardian reports that South Africans went to municipal polls on 4 November amid frustration over water outages, power cuts and local infrastructure. The South African government reported 833 gastrointestinal illness cases linked to contaminated water in Bronkhorstspruit by 26 October, with no critical cases or deaths then reported; election results were not yet available in the Guardian report.",
+      "category": "Politics",
+      "region": "Africa",
+      "countries": [
+        "South Africa"
+      ],
+      "keywords": [
+        "local elections",
+        "water supply",
+        "power outages",
+        "municipal services"
+      ],
+      "publishedAt": "2026-11-04T04:00:00Z",
+      "source": {
+        "publisher": "The Guardian",
+        "url": "https://www.theguardian.com/world/2026/nov/04/anc-south-africa-local-elections-water-outages-power-cuts",
+        "publisherArticleUrl": "https://www.theguardian.com/world/2026/nov/04/anc-south-africa-local-elections-water-outages-power-cuts",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "publisher",
+        "publisherHome": "https://www.theguardian.com",
+        "linkKind": "publisher"
+      },
+      "officialSources": [
+        {
+          "publisher": "SAnews / Government Communication and Information System",
+          "title": "Gastrointestinal illness cases rise to 833",
+          "url": "https://www.sanews.gov.za/south-africa/gastrointestinal-illness-cases-rise-833",
+          "publishedAt": "2026-10-26",
+          "note": "The government news service reported 833 cases linked to contaminated water and said no critical cases or deaths had been reported as of 26 October."
+        },
+        {
+          "publisher": "Electoral Commission of South Africa",
+          "title": "Electoral Commission welcomes announcement of 4 November 2026 as Local Government Elections date",
+          "url": "https://www.elections.org.za/pw/News-And-Media/News-List/News/News-Article/Electoral-Commission-welcomes-announcement-of-4-November-2026-as-Local-Government-Elections-date",
+          "publishedAt": "2026-04-30",
+          "note": "Official confirmation of the announced municipal-election date; it does not establish election results or the reported service-delivery conditions."
+        }
+      ],
+      "evidenceNote": "Guardian's article was published before results were known. The 833-case figure is specifically SAnews' 26 October update, not a current total for election day.",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "ingestedAt": "2026-11-04T09:56:17Z",
+      "rank": 52,
+      "secondarySources": []
+    },
+    {
+      "id": "news-brazil-security-pec-senate-2026",
+      "title": "Brazil Senate approves public-security amendment, separating age-of-criminal-responsibility proposals",
+      "summary": "Brazil's Senate approved the public-security PEC 18/2025 in two rounds, with 73 and 75 votes in favor and none against, according to the Senate. The text reorganizes security coordination and strengthens measures against criminal organizations; proposals to lower the age of criminal responsibility were removed from this amendment and are to proceed separately. The amendment was awaiting promulgation at publication.",
+      "category": "Politics",
+      "region": "South America",
+      "countries": [
+        "Brazil"
+      ],
+      "keywords": [
+        "public security",
+        "criminal organizations",
+        "constitutional amendment",
+        "juvenile justice"
+      ],
+      "publishedAt": "2026-11-03T22:59:00Z",
+      "source": {
+        "publisher": "Agência Senado",
+        "url": "https://www12.senado.leg.br/noticias/materias/2026/11/03/senado-aprova-pec-da-seguranca-publica-sem-reducao-da-maioridade-penal",
+        "publisherArticleUrl": "https://www12.senado.leg.br/noticias/materias/2026/11/03/senado-aprova-pec-da-seguranca-publica-sem-reducao-da-maioridade-penal",
+        "sourceType": "Official source",
+        "basis": "official-record",
+        "linkType": "publisher",
+        "publisherHome": "https://www12.senado.leg.br",
+        "linkKind": "publisher"
+      },
+      "officialSources": [
+        {
+          "publisher": "Senado Federal",
+          "title": "PEC 18/2025 vote records",
+          "url": "https://www25.senado.leg.br/en_US/web/atividade/materias/-/materia/172997/votacoes",
+          "publishedAt": "2026-11-03",
+          "note": "Official legislative vote record. The Senate's news report records 73–0 and 75–0 votes and says the text is to be promulgated."
+        }
+      ],
+      "secondarySources": [
+        {
+          "publisher": "Associated Press",
+          "title": "Brazil’s Senate approves Lula’s main bet to tackle criminal gangs",
+          "articleUrl": "https://apnews.com/article/brazil-senate-crime-lula-bolsonaro-75f83595a1d436bdcb4864d28cf76ea9",
+          "sourceType": "Independent reporting",
+          "publishedAt": "2026-11-04"
+        }
+      ],
+      "evidenceNote": "This is an official legislative news report, not an independent assessment of the amendment's effects. AP's report provides separate context, including the removal of a proposed age-reduction provision.",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "ingestedAt": "2026-11-04T09:56:17Z",
+      "rank": 53
+    },
+    {
+      "id": "news-kenya-ebola-discharge-2026-11-03",
+      "title": "Kenya discharges five Ebola patients after negative tests",
+      "summary": "The Associated Press reported on 3 November that Kenya’s Ministry of Health said five Ebola patients had tested negative and were discharged; two patients remained under supportive care. The ministry also reported that 46 contacts completed 21-day monitoring and left quarantine, while 52 remained under observation. It said no new infections had been reported in the previous two weeks and that the outbreak would not be declared over until the 42-day observation period after the final patient’s recovery or death was complete.",
+      "category": "Health",
+      "region": "Africa",
+      "countries": [
+        "Kenya"
+      ],
+      "keywords": [
+        "Ebola",
+        "Bundibugyo virus",
+        "outbreak response",
+        "quarantine",
+        "contact tracing"
+      ],
+      "publishedAt": "2026-11-03T16:44:03Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://apnews.com/article/kenya-congo-uganda-nigeria-ebola-914b02d6b45e6391f1e406a33254d9cb",
+        "publisherArticleUrl": "https://apnews.com/article/kenya-congo-uganda-nigeria-ebola-914b02d6b45e6391f1e406a33254d9cb",
+        "publisherHome": "https://apnews.com",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "publisher",
+        "linkKind": "publisher"
+      },
+      "officialSources": [
+        {
+          "publisher": "Kenya Ministry of Health",
+          "title": "CS Duale, UNICEF Review Kenya’s Ebola Response and Strengthen Health Emergency Preparedness",
+          "url": "https://www.health.go.ke/node/2713",
+          "publishedAt": "2026-11-03",
+          "note": "The ministry reports nine confirmed cases in one transmission chain, no new cases since 19 October, no evidence of community transmission, 46 contacts completing monitoring and 52 remaining under observation. The AP reports the five patient discharges."
+        }
+      ],
+      "secondarySources": [
+        {
+          "publisher": "Kenya News Agency",
+          "title": "Five Ebola patients discharged as 46 contacts complete quarantine",
+          "articleUrl": "https://www.kenyanews.go.ke/five-ebola-patients-discharged-as-46-contacts-complete-quarantine/",
+          "sourceType": "Government news agency reporting the Ministry of Health update",
+          "publishedAt": "2026-11-03"
+        }
+      ],
+      "evidenceNote": "The Ministry’s 3 November page corroborates case status and contact monitoring. AP reports the five discharges, two patients remaining under care and the 42-day endpoint, attributing those details to the Ministry.",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "ingestedAt": "2026-11-04T09:56:17Z",
+      "rank": 54
+    },
+    {
+      "id": "news-eu-gas-storage-iea-2026-11-03",
+      "title": "IEA warns low European gas storage could keep markets tight into 2027",
+      "summary": "Radiocor reports that the International Energy Agency’s 3 November review found EU gas inventories entering the 2026/27 heating season at their lowest level since 2013. The IEA projects global LNG supply will fall by about 3% (nearly 20 billion cubic metres) in 2026 and warns that low European storage could intensify competition for flexible LNG cargoes and prolong tight global markets into 2027. The supply forecast assumes Strait of Hormuz flows remain largely disrupted at least through the end of 2026; price pressure is a risk, not a certain household-bill outcome.",
+      "category": "Energy",
+      "region": "Europe",
+      "countries": [
+        "European Union"
+      ],
+      "keywords": [
+        "natural gas",
+        "LNG",
+        "gas storage",
+        "energy security",
+        "Strait of Hormuz",
+        "winter heating"
+      ],
+      "publishedAt": "2026-11-03",
+      "source": {
+        "publisher": "Radiocor / Il Sole 24 Ore via Borsa Italiana",
+        "url": "https://www.borsaitaliana.it/borsa/notizie/radiocor/economy/dettaglio/european-natural-gas-storage-levels-lowest-since-2013-iea-nRC_03112026_1124_306206926.html?lang=en",
+        "publisherArticleUrl": "https://www.borsaitaliana.it/borsa/notizie/radiocor/economy/dettaglio/european-natural-gas-storage-levels-lowest-since-2013-iea-nRC_03112026_1124_306206926.html?lang=en",
+        "publisherHome": "https://www.borsaitaliana.it",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "publisher",
+        "linkKind": "publisher"
+      },
+      "officialSources": [
+        {
+          "publisher": "International Energy Agency",
+          "title": "Low storage buffers in Europe could prolong global gas market tightness well into 2027",
+          "url": "https://www.iea.org/news/low-storage-buffers-in-europe-could-prolong-global-gas-market-tightness-well-into-2027",
+          "publishedAt": "2026-11-03",
+          "note": "The IEA press release reports the storage comparison and says its 2026 LNG supply forecast is down 3%, or nearly 20 bcm."
+        },
+        {
+          "publisher": "International Energy Agency",
+          "title": "Executive summary — Global Gas Security Review 2026",
+          "url": "https://www.iea.org/reports/global-gas-security-review-2026/executive-summary",
+          "publishedAt": "2026-11-03",
+          "note": "The report says the LNG forecast assumes flows through the Strait of Hormuz remain largely disrupted at least until the end of 2026, and details the exposure and price-risk scenarios for EU storage."
+        }
+      ],
+      "evidenceNote": "Radiocor’s 3 November report directly attributes the market outlook to the IEA. The storage comparison and LNG numbers are also present in the IEA’s release and report; the Hormuz condition is an assumption in the IEA forecast.",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "ingestedAt": "2026-11-04T09:56:17Z",
+      "rank": 55,
+      "secondarySources": []
+    },
+    {
+      "id": "news-north-korea-missile-launch-2026-11-04",
+      "title": "South Korea reports multiple North Korean missile launches",
+      "summary": "The Associated Press reports that South Korea's Joint Chiefs of Staff detected multiple missiles launched toward North Korea's eastern waters on 4 November. South Korean and U.S. authorities were analyzing the launches, so the missile type and flight details were not settled in the report. The report does not establish that the launches were caused by Pyongyang's separate objections to U.S. accusations over the Binance theft.",
+      "category": "World",
+      "region": "Asia",
+      "countries": [
+        "North Korea",
+        "South Korea"
+      ],
+      "keywords": [
+        "North Korea",
+        "missile launches",
+        "East Sea",
+        "regional security"
+      ],
+      "publishedAt": "2026-11-04T01:27:23Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://apnews.com/article/036aa8b36ae8401f3c1b3bbb81e9b2ed",
+        "publisherArticleUrl": "https://apnews.com/article/036aa8b36ae8401f3c1b3bbb81e9b2ed",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "publisher",
+        "publisherHome": "https://apnews.com",
+        "linkKind": "publisher"
+      },
+      "officialSources": [],
+      "secondarySources": [
+        {
+          "publisher": "Yonhap News Agency",
+          "title": "North Korea fires multiple missiles toward East Sea: JCS",
+          "articleUrl": "https://en.yna.co.kr/view/AEN20261104005551315?section=national%2Fdefense",
+          "sourceType": "Reporting that attributes launch detection to South Korea's Joint Chiefs of Staff",
+          "publishedAt": "2026-11-04"
+        }
+      ],
+      "evidenceNote": "AP and Yonhap attribute the initial detection account to South Korea's Joint Chiefs of Staff. At review time, no direct public JCS release for this launch was located; the cited reporting says military analysis was ongoing.",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "rank": 56,
+      "ingestedAt": "2026-11-04T10:24:10.523Z"
+    },
+    {
+      "id": "news-china-philippines-south-china-sea-call-2026-11-04",
+      "title": "China urges caution in South China Sea dispute during call with Philippines",
+      "summary": "The Associated Press reports that China's Foreign Minister Wang Yi urged his Philippine counterpart Ma. Theresa Lazaro to act with caution over the South China Sea dispute during a 3 November phone call. China's Foreign Ministry readout says both sides supported continued dialogue, but that is Beijing's account of the exchange; it does not establish a new maritime incident or resolve the countries' competing claims.",
+      "category": "Politics",
+      "region": "Asia",
+      "countries": [
+        "China",
+        "Philippines"
+      ],
+      "keywords": [
+        "South China Sea",
+        "China",
+        "Philippines",
+        "diplomacy",
+        "maritime dispute"
+      ],
+      "publishedAt": "2026-11-04T05:35:41Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://apnews.com/article/d42769727206e2c5f58009c407e5287c",
+        "publisherArticleUrl": "https://apnews.com/article/d42769727206e2c5f58009c407e5287c",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "publisher",
+        "publisherHome": "https://apnews.com",
+        "linkKind": "publisher"
+      },
+      "officialSources": [
+        {
+          "publisher": "Ministry of Foreign Affairs of the People's Republic of China",
+          "title": "Wang Yi speaks by phone with Philippine Foreign Secretary Ma. Theresa Lazaro",
+          "url": "https://www.mfa.gov.cn/web/wjdt_674879/gjldrhd_674881/202611/t20261103_12052654.shtml",
+          "publishedAt": "2026-11-03",
+          "note": "China's official readout of the 3 November call. Its descriptions of each side's positions are a single-government account, not a jointly issued transcript."
+        }
+      ],
+      "secondarySources": [
+        {
+          "publisher": "Reuters (syndicated by Yahoo News Malaysia)",
+          "title": "Philippines, China pledge to maintain dialogue despite tensions",
+          "articleUrl": "https://malaysia.news.yahoo.com/philippines-china-pledge-maintain-dialogue-061917671.html",
+          "sourceType": "Reuters reporting, syndicated by Yahoo News Malaysia",
+          "publishedAt": "2026-11-04"
+        }
+      ],
+      "evidenceNote": "The call and the quoted positions are attributed to China's foreign ministry readout and AP reporting. The official link is not an independent record of the exchange, and neither side's stated position determines maritime sovereignty or legal boundaries.",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "rank": 57,
+      "ingestedAt": "2026-11-04T10:24:10.523Z"
+    },
+    {
+      "id": "news-czech-public-media-strike-2026-11-03",
+      "title": "Czech public media workers strike over proposed funding overhaul",
+      "summary": "The Associated Press reports that staff at Czech Television and Czech Radio held a one-day strike on 3 November and reduced programming while protesting a government plan to replace licence fees with state-budget funding. AP says the proposed funding would be about 15% below current levels; that is a forecast in the reporting, not a reduction already implemented. The European Commission said it was assessing the Czech authorities' reply on the reform and announced no finding on compliance with EU rules.",
+      "category": "Politics",
+      "region": "Europe",
+      "countries": [
+        "Czech Republic"
+      ],
+      "keywords": [
+        "public broadcasting",
+        "media funding",
+        "licence fees",
+        "strike",
+        "European Media Freedom Act"
+      ],
+      "publishedAt": "2026-11-03T09:51:15Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://apnews.com/article/ba62e1b60f974e0e514bf7145a7207b3",
+        "publisherArticleUrl": "https://apnews.com/article/ba62e1b60f974e0e514bf7145a7207b3",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "publisher",
+        "publisherHome": "https://apnews.com",
+        "linkKind": "publisher"
+      },
+      "officialSources": [
+        {
+          "publisher": "European Commission Audiovisual Service",
+          "title": "EC Midday press briefing of 3 November 2026 — Czech public service media funding Q&A",
+          "url": "https://audiovisual.ec.europa.eu/de/media/video/I-297080",
+          "publishedAt": "2026-11-03",
+          "note": "The Commission says it is following the parliamentary process and assessing the Czech authorities' reply. It does not announce a legal finding about the bill."
+        },
+        {
+          "publisher": "Government of the Czech Republic",
+          "title": "Government approves proposal to change funding of Czech Television and Czech Radio",
+          "url": "https://vlada.gov.cz/cz/media-centrum/aktualne/vlada-andreje-babise-schvalila-navrh-na-zmenu-financovani-ceske-televize-a-ceskeho-rozhlasu-227533/",
+          "publishedAt": "2026-06-15",
+          "note": "Official government announcement describing the proposed change from licence fees to state-budget contributions; it is not evidence that Parliament has enacted the proposal."
+        }
+      ],
+      "secondarySources": [
+        {
+          "publisher": "Euronews",
+          "title": "Thousands join Czech protest against public media financing plan",
+          "articleUrl": "https://www.euronews.com/2026/11/04/thousands-join-czech-protest-against-public-media-financing-plan",
+          "sourceType": "Reporting",
+          "publishedAt": "2026-11-04"
+        }
+      ],
+      "evidenceNote": "The strike is reported by AP. The funding plan remains proposed; the 15% figure is an estimate reported by AP, and the European Commission has not issued a compliance ruling.",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "rank": 58,
+      "ingestedAt": "2026-11-04T10:24:10.523Z"
+    },
+    {
+      "id": "news-au-household-spending-september-2026",
+      "title": "Australian household spending rises in September as fuel outlays jump",
+      "summary": "The Australian Bureau of Statistics reports seasonally adjusted household spending rose 0.6% in September, after a 0.1% fall in August. Fuel spending increased 5.4% following higher global oil prices and the end of fuel excise relief on 3 August. The ABS's experimental volume estimate says fuel consumption-related spending fell 2.2%, so higher nominal outlays do not mean households bought more fuel. This is September data released on 4 November.",
+      "category": "Economy",
+      "region": "Oceania",
+      "countries": [
+        "Australia"
+      ],
+      "keywords": [
+        "household spending",
+        "fuel prices",
+        "fuel excise",
+        "cost of living",
+        "ABS"
+      ],
+      "publishedAt": "2026-11-04",
+      "source": {
+        "publisher": "Australian Bureau of Statistics",
+        "url": "https://www.abs.gov.au/media-centre/media-releases/household-spending-rises-06-september",
+        "publisherArticleUrl": "https://www.abs.gov.au/media-centre/media-releases/household-spending-rises-06-september",
+        "title": "Household spending rises 0.6% in September",
+        "sourceType": "Official statistical release",
+        "basis": "official-statistics",
+        "linkType": "publisher",
+        "publisherHome": "https://www.abs.gov.au",
+        "linkKind": "publisher"
+      },
+      "officialSources": [
+        {
+          "publisher": "Australian Bureau of Statistics",
+          "title": "Household spending rises 0.6% in September",
+          "url": "https://www.abs.gov.au/media-centre/media-releases/household-spending-rises-06-september",
+          "publishedAt": "2026-11-04",
+          "note": "Official release for September 2026. The fuel spending volume figure is explicitly described as experimental."
+        }
+      ],
+      "evidenceNote": "The headline spending indicator is measured at current prices. The ABS separately describes a 2.2% fall in experimental fuel-spending volume, which helps distinguish price effects from quantities.",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "rank": 59,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": []
+    },
+    {
+      "id": "news-new-zealand-unemployment-september-quarter-2026",
+      "title": "New Zealand unemployment edges up to 5.7% in the September quarter",
+      "summary": "Stats NZ reports the seasonally adjusted unemployment rate rose from 5.6% to 5.7% in the September 2026 quarter, with 174,000 people unemployed. Employment was nearly unchanged from the previous quarter, down 0.1%, while annual wage inflation was 2.1%. The figures describe the July–September quarter and were released on 4 November.",
+      "category": "Economy",
+      "region": "Oceania",
+      "countries": [
+        "New Zealand"
+      ],
+      "keywords": [
+        "unemployment",
+        "employment",
+        "wages",
+        "labour market",
+        "Stats NZ"
+      ],
+      "publishedAt": "2026-11-04",
+      "source": {
+        "publisher": "Stats NZ",
+        "url": "https://www.stats.govt.nz/news/unemployment-rate-at-5-7-percent-in-the-september-2026-quarter/",
+        "publisherArticleUrl": "https://www.stats.govt.nz/news/unemployment-rate-at-5-7-percent-in-the-september-2026-quarter/",
+        "title": "Unemployment rate at 5.7 percent in the September 2026 quarter",
+        "sourceType": "Official statistical release",
+        "basis": "official-statistics",
+        "linkType": "publisher",
+        "publisherHome": "https://www.stats.govt.nz",
+        "linkKind": "publisher"
+      },
+      "officialSources": [
+        {
+          "publisher": "Stats NZ",
+          "title": "Labour market statistics: September 2026 quarter",
+          "url": "https://www.stats.govt.nz/information-releases/labour-market-statistics-september-2026-quarter/",
+          "publishedAt": "2026-11-04",
+          "note": "Official tables include unemployment, employment, underutilisation, hours worked and wage statistics."
+        }
+      ],
+      "evidenceNote": "This is a quarterly estimate, not a count of job losses in a single month. The unemployment rate rose 0.1 percentage point; employment was down 0.1% quarter on quarter.",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "rank": 60,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": []
+    },
+    {
+      "id": "news-us-jolts-september-2026",
+      "title": "U.S. job openings reach 7.5 million in September; hires change little",
+      "summary": "The U.S. Bureau of Labor Statistics reported 7.523 million job openings in September, compared with a revised 7.190 million in August. The job-openings rate was little changed at 4.5%; hires were 5.4 million and layoffs and discharges 1.6 million, both little changed. AP notes that openings are vacancies rather than completed hires and that hiring has been sluggish over a longer period. September data were released on 3 November.",
+      "category": "Economy",
+      "region": "North America",
+      "countries": [
+        "United States"
+      ],
+      "keywords": [
+        "job openings",
+        "hiring",
+        "layoffs",
+        "labor market",
+        "JOLTS"
+      ],
+      "publishedAt": "2026-11-03T15:02:42Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://apnews.com/article/4f6f06216c943fc2f8306306fd3056e3",
+        "publisherArticleUrl": "https://apnews.com/article/4f6f06216c943fc2f8306306fd3056e3",
+        "title": "US job postings jumped sharply in September, potentially a good sign for anyone seeking employment",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "publisher",
+        "publisherHome": "https://apnews.com",
+        "linkKind": "publisher"
+      },
+      "officialSources": [
+        {
+          "publisher": "U.S. Bureau of Labor Statistics",
+          "title": "Job Openings and Labor Turnover Survey — September 2026",
+          "url": "https://www.bls.gov/news.release/jolts.htm",
+          "publishedAt": "2026-11-03",
+          "note": "Official release says the openings rate was little changed at 4.5%, with 7.523 million openings. It also notes sampling and nonsampling uncertainty."
+        }
+      ],
+      "evidenceNote": "JOLTS measures positions open on the last business day of September, not hiring completed during the month. BLS labels openings, hires and separations estimates as preliminary and revises them as additional reports arrive.",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "rank": 61,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": []
+    },
+    {
+      "id": "news-china-services-pmi-october-2026",
+      "title": "China services activity expands more slowly as firms face rising costs",
+      "summary": "Reuters reports the private RatingDog China General Services PMI eased to 50.8 in October from 51.6 in September. A reading above 50 still indicates expansion, but this was the weakest pace since July. The survey also found firms cut selling prices for a second month while input costs rose at the fastest pace in five months and business confidence weakened. This is a private-sector survey, not China's official National Bureau of Statistics PMI.",
+      "category": "Economy",
+      "region": "Asia",
+      "countries": [
+        "China"
+      ],
+      "keywords": [
+        "services",
+        "PMI",
+        "business costs",
+        "prices",
+        "economic activity"
+      ],
+      "publishedAt": "2026-11-04",
+      "source": {
+        "publisher": "Reuters (via MarketScreener)",
+        "url": "https://ca.marketscreener.com/news/china-s-services-growth-slows-to-three-month-low-as-confidence-weakens-ce785fdede8bf721",
+        "publisherArticleUrl": "https://ca.marketscreener.com/news/china-s-services-growth-slows-to-three-month-low-as-confidence-weakens-ce785fdede8bf721",
+        "title": "China's services growth slows to three-month low as confidence weakens",
+        "sourceType": "Reuters reporting, syndicated by MarketScreener",
+        "basis": "article",
+        "linkType": "publisher",
+        "publisherHome": "https://www.marketscreener.com",
+        "linkKind": "publisher"
+      },
+      "officialSources": [],
+      "evidenceNote": "The headline figures come from a private business survey. It should not be conflated with China's official NBS PMI; the 50 threshold indicates expansion or contraction within this survey's measure.",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "rank": 62,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": []
+    },
+    {
+      "id": "news-pune-metro-line-3-phase-two-2026-11-03",
+      "title": "Pune opens Metro Line 3 as ₹13,500 crore Phase II moves to construction",
+      "summary": "Moneycontrol reported that Pune Metro Line 3, a roughly 23 km corridor linking the Hinjawadi IT hub with Shivajinagar, was inaugurated on 3 November, alongside the foundation stone for four Phase II corridors. The government release values the Line 3 project at over ₹8,300 crore and Phase II at about ₹13,500 crore. This records the inauguration and planned investment; it does not independently establish passenger service quality, ridership, or realized travel-time savings.",
+      "category": "Infrastructure",
+      "region": "Asia",
+      "countries": [
+        "India"
+      ],
+      "keywords": [
+        "Pune Metro",
+        "Line 3",
+        "Hinjawadi",
+        "Shivajinagar",
+        "public transport",
+        "urban infrastructure"
+      ],
+      "publishedAt": "2026-11-03T07:37:00Z",
+      "source": {
+        "publisher": "Moneycontrol",
+        "url": "https://www.moneycontrol.com/city/pm-modi-inaugurates-pune-metro-line-3-lays-foundation-for-phase-ii-expansion-article-14067505.html",
+        "publisherArticleUrl": "https://www.moneycontrol.com/city/pm-modi-inaugurates-pune-metro-line-3-lays-foundation-for-phase-ii-expansion-article-14067505.html",
+        "publisherHome": "https://www.moneycontrol.com",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkKind": "original"
+      },
+      "officialSources": [
+        {
+          "publisher": "Press Information Bureau, Prime Minister's Office",
+          "title": "Prime Minister inaugurates and lays foundation stone of Pune Metro projects worth around ₹21,800 crore",
+          "url": "https://www.pib.gov.in/PressReleseDetailm.aspx?PMO=3&PRID=2332011&lang=1&reg=1",
+          "publishedAt": "2026-11-03",
+          "note": "The official release confirms the inauguration and describes the project scope. Its statements about expected benefits are government projections, not independently measured outcomes."
+        }
+      ],
+      "evidenceNote": "The ₹21,800 crore figure combines the Line 3 project and Phase II foundation announcements; it should not be described as money already spent. The article does not establish actual passenger-service availability or results.",
+      "ingestedAt": "2026-11-04T00:00:00Z",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "rank": 63,
+      "secondarySources": []
+    },
+    {
+      "id": "news-india-rabi-sowing-food-inflation-risk-2026-11-03",
+      "title": "Weak soil moisture raises concern over India’s winter crop sowing and food prices",
+      "summary": "Reuters reported that some farmers in western and southern India were delaying winter-crop sowing amid water shortages after weak monsoon rainfall. The report cited a local weather-office estimate that Maharashtra’s Jalna district had received about 48% less rain than average, and noted the latest official CPI reading then available: September food inflation was 7.74% and headline inflation 5.54%. Further price increases were economists’ forecasts, not a confirmed October outcome; October CPI was scheduled for release on 12 November.",
+      "category": "Economy",
+      "region": "Asia",
+      "countries": [
+        "India"
+      ],
+      "keywords": [
+        "food inflation",
+        "winter crops",
+        "rabi sowing",
+        "monsoon",
+        "water shortages",
+        "household costs"
+      ],
+      "publishedAt": "2026-11-03T06:38:00Z",
+      "source": {
+        "publisher": "The Economic Times (Reuters)",
+        "url": "https://m.economictimes.com/news/economy/indicators/no-water-to-sow-no-respite-at-the-grocery-store-indias-prolonged-food-inflation-worry/amp_articleshow/135485480.cms",
+        "publisherArticleUrl": "https://m.economictimes.com/news/economy/indicators/no-water-to-sow-no-respite-at-the-grocery-store-indias-prolonged-food-inflation-worry/amp_articleshow/135485480.cms",
+        "publisherHome": "https://economictimes.indiatimes.com",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkKind": "original"
+      },
+      "officialSources": [
+        {
+          "publisher": "Ministry of Statistics and Programme Implementation, Government of India",
+          "title": "Consumer Price Index on base 2024=100 for September 2026",
+          "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2322244&lang=1&reg=3",
+          "publishedAt": "2026-10-12",
+          "note": "This official release confirms September's provisional CPI and food inflation rates. It does not verify Reuters' field reporting about sowing conditions or establish future food-price changes."
+        }
+      ],
+      "evidenceNote": "The 48% rainfall deficit is attributed to the local weather office via Reuters. The article includes analyst forecasts; they are not official CPI forecasts. October CPI had not been released at publication time.",
+      "ingestedAt": "2026-11-04T00:00:00Z",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "rank": 64,
+      "secondarySources": []
+    },
+    {
+      "id": "news-bangladesh-garment-wage-board-2026-11-04",
+      "title": "Bangladesh garment wage board agrees on raise timeline; new minimum still undecided",
+      "summary": "AFP reported on 4 November that the worker and employer representatives on Bangladesh’s garment-sector wage board had agreed to complete the wage process by December so revised pay could take effect in January. The board did not announce a new wage amount. Workers were still demanding Tk 30,000 a month, compared with the existing Tk 12,500 minimum, and protests continued in industrial centres. The board’s agreement on timing is not a final wage order.",
+      "category": "Economy",
+      "region": "Asia",
+      "countries": [
+        "Bangladesh"
+      ],
+      "keywords": [
+        "garment workers",
+        "minimum wage",
+        "labour protests",
+        "cost of living",
+        "Bangladesh exports",
+        "wage board"
+      ],
+      "publishedAt": "2026-11-04",
+      "source": {
+        "publisher": "Agence France-Presse",
+        "url": "https://www.afp.com/en/bangladesh-increase-garment-sector-pay-wage-board",
+        "publisherArticleUrl": "https://www.afp.com/en/bangladesh-increase-garment-sector-pay-wage-board",
+        "publisherHome": "https://www.afp.com",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkKind": "original"
+      },
+      "officialSources": [
+        {
+          "publisher": "Bangladesh Government Press, Ministry of Labour and Employment",
+          "title": "Bangladesh Gazette notice appointing garment-sector employer and worker representatives to the minimum wage board",
+          "url": "https://www.dpp.gov.bd/upload_file/gazettes/63332_43967.pdf",
+          "publishedAt": "2026-11-01",
+          "note": "The official Gazette confirms the board appointments and statutory remit. It predates the 4 November agreement reported by AFP and does not state the agreed timetable or a new wage amount."
+        }
+      ],
+      "secondarySources": [
+        {
+          "publisher": "bdnews24.com",
+          "articleUrl": "https://bdnews24.com/bangladesh/h35az9m4x9",
+          "sourceType": "Independent reporting on the first wage-board meeting and continuing protests"
+        },
+        {
+          "publisher": "Reuters via MarketScreener",
+          "articleUrl": "https://www.marketscreener.com/news/bangladesh-garment-workers-stage-fourth-day-of-wage-protests-ce785fd9df80fe23",
+          "sourceType": "Independent reporting on wage demands, factory disruption and protests on 3 November"
+        }
+      ],
+      "evidenceNote": "AFP shows the publication date without a time zone, so only the date is recorded. The board members' agreement on the process timeline is reported by AFP; neither the final monthly rate nor a binding government wage order was announced in this report. Worker demands and police actions remain attributed to reporting and named speakers.",
+      "ingestedAt": "2026-11-04T00:00:00Z",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "rank": 65
+    },
+    {
+      "id": "news-shamonda-human-case-france-2026-11-02",
+      "title": "WHO reports first documented human Shamonda virus infection; source remains unknown",
+      "summary": "The World Health Organization's 2 November Disease Outbreak News describes the first laboratory-confirmed human Shamonda virus infection reported globally: an immunocompromised older man in eastern France developed encephalitis and died on 8 October. WHO said no additional human cases had been detected at the time of its report, the exposure source remained unknown, and public-health risk could not yet be reliably assessed. France's health ministry had said on 22 October that no risk to the general population had been identified based on knowledge then available; the statements reflect different dates and assessments, not evidence of a broader human outbreak.",
+      "category": "Health",
+      "region": "Europe",
+      "countries": [
+        "France"
+      ],
+      "keywords": [
+        "Shamonda virus",
+        "zoonotic disease",
+        "One Health",
+        "surveillance",
+        "encephalitis"
+      ],
+      "publishedAt": "2026-11-02",
+      "source": {
+        "publisher": "World Health Organization",
+        "url": "https://www.who.int/emergencies/disease-outbreak-news/item/shamonda-virus-in-human---france",
+        "publisherArticleUrl": "https://www.who.int/emergencies/disease-outbreak-news/item/shamonda-virus-in-human---france",
+        "publisherHome": "https://www.who.int",
+        "sourceType": "Official public-health report",
+        "basis": "official",
+        "linkType": "publisher",
+        "linkKind": "publisher"
+      },
+      "officialSources": [
+        {
+          "publisher": "French Ministry of Health",
+          "title": "Virus Shamonda: first detection in a human",
+          "url": "https://sante.gouv.fr/actualites-presse/presse/communiques-de-presse/article/virus-shamonda-une-premiere-detection-chez-l-etre-humain",
+          "publishedAt": "2026-10-22",
+          "note": "France reported the case before WHO's 2 November notice and said no risk to the general population had been identified at that time."
+        }
+      ],
+      "secondarySources": [
+        {
+          "publisher": "Associated Press",
+          "title": "France reports first human case of livestock virus Shamonda in patient who later died",
+          "articleUrl": "https://apnews.com/article/3fd1c27b89fec64b812b288cdf06c49d",
+          "sourceType": "Independent reporting on France's initial announcement",
+          "publishedAt": "2026-10-22"
+        },
+        {
+          "publisher": "European Centre for Disease Prevention and Control",
+          "title": "Severely ill patient in France becomes first ever human infected with Shamonda virus",
+          "articleUrl": "https://www.ecdc.europa.eu/en/news-events/severely-ill-patient-france-becomes-first-ever-human-infected-shamonda-virus",
+          "sourceType": "Official European public-health assessment",
+          "publishedAt": "2026-10-22"
+        }
+      ],
+      "evidenceNote": "WHO's 2 November notice is the latest primary-source assessment used here. It says no further human cases had been detected and that the public-health risk could not yet be reliably assessed; France's earlier statement said no risk to the general population had been identified then. The route of infection and broader significance remain under investigation.",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "rank": 66,
+      "ingestedAt": "2026-11-04T10:24:10.523Z"
+    },
+    {
+      "id": "news-aramco-q3-earnings-2026-11-03",
+      "title": "Saudi Aramco's third-quarter net profit rises 35%; adjusted income rises 9%",
+      "summary": "The Associated Press reports that Saudi Aramco's Q3 net profit rose 35% year on year to $36.3 billion, with the company also benefiting from selling its stake in a Malaysian refining venture. The company's release reports adjusted net income of $31.2 billion, up 9% year on year after excluding that sale. AP says higher oil prices contributed to the result; Aramco reported an average realized price of $95.20 per barrel versus $70.10 a year earlier. These are company earnings and realized prices, not a forecast of retail fuel costs.",
+      "category": "Energy",
+      "region": "Middle East",
+      "countries": [
+        "Saudi Arabia"
+      ],
+      "keywords": [
+        "Saudi Aramco",
+        "oil prices",
+        "quarterly earnings",
+        "energy markets",
+        "Strait of Hormuz"
+      ],
+      "publishedAt": "2026-11-03T11:02:49Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://apnews.com/article/aramco-saudi-oil-earnings-profit-hormuz-refineries-6fefcbf7b89dd2e4e638cf80d5ffc36f",
+        "publisherArticleUrl": "https://apnews.com/article/aramco-saudi-oil-earnings-profit-hormuz-refineries-6fefcbf7b89dd2e4e638cf80d5ffc36f",
+        "publisherHome": "https://apnews.com",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "publisher",
+        "linkKind": "publisher"
+      },
+      "officialSources": [
+        {
+          "publisher": "Saudi Aramco",
+          "title": "Aramco announces third quarter 2026 results",
+          "url": "https://www.aramco.com/en/news-media/news/2026/aramco-announces-third-quarter-2026-results",
+          "publishedAt": "2026-11-03",
+          "note": "The company release reports adjusted net income of $31.2 billion, compared with $28.6 billion in Q3 2025, and a $21.9 billion base dividend. It does not characterize these figures as household energy-bill changes."
+        }
+      ],
+      "secondarySources": [],
+      "evidenceNote": "AP distinguishes the reported 35% net-profit increase from the 9% increase in adjusted net income after excluding the stake sale. Aramco's own release corroborates the adjusted figure; price and profit effects do not imply an equal change in consumer prices.",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "rank": 67,
+      "ingestedAt": "2026-11-04T10:24:10.523Z"
+    },
+    {
+      "id": "news-us-southwest-flood-recovery-2026-11-03",
+      "title": "Southwest floods leave homes damaged as water recedes and warnings continue",
+      "summary": "The Associated Press reported on 3 November that floods across parts of the U.S. Southwest left homes and roads damaged, some residents stranded, and at least one person dead; police were still assessing whether a second death was weather-related. AP said local officials expected to lift evacuation orders affecting at least 20,000 residents as rivers receded, while cleanup and repairs could take weeks. National Weather Service notices documented continued river flooding and road-safety warnings in parts of Colorado and New Mexico. The casualty and evacuation figures are attributed to the report and local officials, not a final regional damage assessment.",
+      "category": "Infrastructure",
+      "region": "North America",
+      "countries": [
+        "United States"
+      ],
+      "keywords": [
+        "flooding",
+        "Colorado",
+        "New Mexico",
+        "evacuations",
+        "river warnings",
+        "recovery"
+      ],
+      "publishedAt": "2026-11-03T19:32:03Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://apnews.com/article/pagosa-springs-colorado-southwest-new-mexico-flooding-fb6d0a1f00827469be19f2a95821f2ca",
+        "publisherArticleUrl": "https://apnews.com/article/pagosa-springs-colorado-southwest-new-mexico-flooding-fb6d0a1f00827469be19f2a95821f2ca",
+        "publisherHome": "https://apnews.com",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "publisher",
+        "linkKind": "publisher"
+      },
+      "officialSources": [
+        {
+          "publisher": "National Weather Service Grand Junction",
+          "title": "San Juan River flood statement for Pagosa Springs",
+          "url": "https://forecast.weather.gov/showsigwx.php?firewxzone=COZ295&lat=37.26&local_place1=2+Miles+NE+Pagosa+Springs+CO&lon=-107&product1=Flood+Warning&warncounty=COC007&warnzone=COZ023",
+          "publishedAt": "2026-11-02",
+          "note": "NWS reported that the San Juan River near Pagosa Springs had crested at 16.8 feet and was falling but still above flood stage on the evening of 2 November. This gauge measures conditions at one location, not regional damage."
+        },
+        {
+          "publisher": "National Weather Service Albuquerque",
+          "title": "Flood warnings for the San Juan River at Farmington and Shiprock",
+          "url": "https://www.weather.gov/wwamap/wwatxtget.php?amp=&cwa=usa&wwa=Flood+Warning",
+          "publishedAt": "2026-11-03",
+          "note": "The 3 November warning summary documented moderate or forecast major flooding along sections of the San Juan River in San Juan County, New Mexico."
+        }
+      ],
+      "secondarySources": [],
+      "evidenceNote": "AP's 3 November story is the reporting basis for the evacuation estimate and casualty status. National Weather Service warnings corroborate flood conditions in particular river reaches; they do not independently verify the full AP casualty count or regional evacuation total.",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "rank": 68,
+      "ingestedAt": "2026-11-04T10:24:10.523Z"
+    },
+    {
+      "id": "news-uk-transport-resilience-strategy-2026-11-02",
+      "title": "UK transport strategy sets a 5–10 year plan for disruption risks",
+      "summary": "The Department for Transport published a strategy on 2 November covering risks across roads, rail, aviation and maritime transport. Trans.info reports that the plan includes flood and cyber-risk preparation, exercises and coordination with operators; the document sets a direction and commitments, while a detailed delivery plan is still to come. It cites assessments that 38% of roads and 37% of railways in England are in areas at current flood risk, rising by mid-century. Those figures are government assessments, not a forecast that every exposed route will flood.",
+      "category": "Infrastructure",
+      "region": "Europe",
+      "countries": [
+        "United Kingdom"
+      ],
+      "keywords": [
+        "transport resilience",
+        "rail",
+        "roads",
+        "flood risk",
+        "cybersecurity",
+        "supply chains"
+      ],
+      "publishedAt": "2026-11-03",
+      "source": {
+        "publisher": "trans.info",
+        "url": "https://trans.info/en/uk-transport-resilience-strategy-hauliers-flood-cyber-512341",
+        "publisherArticleUrl": "https://trans.info/en/uk-transport-resilience-strategy-hauliers-flood-cyber-512341",
+        "publisherHome": "https://trans.info",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "publisher",
+        "linkKind": "publisher"
+      },
+      "officialSources": [
+        {
+          "publisher": "UK Department for Transport",
+          "title": "Transport resilience strategy",
+          "url": "https://www.gov.uk/government/publications/transport-resilience-strategy",
+          "publishedAt": "2026-11-02",
+          "note": "The department says the strategy covers a 5–10 year approach to understanding risks, reducing vulnerabilities and preparing for disruption. Its summary describes commitments, not completed infrastructure upgrades."
+        }
+      ],
+      "evidenceNote": "The government page confirms the publication date, scope and stated commitments. The flood exposure percentages are figures cited by trans.info from the strategy; they describe areas classified as at risk and are not an estimate of routes certain to flood. The government says a delivery plan and ongoing implementation are still part of the work ahead.",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "rank": 69,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": []
+    },
+    {
+      "id": "news-apache-offshore-strike-uk-2026-11-03",
+      "title": "Apache North Sea workers schedule escalating strikes over pay and conditions",
+      "summary": "Reuters reported that Unite said about 170 Apache offshore workers would take part in a 24-hour stoppage beginning 4 November, with further platform-level stoppages planned for 13–16 November. Unite describes the dispute as involving jobs, pay and conditions. Apache told Reuters its 4% pay offer was fair and said it would continue operations where staffing permits, with controlled shutdowns if there is not enough safe cover. The union has warned of possible effects on the Forties Pipeline System; the company said during an earlier strike that other producers continued using the system normally.",
+      "category": "Energy",
+      "region": "Europe",
+      "countries": [
+        "United Kingdom"
+      ],
+      "keywords": [
+        "North Sea",
+        "oil and gas",
+        "offshore workers",
+        "strike",
+        "Forties Pipeline System",
+        "pay dispute"
+      ],
+      "publishedAt": "2026-11-03",
+      "source": {
+        "publisher": "Reuters (via Euronext) [Reuters report]",
+        "url": "https://live.euronext.com/en/financial-news/unite-union-says-apache-offshore-workers-escalate-uk-strike-action",
+        "publisherArticleUrl": "https://live.euronext.com/en/financial-news/unite-union-says-apache-offshore-workers-escalate-uk-strike-action",
+        "publisherHome": "https://www.reuters.com",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "publisher",
+        "linkKind": "publisher"
+      },
+      "officialSources": [
+        {
+          "publisher": "Unite the Union (party statement)",
+          "title": "Apache offshore workers escalate strike action on offshore platforms",
+          "url": "https://sharepoint.unitetheunion.org/news-events/news/2026/november/apache-offshore-workers-escalate-strike-action-on-offshore-platforms",
+          "publishedAt": "2026-11-03",
+          "note": "Primary statement from the union representing some workers. Its descriptions of wages, employer conduct and risks to UK fuel supplies are claims by an involved party, not independent findings."
+        }
+      ],
+      "evidenceNote": "The strike schedule and worker count are attributed to Unite. Reuters includes Apache's response: its offer was 4%, it would maintain operations where safe, and its earlier shutdown did not stop third-party producers using the pipeline. The union's warning of supply disruption should not be treated as a confirmed effect of the November stoppage.",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "rank": 70,
+      "ingestedAt": "2026-11-04T10:24:10.523Z",
+      "secondarySources": []
+    },
+    {
+      "id": "news-spain-transport-minister-resigns-2026-11-03",
+      "title": "Spain's transport minister announces resignation after deadly rail collision",
+      "summary": "The Associated Press reported that Transport Minister Óscar Puente announced on 3 November that he would step down, six days after a collision on the Madrid–Seville line killed 69 people. He made the announcement after appearing before lawmakers about the crash; the report says he had decided to resign earlier but had not made it public. AP describes a sequence involving a communications system failure and train controllers, while the investigation is still developing. The resignation is a political accountability development, not a finding of individual or institutional legal responsibility for the crash.",
+      "category": "Infrastructure",
+      "region": "Europe",
+      "countries": [
+        "Spain"
+      ],
+      "keywords": [
+        "rail safety",
+        "high-speed rail",
+        "train collision",
+        "transport minister",
+        "investigation",
+        "public accountability"
+      ],
+      "publishedAt": "2026-11-03T21:21:00Z",
+      "source": {
+        "publisher": "Associated Press",
+        "url": "https://apnews.com/article/spain-transport-minister-train-crash-159910e970f48f6a54e50cc7ea740403",
+        "publisherArticleUrl": "https://apnews.com/article/spain-transport-minister-train-crash-159910e970f48f6a54e50cc7ea740403",
+        "publisherHome": "https://apnews.com",
+        "sourceType": "Reporting",
+        "basis": "article",
+        "linkType": "publisher",
+        "linkKind": "publisher"
+      },
+      "officialSources": [
+        {
+          "publisher": "Congress of Deputies of Spain",
+          "title": "Permanent Deputation session on the Urda rail accident, 3 November 2026",
+          "url": "https://app.congreso.es/AudiovisualCongreso/audiovisualEmisionSemiDirecto?codOrgano=500&codSesion=9&fechaSesion=03%2F11%2F2026&idLegislaturaElegida=15",
+          "publishedAt": "2026-11-03",
+          "note": "Official parliamentary audiovisual record confirms the minister's hearing about the 28 October crash. It is a primary record of the appearance; AP supplies the account of the resignation announcement and 69 confirmed deaths."
+        }
+      ],
+      "secondarySources": [
+        {
+          "publisher": "Agencia EFE",
+          "title": "Spanish transportation minister resigns",
+          "articleUrl": "https://efe.com/english/latest-news/2026-11-03/spanish-transportation-minister-resigns/",
+          "sourceType": "Independent news agency reporting",
+          "publishedAt": "2026-11-03"
+        },
+        {
+          "publisher": "Reuters (syndicated by Investing.com)",
+          "title": "Spain’s transport minister resigns over deadly train crash",
+          "articleUrl": "https://www.investing.com/news/world-news/spains-transport-minister-resigns-over-deadly-train-crash-4996622",
+          "sourceType": "Independent reporting, syndicated by Investing.com",
+          "publishedAt": "2026-11-03"
+        }
+      ],
+      "evidenceNote": "The official Congress page establishes the date and subject of the minister's appearance. AP, Reuters and EFE report the resignation announcement and fatality count. The crash investigation and allocation of responsibility remain distinct questions; the item does not infer a cause from the minister's resignation.",
+      "digestBasis": "article-reviewed",
+      "reviewedAt": "2026-11-04",
+      "rank": 71,
+      "ingestedAt": "2026-11-04T10:24:10.523Z"
+    }
+  ],
+  "meta": {
+    "mode": "snapshot",
+    "generatedAt": "2026-11-04T10:24:10.523Z",
+    "reviewedAt": "2026-11-04",
+    "windowStart": "2026-10-31T15:16:20Z",
+    "windowEnd": "2026-11-04T05:35:41Z",
+    "total": 71,
+    "categories": [
+      "Economy",
+      "Finance",
+      "Politics",
+      "World",
+      "Infrastructure",
+      "Health",
+      "Energy",
+      "Trade"
+    ],
+    "categoryRejections": 10,
+    "discovery": "Google News · world and topic editions, with selected manually reviewed updates",
+    "coverageNote": "71 selected stories published 2026-10-31–2026-11-04. Stories outside the eight admitted categories are rejected from this edition. Selection across discovery editions, not a universal importance ranking. Reviewed digests identify reporting or official records; additional links do not automatically mean independent confirmation."
+  }
+}

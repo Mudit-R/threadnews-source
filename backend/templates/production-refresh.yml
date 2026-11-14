@@ -1,0 +1,40 @@
+# Inactive template. Copy to .github/workflows/production-refresh.yml explicitly.
+# Configure APP_ORIGIN as a repository variable and INGEST_SECRET as a secret.
+# This posts runtime metadata; it neither commits files nor deploys the website.
+name: Collect permitted news into the production database
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 * * * *'
+permissions:
+  contents: read
+concurrency:
+  group: threadline-production-news
+  cancel-in-progress: false
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - run: npm ci
+        working-directory: backend
+      - name: Ingest attributed headlines and source links
+        run: node backend/scripts/collect-news.mjs
+        env:
+          APP_ORIGIN: ${{ vars.APP_ORIGIN }}
+          INGEST_SECRET: ${{ secrets.INGEST_SECRET }}
+          ENABLED_FEEDS: ${{ vars.ENABLED_FEEDS || 'nasa,un-news' }}
+          GOOGLE_NEWS_RIGHTS_ACK: ${{ vars.GOOGLE_NEWS_RIGHTS_ACK || 'false' }}
+          GOOGLE_NEWS_TOPICS: ${{ vars.GOOGLE_NEWS_TOPICS || 'WORLD' }}
+      # To opt into Google discovery, include google-world in ENABLED_FEEDS,
+      # review the registry's RSS reuse note, set GOOGLE_NEWS_RIGHTS_ACK=true,
+      # and optionally choose WORLD,BUSINESS,TECHNOLOGY,SCIENCE,HEALTH,SPORTS.
+      # Publisher blocking in feeds.js remains effective even if named here.

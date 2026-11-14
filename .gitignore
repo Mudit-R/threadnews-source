@@ -1,0 +1,17 @@
+node_modules/
+.wrangler/
+.dev.vars
+.env
+.env.*
+!.env.example
+.build/
+.config/
+*.log
+*.tar.gz
+*.key
+*.pem
+dist/
+site/generated/
+.tools/
+backups/
+out/

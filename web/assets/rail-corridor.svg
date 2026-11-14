@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
+  <title id="title">Mumbai to Ahmedabad rail corridor</title><desc id="desc">An original ThreadNews illustration of a high-speed train and a schematic route. It is not a project photograph or a map to scale.</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#133e37"/><stop offset="1" stop-color="#52745c"/></linearGradient><linearGradient id="body" x2="0" y2="1"><stop stop-color="#f5f5e9"/><stop offset="1" stop-color="#c7d4c7"/></linearGradient></defs>
+  <path fill="url(#bg)" d="M0 0h1400v900H0z"/>
+  <g fill="none" stroke="#c5d3ae" opacity=".12" stroke-width="2"><circle cx="1080" cy="280" r="175"/><circle cx="1080" cy="280" r="270"/><circle cx="1080" cy="280" r="360"/><path d="M0 760 1400 245M0 800 1400 285M0 840 1400 325"/></g>
+  <g fill="none" stroke="#c5d3ae" stroke-width="5"><path d="m225 560 175-85 215-42 190-110 225-95" stroke-dasharray="8 14"/></g>
+  <g fill="#dce5bc" stroke="#244b3b" stroke-width="7"><circle cx="225" cy="560" r="13"/><circle cx="400" cy="475" r="11"/><circle cx="615" cy="433" r="11"/><circle cx="805" cy="323" r="11"/><circle cx="1030" cy="228" r="13"/></g>
+  <g fill="#f5f3df" font-family="Arial,sans-serif" font-size="26"><text x="170" y="620">Mumbai</text><text x="365" y="440">Vapi</text><text x="580" y="395">Surat</text><text x="730" y="285">Vadodara</text><text x="960" y="185">Ahmedabad</text></g>
+  <path d="M165 718h1030c-19-95-139-153-293-153H302c-74 0-121 48-137 153Z" fill="url(#body)"/>
+  <path d="M832 588h67c114 0 198 37 238 80H832Z" fill="#173e39"/><path d="M314 590h457v65H314z" fill="#234b44"/><path d="M380 590v65m79-65v65m79-65v65m79-65v65m79-65v65" stroke="#c7d4c7" stroke-width="9"/>
+  <path d="M174 694h1005" stroke="#93ac77" stroke-width="13"/><path d="M142 737h1080" stroke="#dce5bc" stroke-width="4"/><path d="M132 755h1099" stroke="#dce5bc" opacity=".45" stroke-width="3"/>
+  <g fill="#dce5bc" font-family="Arial,sans-serif" font-size="18" letter-spacing="4"><text x="95" y="90">ThreadNews / THE LONG VIEW</text><text x="95" y="839">CORRIDOR SCHEMATIC · NOT TO SCALE</text></g>
+</svg>

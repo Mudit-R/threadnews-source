@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
+  <title id="title">Azini rescue timeline illustration</title>
+  <desc id="desc">An original illustration of a fishing vessel and a search route at sea. It is not a photograph, a live tracking map or an exact route.</desc>
+  <defs><linearGradient id="water" x2="0" y2="1"><stop stop-color="#173e43"/><stop offset="1" stop-color="#416663"/></linearGradient></defs>
+  <path fill="url(#water)" d="M0 0h1400v900H0z"/>
+  <g fill="none" stroke="#d6e4ce" opacity=".15" stroke-width="3"><path d="M0 560h1400M0 648h1400M0 736h1400M0 824h1400"/><path d="M180 0v900M400 0v900M620 0v900M840 0v900M1060 0v900M1280 0v900"/></g>
+  <path d="M170 650c145-68 272-84 421-29s259 65 371-3 179-93 278-31" fill="none" stroke="#e5dab1" stroke-width="5" stroke-dasharray="9 18"/>
+  <circle cx="170" cy="650" r="13" fill="#e8ddb6"/><circle cx="1240" cy="587" r="14" fill="#e8ddb6"/>
+  <g transform="translate(575 350)"><path d="M0 220h360l-55 115H86Z" fill="#dce5d3"/><rect x="110" y="135" width="150" height="85" rx="8" fill="#bfcfb9"/><path d="M178 38v95h76" fill="none" stroke="#e9eedf" stroke-width="13" stroke-linejoin="round"/><path d="M167 43h22v94h-22z" fill="#e9eedf"/><path d="M120 335h215" stroke="#152e32" stroke-width="10"/></g>
+  <g fill="#f5f3df" font-family="Arial,sans-serif"><text x="84" y="116" font-size="22" letter-spacing="5" opacity=".8">THREADNEWS · MARITIME INCIDENT</text><text x="84" y="181" font-family="Georgia,serif" font-size="58">Azini · off Somalia</text><text x="84" y="813" font-size="18" letter-spacing="3" opacity=".75">SCHEMATIC ILLUSTRATION · NOT A NAVIGATIONAL MAP</text></g>
+</svg>

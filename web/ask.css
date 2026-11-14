@@ -1,0 +1,56 @@
+.ask-page { max-width: 1130px; margin: 0 auto; }
+.ask-intro { display: flex; align-items: center; gap: 25px; margin: 0 0 30px; }
+.ask-mark { display: grid; place-items: center; flex: 0 0 70px; height: 70px; border-radius: 20px; color: var(--lime); background: var(--dark); }
+.ask-mark .icon { width: 34px; height: 34px; }
+.ask-intro h1 { color: var(--dark); font: 400 clamp(2.35rem, 5vw, 4.2rem)/1 var(--serif); letter-spacing: -.045em; }
+.ask-intro p { max-width: 560px; margin-top: 10px; color: #4b5e54; font-size: 15px; }
+.ask-form { display: grid; gap: 12px; padding: 25px; border: 1px solid #d5ded1; border-radius: 16px; background: #fff; box-shadow: 0 10px 30px #214c3f08; }
+.ask-form label { color: var(--dark); font-weight: 700; }
+.ask-form textarea { display: block; width: 100%; min-height: 90px; padding: 13px 15px; border: 1px solid #d5ded1; border-radius: 9px; background: #f8faf5; color: var(--ink); font: inherit; font-size: 16px; resize: vertical; }
+.ask-form textarea:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+.ask-form-bottom, .ask-scope { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.ask-form-bottom > span, .ask-scope { color: #4b5e54; font-size: 12px; }
+.ask-form-bottom .button { gap: 12px; margin-left: auto; }
+.ask-form-bottom .button:disabled { opacity: .58; }
+.ask-scope { padding: 8px 12px; border-radius: 7px; background: #edf3e4; overflow-wrap: anywhere; }
+.ask-scope a, .ask-offline a { text-decoration: underline; text-underline-offset: 2px; }
+.ask-examples { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 205px), 1fr)); gap: 10px; margin-top: 14px; }
+.ask-examples button { display: grid; grid-template-columns: 1fr auto; align-content: start; gap: 7px; padding: 15px 16px; border: 1px solid #dce3d6; border-radius: 10px; background: #f2f5ec; text-align: left; }
+.ask-examples button:hover { background: #e7efe0; border-color: #aec2a7; }
+.ask-examples button > span:first-child { grid-column: 1 / -1; color: #415d4c; font-size: 11px; font-weight: 700; }
+.ask-examples button > span:last-child { color: #53705d; }
+.ask-status { margin: 20px 0; color: var(--green); }
+.ask-status:empty, .ask-results:empty { display: none; }
+.ask-results { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 16px; align-items: start; margin-top: 30px; }
+.ask-answer, .ask-evidence { min-width: 0; padding: 22px; border: 1px solid #dce3d6; border-radius: 12px; background: #fff; }
+.ask-answer { border-top: 3px solid var(--green); }
+.ask-answer .eyebrow { color: #4c6957; text-transform: uppercase; }
+.ask-answer h2, .ask-evidence h2 { margin-top: 7px; color: var(--dark); font: 400 31px/1.05 var(--serif); }
+.ask-result-question { margin: 10px 0 0; color: #4b5e54; overflow-wrap: anywhere; }
+.ask-claims { display: grid; gap: 15px; margin: 17px 0; padding: 0; list-style: none; }
+.ask-claims li { padding: 13px 0 0; border-top: 1px solid #e6ebe2; font-size: 15px; line-height: 1.7; overflow-wrap: anywhere; }
+.ask-citation, .ask-number { display: inline-grid; place-items: center; min-width: 23px; height: 23px; padding: 0 5px; border-radius: 5px; background: #e1eddc; font-size: 12px; font-weight: 700; color: #244635; vertical-align: middle; }
+.ask-citation:hover { background: #cfe3c8; }
+.ask-note { margin-top: 14px; color: #4b5e54; font-size: 13px; }
+.ask-evidence > header { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding-bottom: 14px; color: #4b5e54; }
+.ask-source { padding: 13px 0; border-top: 1px solid #e6ebe2; overflow-wrap: anywhere; }
+.ask-source:focus, #ask-answer-heading:focus-visible { outline: 2px solid var(--green); outline-offset: 5px; }
+.ask-source:last-child { padding-bottom: 0; }
+.ask-source-meta, .ask-source-links { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; color: #4b5e54; font-size: 11px; }
+.ask-source h3 { margin-top: 8px; font-size: 15px; font-weight: 700; }
+.ask-source p { margin-top: 4px; color: #4b5e54; font-size: 13px; }
+.ask-source .ask-source-note { font-size: 11px; }
+.ask-source-links { margin-top: 9px; gap: 6px 12px; }
+.ask-source-links a { color: #214c3f; font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+.ask-context-link { display: inline-flex; align-items: center; gap: 7px; }
+.ask-context-link .icon { width: 15px; height: 15px; }
+.ask-economy-link { margin-top: 16px; }
+@media (max-width: 950px) {
+  .ask-results { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 620px) {
+  .ask-intro { align-items: flex-start; gap: 12px; margin-bottom: 20px; }
+  .ask-mark { flex-basis: 48px; height: 48px; border-radius: 13px; }
+  .ask-mark .icon { width: 25px; height: 25px; }
+  .ask-form, .ask-answer, .ask-evidence { padding: 17px; }
+}

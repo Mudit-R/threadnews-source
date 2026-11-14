@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173e35">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="ThreadNews">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="description" content="Your news, with the bigger picture. Read recent reporting, choose your interests, and explore source-linked timelines behind ongoing stories.">
+  <title>ThreadNews — The whole story, unfolding</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23173e35'/%3E%3Cpath d='M18 18v18a10 10 0 0 0 20 0V18M28 46V28a10 10 0 0 1 20 0v18' fill='none' stroke='%23d5ed8c' stroke-width='5'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20261103-4">
+  <link rel="stylesheet" href="news.css?v=20261104-2">
+  <link rel="stylesheet" href="timelines.css?v=20261103-4">
+  <link rel="stylesheet" href="economy.css?v=20261103-4">
+  <link rel="stylesheet" href="account.css?v=20261103-4">
+  <link rel="stylesheet" href="billing.css?v=20261104-2">
+  <link rel="stylesheet" href="reader-updates.css?v=20261104-1">
+  <link rel="stylesheet" href="event-coverage.css?v=20261104-1">
+  <link rel="stylesheet" href="coverage-status.css?v=20261103-4">
+  <link rel="stylesheet" href="pwa.css?v=20261104-1">
+  <link rel="stylesheet" href="ask.css?v=20261114-1">
+  <script src="app-config.js?v=20261103-4" defer></script>
+  <script src="data.js?v=20261104-2" defer></script>
+  <script src="news-data.js?v=20261104-1" defer></script>
+  <script src="editorial-digests.js?v=20261104-22" defer></script>
+  <script src="news-content.js?v=20261104-3" defer></script>
+  <script src="economy-data.js?v=20261103-4" defer></script>
+  <script src="economy-metrics.js?v=20261103-4" defer></script>
+  <script src="economy.js?v=20261114-1" defer></script>
+  <script src="account.js?v=20261103-4" defer></script>
+  <script src="billing.js?v=20261104-2" defer></script>
+  <script src="reader-updates.js?v=20261104-1" defer></script>
+  <script src="event-coverage.js?v=20261104-1" defer></script>
+  <script src="coverage-status.js?v=20261103-4" defer></script>
+  <script src="public-routes.js?v=20261114-1" defer></script>
+  <script src="ask.js?v=20261114-1" defer></script>
+  <script src="newsroom.js?v=20261114-1" defer></script>
+  <script src="app.js?v=20261114-1" defer></script>
+  <script src="install.js?v=20261104-1" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <aside id="sidebar" class="sidebar" aria-label="Main navigation"></aside>
+  <div class="workspace">
+    <header class="topbar">
+      <button class="icon-button mobile-menu" id="menu-button" aria-label="Open navigation" aria-expanded="false"></button>
+      <form class="search-box" id="search-form" role="search">
+        <span id="search-icon"></span>
+        <input type="search" id="search" placeholder="Search news, places, and stories…" autocomplete="off" aria-label="Search news and events">
+        <kbd>/</kbd>
+      </form>
+      <span class="edition" id="edition-status"><span class="edition-dot"></span> Dated edition</span>
+      <button class="account-button" data-action="signin">Sign in <span aria-hidden="true">↗</span></button>
+    </header>
+    <main id="main" tabindex="-1"></main>
+  <footer class="footer"><a class="footer-wordmark" href="#/">ThreadNews</a><span>A little less noise. A lot more context.</span><button id="install-app-button" class="install-app-button" type="button" aria-haspopup="dialog" hidden>Install app</button><a href="#/coverage">Coverage and updates</a><a href="#/pricing">Membership</a><a href="#/privacy">Privacy</a><a href="#/account">Your account</a><a href="https://github.com/Mudit-R/threadnews-source" target="_blank" rel="noopener noreferrer">GitHub source <span aria-hidden="true">↗</span></a><button data-action="about">Our approach <span aria-hidden="true">↗</span></button></footer>
+  </div>
+  <dialog id="install-app-dialog" class="install-app-dialog" aria-labelledby="install-app-title" aria-describedby="install-app-description">
+    <button class="install-dialog-close" type="button" aria-label="Close install instructions" data-install-close>×</button>
+    <div class="install-app-mark" aria-hidden="true">TN</div>
+    <p class="eyebrow">THREADNEWS ON YOUR HOME SCREEN</p>
+    <h2 id="install-app-title">Add ThreadNews to your home screen</h2>
+    <p id="install-app-description">Open ThreadNews like an app, without an app store.</p>
+    <ol id="install-app-steps" class="install-app-steps"></ol>
+    <button class="button primary" type="button" data-install-close>Got it</button>
+  </dialog>
+  <dialog id="source-dialog" aria-labelledby="dialog-title"><div id="dialog-content"></div></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

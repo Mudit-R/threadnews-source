@@ -1,0 +1,11 @@
+{
+  "id": "WH-SANDBOX-REFUND-001",
+  "event_type": "PAYMENT.CAPTURE.REFUNDED",
+  "create_time": "2026-11-04T13:00:00Z",
+  "resource": {
+    "id": "REFUND-SANDBOX-000001",
+    "create_time": "2026-11-04T12:59:58Z",
+    "amount": { "value": "59.00", "currency_code": "USD" },
+    "supplementary_data": { "related_ids": { "order_id": "ORDER-SANDBOX-123456" } }
+  }
+}

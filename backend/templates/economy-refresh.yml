@@ -1,0 +1,33 @@
+# Inactive template. Copy to .github/workflows/economy-refresh.yml explicitly.
+# Refreshes World Bank annual series; national monthly CPI retains its vintage.
+# No Git writes, frontend rebuilds or deployment credentials are required.
+name: Refresh official annual economy data
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '43 5 * * 1'
+permissions:
+  contents: read
+concurrency:
+  group: threadline-production-economy
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - run: npm ci
+        working-directory: backend
+      - name: Update annual history without replacing national monthly records
+        run: node backend/scripts/refresh-economy.mjs
+        env:
+          APP_ORIGIN: ${{ vars.APP_ORIGIN }}
+          INGEST_SECRET: ${{ secrets.INGEST_SECRET }}

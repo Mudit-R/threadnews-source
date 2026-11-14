@@ -1,0 +1,49 @@
+# Copy to .github/workflows/news-refresh.yml in your own GitHub repository.
+# This template is not active inside the private Sites source repository.
+name: Refresh permitted news metadata
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 * * * *'
+permissions:
+  contents: write
+concurrency:
+  group: threadline-news-refresh
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - run: npm ci
+        working-directory: backend
+      - name: Collect allowed headline and source metadata
+        run: node backend/scripts/refresh-news.mjs
+        env:
+          ENABLED_FEEDS: nasa,un-news
+      - name: Save an edition only when it changed
+        shell: bash
+        run: |
+          git add dist/news-data.json dist/news-data.js
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Refresh news metadata'
+          git push
+      - name: Deploy this refreshed edition directly to Cloudflare
+        run: npm run deploy
+        working-directory: backend
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      # Set the two repository secrets above before enabling the workflow.
+      # Deployment is in this same run: it does not depend on GITHUB_TOKEN
+      # commits triggering another workflow or an external Git-build webhook.

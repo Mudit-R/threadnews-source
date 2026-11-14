@@ -1,0 +1,89 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "threadnews-source",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-11-03",
+  "workers_dev": true,
+  "ai": {
+    "binding": "AI"
+  },
+  "ratelimits": [
+    {
+      "name": "ASK_RATE_LIMIT",
+      "namespace_id": "1003",
+      "simple": {
+        "limit": 8,
+        "period": 60
+      }
+    }
+  ],
+  "assets": {
+    "directory": "../web",
+    "binding": "ASSETS",
+    "run_worker_first": [
+      "/api/*",
+      "/app-config.js",
+      "/",
+      "/news",
+      "/news/*",
+      "/threads",
+      "/threads/*",
+      "/economy",
+      "/economy/*",
+      "/ask",
+      "/sources",
+      "/method",
+      "/about",
+      "/privacy",
+      "/corrections",
+      "/pricing",
+      "/billing",
+      "/terms",
+      "/404",
+      "/account",
+      "/following",
+      "/coverage",
+      "/signin",
+      "/robots.txt",
+      "/sitemap.xml"
+    ],
+    "not_found_handling": "single-page-application"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "threadnews",
+      "database_id": "00000000-0000-4000-8000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "vars": {
+    "FEED_AUTO_REFRESH": "false",
+    "NEWS_STORAGE": "d1",
+    "NEWS_FEED_DAYS": "4",
+    "NEWS_RETENTION_DAYS": "30",
+    "ENABLED_FEEDS": "google-world,fed-monetary,ecb,nasa,un-news",
+    "GOOGLE_NEWS_ENABLED": "true",
+    "GOOGLE_NEWS_TOPICS": "WORLD,BUSINESS,TECHNOLOGY,HEALTH",
+    "FEED_REFRESH_SECONDS": "540",
+    "FEED_MAX_BYTES": "524288",
+    "FEED_MAX_ITEMS": "25",
+    "ECONOMY_REFRESH_SECONDS": "604800",
+    "BILLING_ENABLED": "false",
+    "TERMS_PUBLISHED": "false",
+    "TERMS_VERSION": "2026-11-04",
+    "REFUND_WINDOW_DAYS": "7",
+    "APPLE_SIGN_IN_ENABLED": "false",
+    "EMAIL_SEND_ENABLED": "false",
+    "PAYPAL_ENV": "sandbox"
+  },
+  "observability": {
+    "enabled": true,
+    "redact_query_string": true,
+    "head_sampling_rate": 0.1,
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 0.1
+    }
+  }
+}

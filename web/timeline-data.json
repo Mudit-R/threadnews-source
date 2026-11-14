@@ -1,0 +1,1312 @@
+{
+  "events": [
+    {
+      "id": "bullet-train",
+      "title": "India’s high-speed rail journey",
+      "shortTitle": "Mumbai–Ahmedabad bullet train",
+      "category": "Infrastructure",
+      "region": "Asia",
+      "location": "India",
+      "eyebrow": "CONNECTING CITIES",
+      "description": "From the foundation ceremony to civil works, train procurement and 2026 testing updates on the Mumbai–Ahmedabad corridor.",
+      "tagline": "An ambitious connection. Years in the making.",
+      "coverageEnd": "2026-09-25",
+      "image": "assets/rail-corridor.svg",
+      "imageAlt": "ThreadNews illustration of a high-speed train and a schematic Mumbai–Ahmedabad route, not to scale",
+      "imageCredit": "ThreadNews · original illustration",
+      "imagePage": "#/about",
+      "limitation": "Public preview: the first 10 selected milestones, from 2017-09-14 through 2026-09-25. Later chronology may be available through the signed-in archive.",
+      "context": "Civil construction, track installation, electrical and signalling systems, rolling-stock manufacture and safety validation are separate workstreams. A completed viaduct or awarded train contract does not mean a line is ready for passengers.",
+      "watch": "Look for dated project measurements, delivered trains, test results and regulatory approvals. Keep ministerial targets separate from demonstrated readiness.",
+      "keywords": "Mumbai Ahmedabad bullet train rail railway Gujarat Maharashtra India NHSRCL transport",
+      "milestones": [
+        {
+          "date": "2017-09-14",
+          "title": "The project’s foundation stone is laid",
+          "summary": "India and Japan marked the start of the Mumbai–Ahmedabad high-speed rail project at a ceremony in Ahmedabad.",
+          "kind": "Official record",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "Press Information Bureau",
+              "type": "Government statement",
+              "title": "PM Modi and Japanese PM Abe lay foundation stone for India’s first High Speed Rail project",
+              "published": "2017-09-14",
+              "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1502929&lang=2&reg=48"
+            }
+          ],
+          "dateType": "event"
+        },
+        {
+          "date": "2021-11-25",
+          "title": "The first girder is launched",
+          "summary": "The project’s first girder was launched, an early step in building the corridor’s elevated structure.",
+          "kind": "Official record",
+          "key": false,
+          "sources": [
+            {
+              "publisher": "NHSRCL",
+              "type": "Project authority; retrospective",
+              "title": "100 km of viaducts are ready; 250 km of pier work completed",
+              "published": null,
+              "url": "https://www.nhsrcl.in/en/media/press-release/100-km-viaducts-are-ready-mumbai-ahmedabad-high-speed-rail-corridor-250-km-pier"
+            },
+            {
+              "publisher": "Larsen & Toubro",
+              "type": "Contractor annual report; involved party",
+              "title": "Infrastructure business: 2021–22 annual report",
+              "published": null,
+              "url": "https://investors.larsentoubro.com/pdf/annexures/INFRASTRUCTURE%20BUSINESS.pdf"
+            }
+          ],
+          "dateType": "event"
+        },
+        {
+          "date": "2023-10-05",
+          "title": "A breakthrough at the first mountain tunnel",
+          "summary": "NHSRCL announced a breakthrough in the 350-metre mountain tunnel near Zaroli in Gujarat, after ten months of work.",
+          "kind": "Official record",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "NHSRCL",
+              "type": "Project authority",
+              "title": "Breakthrough of First Mountain Tunnel for Mumbai–Ahmedabad High Speed Rail Corridor",
+              "published": "2023-10-05",
+              "url": "https://nhsrcl.in/index.php/en/media/press-release/breakthrough-first-mountain-tunnel-mumbai-ahmedabad-high-speed-rail-corridor"
+            },
+            {
+              "publisher": "The Metro Rail Guy",
+              "type": "Specialist reporting",
+              "title": "First mountain tunnel breakthrough",
+              "published": "2023-10-05",
+              "url": "https://themetrorailguy.com/2023/10/05/lt-records-mumbai-ahmedabad-bullet-trains-1st-mountain-tunnel-breakthrough/"
+            }
+          ],
+          "dateType": "event"
+        },
+        {
+          "date": "2024-01-08",
+          "title": "Land acquisition reported complete",
+          "summary": "The project authority reported that all required land had been acquired across Gujarat, Maharashtra and Dadra and Nagar Haveli.",
+          "kind": "Attributed report",
+          "key": false,
+          "note": "This news report attributes the announcement to NHSRCL. Repeating an announcement is not an independent audit of the underlying work.",
+          "sources": [
+            {
+              "publisher": "The Times of India",
+              "type": "Reporting on project announcement",
+              "title": "100 percent land acquired for Mumbai–Ahmedabad bullet train project",
+              "published": "2024-01-08",
+              "url": "https://timesofindia.indiatimes.com/india/100-percent-land-acquired-for-mumbai-ahmedabad-bullet-train-project/articleshow/106643627.cms"
+            }
+          ],
+          "dateType": "event"
+        },
+        {
+          "date": "2025-05-20",
+          "title": "300 km of viaducts completed",
+          "summary": "NHSRCL reported completing 300 kilometres of viaducts. Track work and other parts of the rail system remained separate tasks.",
+          "kind": "Attributed report",
+          "key": true,
+          "note": "The project authority is the original source for the construction figure. NDTV’s report also draws on that announcement.",
+          "sources": [
+            {
+              "publisher": "Ministry of Railways / PIB",
+              "type": "Project authority release",
+              "title": "300 km of viaducts completed",
+              "published": "2025-05-20",
+              "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2129880&lang=1&reg=6"
+            },
+            {
+              "publisher": "NDTV",
+              "type": "Reporting on project announcement",
+              "title": "300 Km Of Viaducts For Bullet Train Project Completed, Minister Shares Video",
+              "published": "2025-05-20",
+              "url": "https://www.ndtv.com/india-news/mumbai-ahmedabad-bullet-train-project-300-km-of-viaducts-completed-minister-ashwini-vaishnaw-shares-video-8460944"
+            }
+          ],
+          "dateType": "event"
+        },
+        {
+          "date": "2026-02-11",
+          "dateType": "publication",
+          "title": "Government details progress across the two states",
+          "summary": "A parliamentary reply recorded 331 km of girder launching in Gujarat and 3 km in Maharashtra, with 17 river bridges complete.",
+          "kind": "Official record",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "Ministry of Railways / PIB",
+              "type": "Written parliamentary reply",
+              "title": "Mumbai–Ahmedabad project update",
+              "published": "2026-02-11",
+              "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2226523&lang=2&reg=48"
+            }
+          ],
+          "note": "This is the date of the published status reply, not the date every structure was completed. Track, electrical systems, signalling and trains remained separate workstreams."
+        },
+        {
+          "date": "2026-09-16",
+          "dateType": "publication",
+          "title": "August progress update adds track and electrical detail",
+          "summary": "The railway minister’s August update reported 365 km of viaducts, 222 km of concrete track bed and 98 km of installed track slabs.",
+          "kind": "Involved-party account",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "Ashwini Vaishnaw",
+              "type": "Railway minister’s official video description",
+              "title": "August 2026 bullet-train progress update",
+              "published": "2026-09-16",
+              "url": "https://www.youtube.com/watch?v=TTry1mZuH9s"
+            }
+          ],
+          "note": "Published on 16 September but explicitly covering August 2026. Construction quantities are the minister’s reported snapshot, not an independent site audit."
+        },
+        {
+          "date": "2026-09-18",
+          "dateType": "event",
+          "title": "BEML discloses a major rolling-stock order",
+          "summary": "BEML disclosed an order exceeding ₹5,400 crore from NHSRCL for high-speed rolling stock, maintenance and associated works.",
+          "kind": "Official record",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "BEML",
+              "type": "Company stock-exchange disclosure; involved party",
+              "title": "Rolling-stock order disclosure",
+              "published": "2026-09-18",
+              "url": "https://www.bemlindia.in/wp-content/uploads/2026/09/SE_Letter_180926.pdf"
+            },
+            {
+              "publisher": "The Indian Express",
+              "type": "Reporting on exchange disclosure",
+              "title": "BEML wins high-speed rolling-stock contract",
+              "published": "2026-09-18",
+              "url": "https://indianexpress.com/article/india/beml-rs-5400-crore-order-nhsrcl-mumbai-ahmedabad-bullet-train-project-10883831/"
+            }
+          ],
+          "note": "The original filing was read. An awarded supply contract does not establish delivery, certification or passenger-service readiness."
+        },
+        {
+          "date": "2026-09-22",
+          "dateType": "event",
+          "title": "First-section opening and testing targets are restated",
+          "summary": "NHSRCL relayed a ministerial target for Surat–Vapi service in 2027, with extensive testing planned before passengers are carried.",
+          "kind": "Attributed report",
+          "key": false,
+          "sources": [
+            {
+              "publisher": "The Financial Express",
+              "type": "Reporting with embedded NHSRCL announcement",
+              "title": "Surat–Vapi section and testing targets",
+              "published": "2026-09-23",
+              "url": "https://www.financialexpress.com/business/railways-mumbai-ahmedabad-bullet-train-surat-vapi-corridor-construction-likely-to-kick-off-by-december-this-year-4345307/"
+            }
+          ],
+          "note": "The embedded announcement is dated 22 September; the article appeared on 23 September. These are targets, not completed work or a guaranteed opening date. The article’s headline and one paragraph conflict on whether December refers to starting or finishing construction, so no December construction claim is adopted."
+        },
+        {
+          "date": "2026-09-25",
+          "dateType": "publication",
+          "title": "RTI reporting exposes the measurement dates behind progress",
+          "summary": "Aaj Tak reported 62.16% overall progress at July-end, alongside a later track snapshot of 97 route-km with CAM filling by 27 August.",
+          "kind": "Attributed report",
+          "key": false,
+          "sources": [
+            {
+              "publisher": "Aaj Tak",
+              "type": "Reporting on an NHSRCL RTI response",
+              "title": "RTI report: project status and measurement cutoffs",
+              "published": "2026-09-25",
+              "url": "https://www.aajtak.in/amp/india/delhi/story/bullet-train-project-status-mumbai-ahmedabad-route-nhsrcl-rti-info-ntc-apdy-rptc-2652881-2026-09-25"
+            }
+          ],
+          "note": "The report says NHSRCL replied on 21 September to an August request. The 62.16% measure describes July-end, not September-end. Viaduct, track and total-project percentages have different denominators and should not be merged."
+        }
+      ],
+      "imageLicense": null,
+      "checkedThrough": "2026-11-04",
+      "tracking": {
+        "version": 1,
+        "enabled": true,
+        "rules": [
+          {
+            "all": [
+              "Mumbai",
+              "Ahmedabad"
+            ],
+            "any": [
+              "bullet train",
+              "high speed rail",
+              "high speed railway",
+              "NHSRCL",
+              "MAHSR"
+            ]
+          },
+          {
+            "all": [
+              "NHSRCL"
+            ],
+            "any": [
+              "Mumbai",
+              "Ahmedabad",
+              "bullet train",
+              "MAHSR"
+            ]
+          }
+        ]
+      },
+      "previewTruncated": true
+    },
+    {
+      "id": "hormuz",
+      "title": "The Strait of Hormuz, under pressure",
+      "shortTitle": "Tensions in the Strait of Hormuz",
+      "category": "World affairs",
+      "region": "Middle East",
+      "location": "Strait of Hormuz",
+      "eyebrow": "A GLOBAL CHOKEPOINT",
+      "description": "Vessel incidents, shipping disruption and diplomacy around the Strait of Hormuz, with official records beside reported claims.",
+      "tagline": "A narrow passage. A worldwide ripple.",
+      "coverageEnd": "2026-09-12",
+      "image": "assets/hormuz.jpg",
+      "imageAlt": "Satellite view of the Strait of Hormuz between Iran and Oman, December 2020",
+      "imageCredit": "MODIS / NASA GSFC · public domain · December 2020",
+      "imagePage": "https://commons.wikimedia.org/wiki/File:Strait_of_Hormuz_(MODIS_2020-12-04).jpg",
+      "limitation": "Public preview: the first 10 selected milestones, from 2019-06-13 through 2026-09-12. Later chronology may be available through the signed-in archive.",
+      "context": "Hormuz links Gulf producers to global shipping. Its recent history includes vessel seizures, attacks, disruption during the 2026 war and competing negotiating proposals. A passage can carry some traffic while remaining dangerous and heavily restricted.",
+      "watch": "Check the date, vessel identity and source of each incident. Proposals do not establish reopening, and military claims do not independently establish responsibility or a mine as the cause. Singapore’s October flag-state record identifies unknown projectiles.",
+      "keywords": "Hormuz Iran oil tanker shipping Gulf Oman energy maritime strait crisis",
+      "milestones": [
+        {
+          "date": "2019-06-13",
+          "dateType": "event",
+          "title": "Two tankers are attacked near the strait",
+          "summary": "Front Altair and Kokuka Courageous were damaged in the Sea of Oman near the Strait of Hormuz.",
+          "kind": "Official record",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "International Maritime Organization",
+              "type": "Institutional coverage",
+              "title": "IMO Council condemns tanker attacks in Strait of Hormuz and Sea of Oman",
+              "published": "2019-07-18",
+              "url": "https://www.imo.org/en/mediacentre/pressbriefings/pages/15-imo-council-condemns-tanker-attacks.aspx"
+            }
+          ],
+          "note": "The event date predates the IMO release. This entry does not establish responsibility for the attacks."
+        },
+        {
+          "date": "2019-07-19",
+          "dateType": "event",
+          "title": "Iran seizes the Stena Impero tanker",
+          "summary": "The UK government said Iranian forces intercepted the British-flagged tanker while it was passing through the Strait of Hormuz.",
+          "kind": "Involved-party account",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "UK Foreign & Commonwealth Office",
+              "type": "Government statement; involved party",
+              "title": "Situation in the Gulf: Foreign Secretary statement to Parliament",
+              "published": "2019-07-22",
+              "url": "https://www.gov.uk/government/speeches/situation-in-the-gulf-foreign-secretary-statement"
+            }
+          ]
+        },
+        {
+          "date": "2024-04-13",
+          "dateType": "event",
+          "title": "MSC Aries is boarded and diverted",
+          "summary": "MSC said Iranian authorities boarded MSC Aries and diverted it, with 25 crew members aboard.",
+          "kind": "Attributed report",
+          "key": false,
+          "sources": [
+            {
+              "publisher": "Seatrade Maritime",
+              "type": "Industry reporting; company account",
+              "title": "Iran seizes large container ship MSC Aries in Strait of Hormuz",
+              "published": "2024-04-13",
+              "url": "https://www.seatrade-maritime.com/containers/iran-seizes-large-container-ship-msc-aries-in-strait-of-hormuz"
+            }
+          ]
+        },
+        {
+          "date": "2025-06-16",
+          "dateType": "publication",
+          "title": "EIA reports that maritime traffic remains unblocked",
+          "summary": "The US energy agency reported no blockage at that time and estimated 2024 oil transit at roughly 20 million barrels a day.",
+          "kind": "Official assessment",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "US Energy Information Administration",
+              "type": "Government statistical assessment",
+              "title": "Amid regional conflict, the Strait of Hormuz remains critical oil chokepoint",
+              "published": "2025-06-16",
+              "url": "https://www.eia.gov/todayinenergy/detail.php?id=65504"
+            }
+          ],
+          "note": "A dated 2025 assessment cannot establish conditions in the later 2026 conflict."
+        },
+        {
+          "date": "2026-02-28",
+          "dateType": "event",
+          "title": "Major shippers suspend Hormuz shipments as war begins",
+          "summary": "Reuters reported tanker owners and energy traders suspending shipments after US–Israeli strikes on Iran and Iranian statements restricting navigation.",
+          "kind": "Attributed report",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "Reuters via Investing.com",
+              "type": "Agency reporting; trading sources",
+              "title": "Oil and gas majors and traders suspend shipments via Hormuz, sources say",
+              "published": "2026-02-28",
+              "url": "https://www.investing.com/news/commodities-news/oil-and-gas-majors-and-traders-suspend-shipments-via-hormuz-as-us-attacks-iran-sources-say-4533427"
+            }
+          ],
+          "note": "Suspensions, Iranian closure claims and measured traffic volumes are different forms of evidence; this entry does not imply every vessel stopped."
+        },
+        {
+          "date": "2026-04-13",
+          "dateType": "event",
+          "title": "US begins a blockade targeting Iranian ports",
+          "summary": "CENTCOM announced a blockade of vessels entering or leaving Iranian ports. Reuters reported its implementation after negotiations failed to produce a deal.",
+          "kind": "Attributed report",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "US Central Command",
+              "type": "Military announcement; involved party",
+              "title": "U.S. to Blockade Ships Entering or Exiting Iranian Ports",
+              "published": "2026-04-12",
+              "url": "https://www.centcom.mil/MEDIA/PUBLIC-RELEASES/Article/4457255/us-to-blockade-ships-entering-or-exiting-iranian-ports/"
+            },
+            {
+              "publisher": "Reuters via Investing.com",
+              "type": "Agency reporting",
+              "title": "US begins blockade of Iran’s ports, Tehran threatens retaliation",
+              "published": "2026-04-13",
+              "url": "https://www.investing.com/news/world-news/us-to-blockade-iran-after-talks-fail-to-yield-adeal-4609134"
+            }
+          ],
+          "note": "CENTCOM said traffic to and from non-Iranian ports would not be impeded. A port blockade is not synonymous with a complete closure of the strait."
+        },
+        {
+          "date": "2026-06-29",
+          "dateType": "event",
+          "title": "Washington and Tehran announce Qatar delegations",
+          "summary": "The US and Iran separately announced plans to send delegations to Qatar, while disagreeing about whether direct talks had been agreed.",
+          "kind": "Attributed report",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "AP News",
+              "type": "Reporting; contrasting party accounts",
+              "title": "US and Iran pause strikes but disagree over next steps on talks",
+              "published": "2026-06-29",
+              "url": "https://apnews.com/article/d1c0ec8aa84c0e5693b94f0cf0862bab"
+            }
+          ]
+        },
+        {
+          "date": "2026-09-06",
+          "dateType": "publication",
+          "title": "Iran announces plans for a new exclusion zone",
+          "summary": "AP reported an Iranian official’s plan for an exclusion zone near Hormuz.",
+          "kind": "Involved-party account",
+          "key": false,
+          "sources": [
+            {
+              "publisher": "AP News via Google News",
+              "type": "Headline record; involved-party announcement",
+              "title": "Iran says it plans to announce a new exclusion zone near the Strait of Hormuz",
+              "published": "2026-09-06",
+              "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxNeXpPTUJjVll0WEd0Wk90aXMyTzltVWQwNXk2Y0hXZ1JsWVZmeFpLMTN0VG9CdlVrdjFKRXlRWWpkczdkOVk4blJKOVZNYUYtbi1fLUpqOXBnN25hdFZDQWN1S3BtWGxJM3NRdHg2a3VPTUVYZzkzUjFTc1JGQkZPd0FwR3dRdUFXeV91UWJyZURPTFZwWXJTYjRXNS1hdw?oc=5"
+            }
+          ],
+          "note": "This is a reported plan, not proof of the zone’s legal status or implementation. Headline metadata supports this limited statement."
+        },
+        {
+          "date": "2026-09-09",
+          "dateType": "event",
+          "title": "A new wave of attacks hits commercial shipping",
+          "summary": "Reuters reported multiple tanker incidents and UKMTO alerts. Iran claimed attacks after US forces struck Iranian oil tankers; a vessel charterer reported a seafarer killed.",
+          "kind": "Attributed report",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "Reuters via StreetInsider",
+              "type": "Agency reporting; maritime alerts and party claims distinguished",
+              "title": "Iran and US hit tankers in biggest wave of attacks on shipping since war began",
+              "published": "2026-09-09",
+              "url": "https://www.streetinsider.com/Reuters/Iran%2Battacks%2BUS%2Bbase%2Bin%2BJordan%2C%2Bships%2Bnear%2BHormuz%2Bafter%2Btankers%2Bsunk/27038067.html"
+            }
+          ],
+          "note": "The number and responsibility claimed by Iran were not treated as independent confirmation of each reported incident."
+        },
+        {
+          "date": "2026-09-12",
+          "dateType": "publication",
+          "title": "Iran–Oman understanding falls short of immediate reopening",
+          "summary": "Reuters relayed an Iranian source’s account that an understanding with Oman set a possible basis for reopening, but would not reopen the strait immediately.",
+          "kind": "Involved-party account",
+          "key": false,
+          "sources": [
+            {
+              "publisher": "Reuters via StreetInsider",
+              "type": "Agency report relaying Tasnim’s Iranian source",
+              "title": "Iran-Oman understanding does not provide for immediate reopening of Strait of Hormuz, Tasnim reports",
+              "published": "2026-09-12",
+              "url": "https://www.streetinsider.com/Reuters/Iran-Oman%2Bunderstanding%2Bdoes%2Bnot%2Bprovide%2Bfor%2Bimmediate%2Breopening%2Bof%2BStrait%2Bof%2BHormuz%2C%2BTasnim%2Breports/27054170.html"
+            }
+          ],
+          "note": "The source describes negotiating terms. It is not an independent traffic assessment."
+        }
+      ],
+      "recentCoverageCount": 16,
+      "tracking": {
+        "version": 1,
+        "enabled": true,
+        "rules": [
+          {
+            "all": [
+              "Hormuz"
+            ]
+          }
+        ]
+      },
+      "previewTruncated": true
+    },
+    {
+      "id": "ukraine",
+      "title": "Russia’s war in Ukraine",
+      "shortTitle": "Russia’s war in Ukraine",
+      "category": "World affairs",
+      "region": "Europe",
+      "location": "Ukraine",
+      "eyebrow": "CONFLICT & DIPLOMACY",
+      "description": "Military, humanitarian and diplomatic turning points in Russia’s war in Ukraine, with closer tracking of recent developments.",
+      "tagline": "The developments behind the headlines.",
+      "coverageEnd": "2026-09-05",
+      "image": "assets/ukraine.jpg",
+      "imageAlt": "Illustrative view of Kyiv’s riverfront and bridges across the Dnipro, September 2008",
+      "imageCredit": "Dmitry A. Mottl / Wikimedia · CC BY-SA 3.0 · September 2008",
+      "imagePage": "https://commons.wikimedia.org/wiki/File:Dniepr_river_in_Kyiv.jpg",
+      "imageLicense": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "limitation": "Public preview: the first 10 selected milestones, from 2014-03-27 through 2026-09-05. Later chronology may be available through the signed-in archive.",
+      "context": "Russia’s full-scale invasion followed years of conflict after 2014. Military operations, humanitarian arrangements, sanctions and peace initiatives have evolved separately; a local truce or a negotiating announcement does not establish a nationwide ceasefire.",
+      "watch": "Distinguish signed decisions from implementation, casualty reports from final counts, and an announced meeting from an agreed settlement. Official records identify an institution’s position, not independent confirmation of all underlying claims.",
+      "keywords": "Russia Ukraine war invasion Kyiv Europe grain Black Sea UN conflict diplomacy",
+      "milestones": [
+        {
+          "date": "2014-03-27",
+          "dateType": "event",
+          "title": "UN affirms Ukraine’s territorial integrity",
+          "summary": "The General Assembly adopted a resolution affirming Ukraine’s territorial integrity and rejecting the validity of the Crimea referendum.",
+          "kind": "Official record",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "United Nations",
+              "type": "General Assembly resolution",
+              "title": "Territorial integrity of Ukraine — A/RES/68/262",
+              "published": "2014-03-27",
+              "url": "https://digitallibrary.un.org/record/767883?ln=en"
+            },
+            {
+              "publisher": "Library of Congress",
+              "type": "Institutional legal-news record",
+              "title": "United Nations: Resolution Declares Crimea Referendum Invalid",
+              "published": "2014-04-02",
+              "url": "https://www.loc.gov/item/global-legal-monitor/2014-04-02/united-nations-resolution-declares-crimea-referendum-invalid/"
+            }
+          ]
+        },
+        {
+          "date": "2015-02-12",
+          "dateType": "event",
+          "title": "Minsk implementation package is agreed",
+          "summary": "The Trilateral Contact Group agreed a package of measures in Minsk, including a ceasefire framework for parts of Donetsk and Luhansk.",
+          "kind": "Official record",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "OSCE",
+              "type": "Official agreement record",
+              "title": "Package of Measures for the Implementation of the Minsk Agreements",
+              "published": "2015-02-12",
+              "url": "https://www.osce.org/cio/140156"
+            }
+          ]
+        },
+        {
+          "date": "2022-02-24",
+          "dateType": "event",
+          "title": "Russia begins its full-scale invasion",
+          "summary": "Russian forces began large-scale operations in Ukraine. The UN Secretary-General called for Russian troops to return to Russia.",
+          "kind": "Official record",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "United Nations",
+              "type": "Secretary-General statement",
+              "title": "Statement by the Secretary-General — on Ukraine",
+              "published": "2022-02-24",
+              "url": "https://www.un.org/sg/en/content/sg/statements/2022-02-24/statement-the-secretary-general-ukraine"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-02",
+          "dateType": "event",
+          "title": "UN General Assembly demands withdrawal",
+          "summary": "The Assembly voted 141–5, with 35 abstentions, to demand an end to the invasion and withdrawal of Russian forces.",
+          "kind": "Official record",
+          "key": false,
+          "sources": [
+            {
+              "publisher": "United Nations",
+              "type": "Institutional coverage",
+              "title": "General Assembly resolution demands end to Russian offensive in Ukraine",
+              "published": "2022-03-02",
+              "url": "https://georgia.un.org/en/175673-general-assembly-resolution-demands-end-russian-offensive-ukraine"
+            }
+          ]
+        },
+        {
+          "date": "2022-07-22",
+          "dateType": "event",
+          "title": "Black Sea grain agreement is signed",
+          "summary": "Ukraine, Russia, Türkiye and the UN launched a framework for food exports through three Ukrainian Black Sea ports.",
+          "kind": "Official record",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "United Nations",
+              "type": "Official programme retrospective",
+              "title": "Black Sea Grain Initiative — FAQ",
+              "published": null,
+              "url": "https://www.un.org/en/black-sea-grain-initiative/faq"
+            },
+            {
+              "publisher": "United Nations",
+              "type": "Secretary-General signing remarks",
+              "title": "Secretary-General: Black Sea Grain Initiative a Beacon of Hope, Relief for World",
+              "published": "2022-07-22",
+              "url": "https://india.un.org/en/192870-secretary-general-black-sea-grain-initiative-%E2%80%98-beacon-hope-relief%E2%80%99-world"
+            }
+          ]
+        },
+        {
+          "date": "2023-06-06",
+          "dateType": "event",
+          "title": "Kakhovka dam destruction triggers flooding",
+          "summary": "The dam’s destruction flooded downstream communities and forced urgent evacuations. The UN said it lacked independent information on the circumstances of the destruction.",
+          "kind": "Official assessment",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "WHO",
+              "type": "Official humanitarian assessment",
+              "title": "WHO steps up its humanitarian response in southern Ukraine following the destruction of the Kakhovka Dam",
+              "published": "2023-06-13",
+              "url": "https://www.who.int/europe/news-room/13-06-2023-who-steps-up-its-humanitarian-response-in-southern-ukraine-following-the-destruction-of-the-kakhovka-dam"
+            },
+            {
+              "publisher": "United Nations",
+              "type": "Secretary-General press remarks",
+              "title": "Ukraine: Damage caused to the Nova Kakhovka dam",
+              "published": "2023-06-06",
+              "url": "https://www.youtube.com/watch?v=WZflH-tVJpQ"
+            }
+          ],
+          "note": "This entry describes the destruction and humanitarian consequences without making an independently established attribution of responsibility."
+        },
+        {
+          "date": "2023-07-17",
+          "dateType": "event",
+          "title": "The Black Sea grain framework expires",
+          "summary": "After two renewals, the initiative expired, removing its agreed framework for grain shipments through the corridor.",
+          "kind": "Official record",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "United Nations",
+              "type": "Official programme retrospective",
+              "title": "Black Sea Grain Initiative — FAQ",
+              "published": null,
+              "url": "https://www.un.org/en/black-sea-grain-initiative/faq"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "dateType": "event",
+          "title": "Ukraine opens an incursion into Kursk",
+          "summary": "Ukrainian forces crossed into Russia’s Kursk region, opening a new operation on Russian territory.",
+          "kind": "Attributed report",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "Le Monde",
+              "type": "Reporting; retrospective event date",
+              "title": "Ukrainian army enters Russia in largest-ever incursion",
+              "published": "2024-08-08",
+              "url": "https://www.lemonde.fr/en/international/article/2024/08/08/ukrainian-army-enters-russia-in-largest-ever-incursion_6711481_4.html"
+            }
+          ]
+        },
+        {
+          "date": "2025-05-16",
+          "dateType": "event",
+          "title": "Direct Istanbul talks produce a prisoner-swap agreement",
+          "summary": "Russian and Ukrainian delegations agreed to exchange 1,000 prisoners each, but did not agree to a ceasefire.",
+          "kind": "Attributed report",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "AP News",
+              "type": "Reporting with accounts from both delegations",
+              "title": "Russia-Ukraine peace talks end after less than 2 hours with deal to swap POWs but no ceasefire",
+              "published": "2025-05-16",
+              "url": "https://apnews.com/article/9a75e2069cea6c73d1276a9e53e7d6e5"
+            }
+          ]
+        },
+        {
+          "date": "2026-09-05",
+          "dateType": "event",
+          "title": "US envoys meet Putin in Moscow",
+          "summary": "Steve Witkoff and Jared Kushner held talks with Vladimir Putin. A Kremlin aide described them as useful without announcing a breakthrough.",
+          "kind": "Attributed report",
+          "key": false,
+          "sources": [
+            {
+              "publisher": "Reuters via ThePrint",
+              "type": "Agency reporting; Kremlin account attributed",
+              "title": "Kremlin says Ukraine talks with US envoys were useful; no sign of breakthrough",
+              "published": "2026-09-06",
+              "url": "https://theprint.in/world/kremlin-says-ukraine-talks-with-us-envoys-were-useful-no-sign-of-breakthrough/3034881/"
+            },
+            {
+              "publisher": "Axios",
+              "type": "Reporting",
+              "title": "Witkoff and Kushner meet with Putin about ending Ukraine war",
+              "published": "2026-09-06",
+              "url": "https://www.axios.com/2026/09/05/putin-witkoff-kushner-trump-ukraine-war"
+            }
+          ]
+        }
+      ],
+      "recentCoverageCount": 13,
+      "tracking": {
+        "version": 1,
+        "enabled": true,
+        "rules": [
+          {
+            "all": [
+              "Ukraine"
+            ],
+            "any": [
+              "Russia",
+              "Russian",
+              "war",
+              "ceasefire",
+              "Kyiv",
+              "invasion",
+              "peace talks",
+              "Putin",
+              "Zelensky",
+              "Zelenskiy"
+            ],
+            "none": [
+              "Eurovision",
+              "football championship"
+            ]
+          },
+          {
+            "all": [
+              "Ukrainian"
+            ],
+            "any": [
+              "Russia",
+              "Russian",
+              "war",
+              "ceasefire",
+              "missile",
+              "drone",
+              "attack",
+              "frontline",
+              "peace talks"
+            ],
+            "none": [
+              "Eurovision",
+              "football championship"
+            ]
+          }
+        ]
+      },
+      "previewTruncated": true
+    },
+    {
+      "id": "artemis",
+      "title": "Artemis I: to the Moon and back",
+      "shortTitle": "Artemis I’s lunar journey",
+      "category": "Space & science",
+      "region": "Global",
+      "location": "Earth & Moon",
+      "eyebrow": "BEYOND OUR HORIZON",
+      "description": "The first integrated flight of NASA’s SLS rocket and Orion spacecraft, followed from launch to Pacific splashdown.",
+      "tagline": "One spacecraft. A journey into deep space.",
+      "coverageEnd": "2022-12-11",
+      "image": "assets/artemis.jpg",
+      "imageAlt": "NASA’s Artemis I rocket rising from its launch pad at night on 16 November 2022",
+      "imageCredit": "NASA / Joel Kowsky · public domain · November 2022",
+      "imagePage": "https://commons.wikimedia.org/wiki/File:Launch_of_Artemis_1_(NHQ202211160002)_(cropped).jpg",
+      "limitation": "A completed 2022 mission timeline from NASA’s retrospective. This does not cover later Artemis missions, current programme schedules or independent assessments.",
+      "context": "Artemis I was uncrewed. Its purpose was to test the integrated rocket and spacecraft before later crewed flights. This timeline covers that test mission alone.",
+      "watch": "NASA is both the mission operator and the source. These are official mission records, not independent programme evaluations.",
+      "keywords": "Artemis NASA Moon space science rocket Orion SLS lunar mission launch",
+      "milestones": [
+        {
+          "date": "2022-11-16",
+          "title": "Artemis I lifts off",
+          "summary": "NASA launched its SLS rocket and uncrewed Orion spacecraft from Kennedy Space Center on their integrated flight test.",
+          "kind": "Official record",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "NASA",
+              "type": "Official mission retrospective",
+              "title": "Artemis I Mission Timeline",
+              "published": null,
+              "updated": "2026-09-03",
+              "url": "https://www.nasa.gov/reference/artemis-i-mission-timeline/"
+            }
+          ],
+          "dateType": "event"
+        },
+        {
+          "date": "2022-11-21",
+          "title": "Orion makes its outbound lunar flyby",
+          "summary": "Orion passed about 80 miles above the lunar surface before continuing toward a distant retrograde orbit.",
+          "kind": "Official record",
+          "key": false,
+          "sources": [
+            {
+              "publisher": "NASA",
+              "type": "Official mission retrospective",
+              "title": "Artemis I Mission Timeline",
+              "published": null,
+              "updated": "2026-09-03",
+              "url": "https://www.nasa.gov/reference/artemis-i-mission-timeline/"
+            }
+          ],
+          "dateType": "event"
+        },
+        {
+          "date": "2022-11-25",
+          "title": "A new orbit around the Moon",
+          "summary": "Orion entered distant retrograde orbit, a stable environment for testing its systems in deep space.",
+          "kind": "Official record",
+          "key": false,
+          "sources": [
+            {
+              "publisher": "NASA",
+              "type": "Official mission retrospective",
+              "title": "Artemis I Mission Timeline",
+              "published": null,
+              "updated": "2026-09-03",
+              "url": "https://www.nasa.gov/reference/artemis-i-mission-timeline/"
+            }
+          ],
+          "dateType": "event"
+        },
+        {
+          "date": "2022-12-11",
+          "title": "Splashdown, and a mission complete",
+          "summary": "Orion returned to the Pacific Ocean off Baja California, completing a 25.5-day uncrewed mission around the Moon.",
+          "kind": "Official record",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "NASA",
+              "type": "Official mission retrospective",
+              "title": "Artemis I Mission Timeline",
+              "published": null,
+              "updated": "2026-09-03",
+              "url": "https://www.nasa.gov/reference/artemis-i-mission-timeline/"
+            }
+          ],
+          "dateType": "event"
+        }
+      ],
+      "previewTruncated": false
+    },
+    {
+      "id": "azini-piracy",
+      "title": "Azini hijacking and rescue off Somalia",
+      "shortTitle": "Azini piracy incident",
+      "category": "World affairs",
+      "region": "Africa",
+      "location": "Off Somalia’s northeastern coast",
+      "eyebrow": "A CREW RESCUED AT SEA",
+      "description": "The reported seizure of the Iranian fishing vessel Azini and the Indian Navy operation that freed its crew, with conflicting reported crew totals kept visible.",
+      "tagline": "Track the incident, the rescue and what remains unclear.",
+      "image": "assets/maritime-rescue.svg",
+      "imageAlt": "ThreadNews illustration of a fishing vessel and rescue route at sea; not a photograph or navigational map",
+      "imageCredit": "ThreadNews · original illustration",
+      "imagePage": "#/about",
+      "keywords": "Azini Somalia piracy hijacking Indian Navy Iranian fishing vessel crew maritime security Gulf of Aden",
+      "coverageEnd": "2026-11-03",
+      "limitation": "Two selected milestones from the reported seizure through the 3 November rescue announcement. The crew count differs between an earlier local account and India’s official rescue statement; the discrepancy is unresolved.",
+      "context": "A reported hijacking is distinct from a confirmed piracy attribution by a court or international body. The Indian government’s release establishes its own rescue account; it does not explain why an earlier local report gave a different crew count.",
+      "watch": "Look for an independently reconciled crew list, statements from the vessel owner and crew, and any prosecution or maritime-security inquiry.",
+      "milestones": [
+        {
+          "date": "2026-10-29",
+          "dateType": "event",
+          "title": "Armed pirates seize the Azini off Somalia",
+          "summary": "AP reported that armed pirates seized the Iranian fishing vessel off Somalia. A local Puntland official cited 23 people aboard; the later Indian rescue statement reported 20 crew.",
+          "kind": "Attributed report",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "Associated Press",
+              "type": "Reporting citing a Puntland official; initial crew count",
+              "title": "Somali pirates seize Iranian fishing vessel off coast of Somalia",
+              "published": "2026-10-30",
+              "url": "https://apnews.com/article/dd4d404235781a3b871668c353540e4c"
+            }
+          ],
+          "note": "The initial count of 23 came from a local official. India’s later statement says 20 people were rescued; no linked source reconciles the figures."
+        },
+        {
+          "date": "2026-11-03",
+          "dateType": "publication",
+          "title": "India says Navy freed the vessel and rescued 20 crew",
+          "summary": "India’s Defence Ministry said an operation lasting more than 48 hours freed the Azini and its 20 crew without injuries. AP reported the rescue and earlier local count; the difference remains unexplained.",
+          "kind": "Official account and reporting",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "Press Information Bureau / Ministry of Defence",
+              "type": "Official Indian rescue statement",
+              "title": "Indian Navy successfully rescues hijacked fishing vessel Azini off the coast of Somalia",
+              "published": "2026-11-03",
+              "url": "https://www.pib.gov.in/PressReleseDetailm.aspx?PRID=2331872&lang=1&reg=3"
+            },
+            {
+              "publisher": "Associated Press",
+              "type": "Reporting on the rescue and Ministry of Defence account",
+              "title": "Indian navy rescues 20 crew from Iranian fishing boat hijacked off Somalia",
+              "published": "2026-11-03",
+              "url": "https://apnews.com/article/126cc7e5af41ac328a3a51fd340c12a3"
+            }
+          ],
+          "note": "The 20-person rescue count is the Indian government’s stated figure. The earlier 23-person local count remains unresolved."
+        }
+      ],
+      "tracking": {
+        "version": 1,
+        "enabled": true,
+        "rules": [
+          {
+            "all": [
+              "Azini"
+            ]
+          },
+          {
+            "all": [
+              "Somalia"
+            ],
+            "any": [
+              "hijacked fishing vessel",
+              "piracy",
+              "Indian Navy"
+            ]
+          }
+        ]
+      },
+      "previewTruncated": false
+    },
+    {
+      "id": "air-india-171",
+      "title": "Air India AI171: the crash and investigation",
+      "shortTitle": "Air India AI171 investigation",
+      "category": "World affairs",
+      "region": "Asia",
+      "location": "Ahmedabad, India",
+      "eyebrow": "AN INVESTIGATION, IN CONTEXT",
+      "description": "Six significant developments in the Ahmedabad crash and the publicly documented investigation, with early reports separated from later records.",
+      "tagline": "Following the evidence, without assigning blame.",
+      "image": "assets/air-india.svg",
+      "imageAlt": "ThreadNews illustration of an aircraft and dated investigation records; not a photograph of the crash",
+      "imageCredit": "ThreadNews · original illustration",
+      "imagePage": "#/about",
+      "keywords": "Air India AI171 flight 171 Ahmedabad Boeing 787 crash AAIB investigation pilots fuel switches safety",
+      "coverageEnd": "2026-07-28",
+      "checkedThrough": "2026-11-04",
+      "limitation": "Six event milestones through 28 July 2026. AAIB’s public index was checked again on 4 November: the checked page still lists the June 2026 interim statement, and no public AI171 final report was located. This does not establish whether a confidential draft exists.",
+      "context": "A preliminary report records evidence and can change. Fuel-switch transitions alone do not establish who acted, why, or the final cause. Public records reviewed here do not support assigning blame to either pilot.",
+      "watch": "A published AAIB final report and its safety findings would change this account. Confidential court drafts, projected deadlines and unnamed-source allegations are not a public final determination.",
+      "milestones": [
+        {
+          "date": "2025-06-12",
+          "dateType": "event",
+          "title": "Flight AI171 crashes shortly after take-off",
+          "summary": "The London-bound Boeing 787 crashed in Ahmedabad. Air India confirmed 241 onboard deaths and one surviving passenger as early reports evolved.",
+          "kind": "Attributed report",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "Associated Press",
+              "type": "Contemporaneous reporting quoting Air India",
+              "title": "Airline confirms one survivor after Ahmedabad crash",
+              "published": "2025-06-12",
+              "url": "https://apnews.com/article/cad8dad5cd0e92795b03d357404af5f8"
+            },
+            {
+              "publisher": "Reuters / ThePrint",
+              "type": "Contemporaneous initial reporting",
+              "title": "Initial report of the Ahmedabad crash",
+              "published": "2025-06-12",
+              "url": "https://theprint.in/world/more-than-200-killed-as-air-india-plane-crashes-after-take-off-in-ahmedabad/2655716/"
+            }
+          ],
+          "note": "Early ground-fatality totals were provisional. The later AAIB table records 260 deaths in total; do not retain early estimates as the settled count."
+        },
+        {
+          "date": "2025-06-25",
+          "dateType": "event",
+          "title": "Investigators download the front recorder’s data",
+          "summary": "The aviation ministry said the front recorder’s memory was accessed and downloaded at AAIB’s Delhi laboratory, enabling voice and flight-data analysis.",
+          "kind": "Official record",
+          "key": false,
+          "sources": [
+            {
+              "publisher": "Ministry of Civil Aviation / PIB",
+              "type": "Investigation progress statement",
+              "title": "Recorder recovery and data-extraction status",
+              "published": "2025-06-26",
+              "url": "https://www.pib.gov.in/Pressreleaseshare.aspx?PRID=2139785&lang=2&reg=48"
+            }
+          ],
+          "note": "The ministry’s statement was published on 26 June and dates the successful download to 25 June. Recorder recovery and a cause determination are different steps."
+        },
+        {
+          "date": "2025-07-12",
+          "dateType": "publication",
+          "title": "Preliminary report establishes a factual baseline",
+          "summary": "AAIB recorded 260 fatalities: 241 onboard and 19 on the ground. Recorder data showed both fuel switches changing to cutoff, then back to run.",
+          "kind": "Official record",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "Aircraft Accident Investigation Bureau",
+              "type": "Preliminary safety investigation report",
+              "title": "AI171 preliminary accident report",
+              "published": "2025-07-12",
+              "url": "https://aaib.gov.in/Reports/2025/Accident/Preliminary%20Report%20VT-ANB.pdf"
+            }
+          ],
+          "note": "The preliminary report does not identify who moved the switches or why, establish a final cause, or assign blame. The 15-page report was read; its fatality table was checked visually."
+        },
+        {
+          "date": "2026-02-12",
+          "dateType": "publication",
+          "title": "AAIB rejects claims that the probe is finalised",
+          "summary": "AAIB described reports that its investigation had been finalised as incorrect and speculative, saying work remained ongoing and conclusions would follow a final report.",
+          "kind": "Official assessment",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "AAIB / Ministry of Civil Aviation / PIB",
+              "type": "Investigation authority clarification",
+              "title": "AAIB says investigation remains ongoing",
+              "published": "2026-02-12",
+              "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2227252&lang=1&reg=6"
+            }
+          ],
+          "note": "This is an official clarification at that date. It does not establish whether a later draft was submitted confidentially."
+        },
+        {
+          "date": "2026-06-12",
+          "dateType": "publication",
+          "title": "Anniversary statement says integrated analysis continues",
+          "summary": "AAIB said aircraft systems, recorders, engine components, maintenance and human factors remained under examination; a final report required investigation and international consultation.",
+          "kind": "Official assessment",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "AAIB / Ministry of Civil Aviation / PIB",
+              "type": "One-year interim investigation statement",
+              "title": "AI171 investigation progress statement",
+              "published": "2026-06-12",
+              "url": "https://www.pib.gov.in/newsite/erelcontent.aspx?lang=2&reg=48&relid=289951"
+            }
+          ],
+          "note": "The authority reiterated that safety investigations aim to prevent accidents, not apportion blame or liability."
+        },
+        {
+          "date": "2026-07-27",
+          "dateType": "event",
+          "title": "Ministry tells Rajya Sabha AI171 investigation remains in progress",
+          "summary": "In a written answer to Rajya Sabha Unstarred Question 806, the Civil Aviation Ministry said the AI171 investigation was ongoing, all probable causes and contributing factors were being investigated, and the final report would be published after the investigation. It gave no predictable completion date. The answer also reported no abnormality in an OEM examination of a fuel-control-switch locking mechanism after a separate February 2026 grounding, while inspection of the complete Thrust Control Module remained underway; that test is not a finding on AI171's cause.",
+          "kind": "Official government response",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "Government of India, Ministry of Civil Aviation / Rajya Sabha",
+              "type": "Official parliamentary written answer",
+              "title": "Unstarred Question No. 806: Delay in publication of AAIB final report on AI-171 crash",
+              "published": "2026-07-27",
+              "url": "https://sansad.in/getFile/annex/271/AU806_CaJzqx.pdf?source=pqars"
+            }
+          ],
+          "note": "The answer makes no finding about pilot culpability or exoneration. Its fuel-control-switch test concerns airworthiness testing following a separate February 2026 grounding; it must not be presented as a causal finding for AI171. The latest AAIB status statement located in this review is its 12 June 2026 interim statement, which said integrated analysis and any necessary specialist examinations were continuing."
+        },
+        {
+          "date": "2026-07-28",
+          "dateType": "event",
+          "title": "Court hears an October target for a draft report",
+          "summary": "PTI reported that the government told the Supreme Court a draft final report was expected in early October and would be submitted under seal.",
+          "kind": "Attributed report",
+          "key": false,
+          "sources": [
+            {
+              "publisher": "PTI / ThePrint",
+              "type": "Court-hearing reporting",
+              "title": "Court hears forecast for an AI171 draft report",
+              "published": "2026-07-28",
+              "url": "https://theprint.in/india/draft-final-probe-report-of-aaib-in-ahmedabad-plane-crash-will-be-filed-in-october-sc-told/2998916/"
+            }
+          ],
+          "note": "A forecast for a confidential draft is not publication of a final investigation report. No conclusion about pilot intent or blame follows from this procedural update."
+        }
+      ],
+      "statusCheck": {
+        "date": "2026-11-04",
+        "url": "https://aaib.gov.in/whatsnew.html",
+        "publisher": "Aircraft Accident Investigation Bureau",
+        "method": "public-index-review",
+        "observation": "AAIB’s public What’s New page was reviewed on 4 November 2026. It listed the June 2026 interim statement; the preliminary VT-ANB report was also checked. A public AI171 final report was not located in these records. This status check is not a new accident development and does not establish whether a confidential draft was filed in court.",
+        "sources": [
+          {
+            "publisher": "Aircraft Accident Investigation Bureau",
+            "type": "Official public notices index",
+            "title": "AAIB What’s New",
+            "url": "https://aaib.gov.in/whatsnew.html"
+          },
+          {
+            "publisher": "Aircraft Accident Investigation Bureau",
+            "type": "Official preliminary report",
+            "title": "Preliminary Report VT-ANB",
+            "published": "2025-07-12",
+            "url": "https://aaib.gov.in/Reports/2025/Accident/Preliminary%20Report%20VT-ANB.pdf"
+          },
+          {
+            "publisher": "Aircraft Accident Investigation Bureau",
+            "type": "Official interim investigation statement",
+            "title": "AI171 interim statement",
+            "published": "2026-06-12",
+            "url": "https://aaib.gov.in/What%27s%20New%20Assets/AAIB%20Interim%20Statement.pdf"
+          }
+        ]
+      },
+      "tracking": {
+        "version": 1,
+        "enabled": true,
+        "rules": [
+          {
+            "all": [
+              "Air India"
+            ],
+            "any": [
+              "AI171",
+              "AI-171",
+              "flight 171",
+              "VT-ANB",
+              "Ahmedabad crash"
+            ]
+          },
+          {
+            "all": [
+              "VT-ANB"
+            ]
+          }
+        ]
+      },
+      "previewTruncated": false
+    },
+    {
+      "id": "murasu",
+      "title": "Cyclone Murasu in Andhra Pradesh",
+      "shortTitle": "Cyclone Murasu",
+      "category": "Climate",
+      "region": "Asia",
+      "location": "Andhra Pradesh, India",
+      "eyebrow": "A STORM, TRACKED THROUGH LANDFALL",
+      "description": "The storm’s formation, landfall near Ongole, weakening and reported impacts, with IMD forecasts separated from casualty reports.",
+      "tagline": "Follow the official storm bulletins and the reported impact.",
+      "image": "assets/cyclone-murasu.svg",
+      "imageAlt": "ThreadNews illustration of a coastal storm track; not a satellite image or local scene photograph",
+      "imageCredit": "ThreadNews · original illustration",
+      "imagePage": "#/about",
+      "keywords": "Cyclone Murasu Andhra Pradesh Ongole IMD landfall storm surge flooding Prakasam Nellore Bapatla",
+      "coverageEnd": "2026-11-04",
+      "limitation": "Five selected developments from the IMD’s storm classification through the 4 November post-landfall update. Casualty and damage reporting was still developing; this is not a final loss assessment.",
+      "context": "IMD bulletins describe the storm’s classification and forecast track. Local authorities and reporters describe effects on communities. Forecast wind speeds, observed landfall conditions, casualties and crop losses are different measures and may be revised.",
+      "watch": "Check each IMD bulletin’s issue time, the storm’s classification at that time, district-level rainfall and river alerts, evacuation status, and subsequent government damage assessments.",
+      "milestones": [
+        {
+          "date": "2026-11-01",
+          "dateType": "event",
+          "title": "A depression strengthens into Cyclone Murasu",
+          "summary": "IMD bulletins record the system’s development and naming as Cyclone Murasu over the Bay of Bengal. Classification and forecast strength are time-stamped by each bulletin.",
+          "kind": "Official meteorological record",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "India Meteorological Department",
+              "type": "Official cyclone bulletin archive",
+              "title": "Cyclone Murasu bulletins, 1 November 2026",
+              "published": "2026-11-01",
+              "url": "https://mausam.imd.gov.in/responsive/cyclone_bulletin_archive.php?id=1"
+            }
+          ],
+          "note": "This is an official forecast record, not an observation of impact on land."
+        },
+        {
+          "date": "2026-11-02",
+          "dateType": "event",
+          "title": "IMD escalates warnings as Murasu approaches the coast",
+          "summary": "IMD classified Murasu as a severe cyclonic storm and issued coastal warnings ahead of landfall. Forecast wind and surge figures describe risk, not measured damage.",
+          "kind": "Official forecast and warning",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "India Meteorological Department",
+              "type": "Official cyclone bulletin archive",
+              "title": "Severe Cyclonic Storm Murasu bulletins",
+              "published": "2026-11-02",
+              "url": "https://mausam.imd.gov.in/responsive/cyclone_bulletin_archive.php?id=1"
+            },
+            {
+              "publisher": "Andhra Pradesh State Disaster Management Authority",
+              "type": "Official warning and live status dashboard",
+              "title": "Cyclone information and alerts",
+              "published": "2026-11-02",
+              "url": "https://apsdmagis.ap.gov.in/weather-watch/cyclone"
+            }
+          ],
+          "note": "Forecasts and alerts are time-sensitive. They do not establish eventual casualties or damage."
+        },
+        {
+          "date": "2026-11-03",
+          "dateType": "event",
+          "title": "Murasu makes landfall near Ongole",
+          "summary": "AP reported landfall near Ongole in Prakasam district with IMD-reported sustained winds of 100–110 kph. The report noted evacuations and heavy rain; a final damage assessment was not yet available.",
+          "kind": "Attributed report",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "Associated Press",
+              "type": "Reporting with IMD storm data",
+              "title": "Heavy rain falls in eastern India after second cyclone in a week",
+              "published": "2026-11-03",
+              "url": "https://apnews.com/article/c8d1899f4344625f63d6d456dc3805fb"
+            },
+            {
+              "publisher": "India Meteorological Department",
+              "type": "Official cyclone bulletin archive",
+              "title": "Murasu landfall and post-landfall bulletins",
+              "published": "2026-11-03",
+              "url": "https://mausam.imd.gov.in/responsive/cyclone_bulletin_archive.php?id=1"
+            }
+          ],
+          "note": "The landfall date is 3 November. AP’s article was published the same day; its wind figure is attributed to IMD."
+        },
+        {
+          "date": "2026-11-03",
+          "dateType": "publication",
+          "title": "IMD downgrades Murasu as it moves inland",
+          "summary": "IMD’s later bulletin downgraded Murasu from a severe cyclonic storm to a cyclonic storm over coastal Andhra Pradesh. The forecast status changed as the system weakened.",
+          "kind": "Official meteorological update",
+          "key": false,
+          "sources": [
+            {
+              "publisher": "Andhra Pradesh State Disaster Management Authority",
+              "type": "Dashboard reproducing IMD bulletin updates",
+              "title": "Cyclone Murasu status and bulletin archive",
+              "published": "2026-11-03",
+              "url": "https://apsdmagis.ap.gov.in/weather-watch/cyclone"
+            },
+            {
+              "publisher": "The Indian Express",
+              "type": "Reporting on IMD updates",
+              "title": "Cyclone Murasu weakens, 2 dead in Andhra Pradesh; Odisha on alert",
+              "published": "2026-11-04",
+              "url": "https://indianexpress.com/article/india/cyclone-murasu-andhra-pradesh-odisha-impact-10949483/"
+            }
+          ],
+          "note": "The event is the official downgrade; the linked Indian Express report was published the following day and also carries casualty reporting."
+        },
+        {
+          "date": "2026-11-04",
+          "dateType": "publication",
+          "title": "Post-landfall bulletin and first fatality reports emerge",
+          "summary": "The IMD archive records a weakening remnant; Indian Express reported two deaths and heavy rain. The death count is attributed to the report and remains subject to later state assessments.",
+          "kind": "Official update and attributed reporting",
+          "key": true,
+          "sources": [
+            {
+              "publisher": "India Meteorological Department",
+              "type": "Official post-landfall bulletin archive",
+              "title": "Deep depression / remnant of Severe Cyclonic Storm Murasu",
+              "published": "2026-11-04",
+              "url": "https://mausam.imd.gov.in/responsive/cyclone_bulletin_archive.php?id=1"
+            },
+            {
+              "publisher": "The Indian Express",
+              "type": "Reporting on local impacts and official updates",
+              "title": "Cyclone Murasu weakens, 2 dead in Andhra Pradesh; Odisha on alert",
+              "published": "2026-11-04",
+              "url": "https://indianexpress.com/article/india/cyclone-murasu-andhra-pradesh-odisha-impact-10949483/"
+            }
+          ],
+          "note": "The IMD source supports storm status; the two deaths are from news reporting and should not be represented as a final state-wide toll."
+        }
+      ],
+      "tracking": {
+        "version": 1,
+        "enabled": true,
+        "rules": [
+          {
+            "all": [
+              "Cyclone Murasu"
+            ]
+          },
+          {
+            "all": [
+              "Murasu"
+            ],
+            "any": [
+              "Andhra Pradesh",
+              "IMD",
+              "Ongole"
+            ]
+          }
+        ]
+      },
+      "previewTruncated": false
+    }
+  ],
+  "meta": {
+    "asOf": "2026-11-04",
+    "recentStart": "2026-09-03",
+    "selectionNote": "Public timelines are previews. Each shows up to the first 10 selected milestones in chronological order."
+  }
+}

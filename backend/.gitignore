@@ -1,0 +1,9 @@
+node_modules/
+.wrangler/
+.wrangler-config/
+.build/
+.dev.vars
+.paypal-sandbox-plan-ids.json
+.env*
+!.env.example
+seed.sql
