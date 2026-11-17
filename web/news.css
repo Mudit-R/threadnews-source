@@ -60,3 +60,8 @@
 .updated-timelines .icon { width: 15px; height: 15px; }
 @media (max-width: 1060px) { .updated-timeline-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
 @media (max-width: 430px) { .updated-timeline-grid { grid-template-columns: minmax(0,1fr); } .updated-timeline-grid a { min-height: 0; } }
+
+@media (max-width: 620px) {
+  .footer { flex-wrap: wrap; gap: 11px 16px; }
+  .footer button { margin-inline-start: 0; }
+}
