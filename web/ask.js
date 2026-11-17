@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const maxLength = 280;
+  const maxLength = 240;
   const escape = value => String(value ?? '').replace(/[&<>"']/g, char => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
   })[char]);
@@ -66,19 +66,40 @@
     })).filter(claim => claim.text && claim.citations.length);
     const answered = data.status === 'answered' && claims.length > 0;
     const title = answered ? 'The answer' : data.status === 'insufficient' ? 'Limited evidence for this question' : 'Explore the matching sources';
-    const provider = data.provider === 'gemini' ? 'Gemini' : data.provider === 'workers-ai' ? 'Workers AI' : '';
-    const titleMarkup = `<div class="eyebrow">${answered ? escape(provider ? `AI answer · ${provider}` : 'AI answer') : 'Source search'}</div>
-      <h2 id="ask-answer-heading" tabindex="-1">${title}</h2><p class="ask-result-question">${escape(question)}</p>`;
+    const citedIds = new Set(claims.flatMap(claim => claim.citations));
+    const titleMarkup = `<h2 id="ask-answer-heading" tabindex="-1">${title}</h2><p class="ask-result-question">${escape(question)}</p>`;
     const body = answered ? `<ol class="ask-claims">${claims.map(claim =>
       `<li><p>${escape(claim.text)} ${claim.citations.map(id =>
         `<a class="ask-citation" href="#ask-source-${id}" data-citation="${id}" aria-label="View evidence ${id}">${id}</a>`
       ).join(' ')}</p></li>`).join('')}</ol>
-      <p class="ask-note">AI-generated from the records shown here. Follow the citations to check the wording and dates.</p>`
-      : `<p class="ask-note">${data.status === 'insufficient'
-        ? 'Try adding a country, event name or year to make the question more specific.'
-        : 'An AI answer is unavailable for this request. You can inspect the retrieved records below.'}</p>`;
+      <p class="ask-note">AI-generated from ${citedIds.size} cited ${citedIds.size === 1 ? 'record' : 'records'}. Follow a citation to inspect its source.</p>
+      ${navigator.clipboard ? '<button type="button" class="button ask-copy" data-ask-copy>Copy answer with sources</button><span class="ask-copy-status" role="status"></span>' : ''}`
+      : `<p class="ask-note">${escape(data.message || 'An AI answer is unavailable for this request.')}${data.status === 'insufficient'
+        ? ' Try adding a country, event name or year.'
+        : ''}</p>`;
+    const cited = evidence.filter(item => citedIds.has(item.id));
+    const related = evidence.filter(item => !citedIds.has(item.id));
+    const sources = answered
+      ? `${cited.map(evidenceCard).join('')}${related.length ? `<details class="ask-related"><summary>${related.length} other retrieved ${related.length === 1 ? 'record' : 'records'}</summary>${related.map(evidenceCard).join('')}</details>` : ''}`
+      : evidence.map(evidenceCard).join('');
     panel.innerHTML = `<div class="ask-answer">${titleMarkup}${body}</div>
-      ${evidence.length ? `<aside class="ask-evidence" aria-label="Evidence"><header><h2>Evidence</h2><span>${evidence.length} records</span></header>${evidence.map(evidenceCard).join('')}</aside>` : ''}`;
+      ${evidence.length ? `<aside class="ask-evidence" aria-label="Evidence"><header><h2>${answered ? 'Cited sources' : 'Matching sources'}</h2><span>${answered ? cited.length : evidence.length} ${(answered ? cited.length : evidence.length) === 1 ? 'record' : 'records'}</span></header>${sources}</aside>` : ''}`;
+    panel.querySelector('[data-ask-copy]')?.addEventListener('click', async () => {
+      const citations = cited.map(item => {
+        const direct = Array.isArray(item.links) ? item.links.find(link => sourceURL(link?.url)) : null;
+        const record = recordURL(item.href);
+        const url = direct?.url || (record ? new URL(item.href, location.origin).href : '');
+        return `[${item.id}] ${item.title}${url ? `\n${url}` : ''}`;
+      });
+      const lines = claims.map(claim => `${claim.text} ${claim.citations.map(id => `[${id}]`).join(' ')}`);
+      const status = panel.querySelector('.ask-copy-status');
+      try {
+        await navigator.clipboard.writeText([question, lines.join('\n'), citations.join('\n\n')].join('\n\n'));
+        if (status) status.textContent = 'Copied.';
+      } catch {
+        if (status) status.textContent = 'Clipboard unavailable.';
+      }
+    });
     panel.querySelector('#ask-answer-heading').focus();
   }
 
@@ -98,7 +119,7 @@
         <label for="ask-question">Your question</label>
         <textarea id="ask-question" rows="2" maxlength="${maxLength}" minlength="8" required placeholder="What happened, and how did we get here?" aria-describedby="ask-input-note"></textarea>
         <div class="ask-form-bottom">
-          <span id="ask-input-note">${scope.countryCode ? 'Answers use official economic observations.' : 'Questions are sent to an AI provider. Keep personal details out.'}</span>
+          <span id="ask-input-note">Questions are sent to an AI provider. Keep personal details out.</span>
           <button type="submit" class="button primary">Find an answer <span aria-hidden="true">→</span></button>
         </div>
       </form>
@@ -126,6 +147,8 @@
       const item = document.getElementById('ask-source-' + id);
       if (!item) return;
       event.preventDefault();
+      results.querySelector('.ask-source.is-cited-target')?.classList.remove('is-cited-target');
+      item.classList.add('is-cited-target');
       item.focus({ preventScroll: true });
       item.scrollIntoView({ block: 'nearest' });
     });
@@ -153,6 +176,10 @@
         });
         if (response.status === 429) {
           status.textContent = 'Too many requests. Wait a minute and try again.';
+          return;
+        }
+        if (response.status === 400) {
+          status.textContent = 'Enter a question between eight and 240 characters.';
           return;
         }
         if (!response.ok) throw new Error('Unable to load an answer');

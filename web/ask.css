@@ -42,6 +42,12 @@
 .ask-source .ask-source-note { font-size: 11px; }
 .ask-source-links { margin-top: 9px; gap: 6px 12px; }
 .ask-source-links a { color: #214c3f; font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+.ask-source.is-cited-target { padding-inline: 10px; border-radius: 6px; background: #eef5e6; }
+.ask-related { margin-top: 16px; border-top: 1px solid #e6ebe2; }
+.ask-related > summary { padding: 14px 0 2px; cursor: pointer; font-size: 13px; font-weight: 700; color: var(--green); }
+.ask-related > .ask-source:first-of-type { margin-top: 12px; }
+.ask-copy { margin-top: 16px; }
+.ask-copy-status { margin-left: 9px; color: #425c4c; font-size: 13px; }
 .ask-context-link { display: inline-flex; align-items: center; gap: 7px; }
 .ask-context-link .icon { width: 15px; height: 15px; }
 .ask-economy-link { margin-top: 16px; }

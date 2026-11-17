@@ -596,9 +596,16 @@ export async function handleContent(request, env, ctx, { canAccessArchive = fals
       if(!Number.isInteger(limit)||limit<1||limit>100)fail('Limit must be between 1 and 100');
       let where='',args=[];
       if(params.has('cursor')){const cursor=decodeCursor(params.get('cursor'));if(cursor.scope!=='events'||date(cursor.at,'cursor date',new Date())!==cursor.at)fail('Invalid event cursor');identity(cursor.id);where=' WHERE (updated_at<? OR (updated_at=? AND id>?))';args=[cursor.at,cursor.at,cursor.id];}
-      const [result,count]=await Promise.all([env.DB.prepare(`SELECT id,title,category,region,coverage_end,updated_at,json_array_length(payload_json,'$.milestones') AS milestone_count FROM event_payloads${where} ORDER BY updated_at DESC,id LIMIT ?`).bind(...args,limit+1).all(),env.DB.prepare('SELECT COUNT(*) AS total FROM event_payloads').first()]);
+      const [result,count]=await Promise.all([env.DB.prepare(`SELECT id,title,category,region,coverage_end,updated_at,
+        json_extract(payload_json,'$.shortTitle') AS short_title,
+        json_extract(payload_json,'$.description') AS description,
+        json_extract(payload_json,'$.keywords') AS keywords,
+        json_array_length(payload_json,'$.milestones') AS milestone_count
+        FROM event_payloads${where} ORDER BY updated_at DESC,id LIMIT ?`).bind(...args,limit+1).all(),env.DB.prepare('SELECT COUNT(*) AS total FROM event_payloads').first()]);
       const records=result.results||[],hasMore=records.length>limit,page=records.slice(0,limit),last=page.at(-1);
-      return json({ events: page.map(r => ({ id: r.id, title: r.title, category: r.category, region: r.region, coverageEnd: r.coverage_end, updatedAt: r.updated_at, milestoneCount: r.milestone_count })), meta: { total: count?.total||0, mode: 'database',hasMore,nextCursor:hasMore&&last?encodeCursor({v:1,scope:'events',at:last.updated_at,id:last.id}):null } });
+      return json({ events: page.map(r => ({ id: r.id, title: r.title, shortTitle: r.short_title || r.title,
+        description: plainText(r.description, 500), keywords: parse(r.keywords, []), category: r.category, region: r.region,
+        coverageEnd: r.coverage_end, updatedAt: r.updated_at, milestoneCount: r.milestone_count })), meta: { total: count?.total||0, mode: 'database',hasMore,nextCursor:hasMore&&last?encodeCursor({v:1,scope:'events',at:last.updated_at,id:last.id}):null } });
     }
     const id = identity(decodeURIComponent(path.slice('/api/events/'.length)), 'event id');
     const row = await env.DB.prepare('SELECT payload_json FROM event_payloads WHERE id=?').bind(id).first();

@@ -26,3 +26,42 @@
 .timeline-chapters button:hover, .timeline-chapters button:focus-visible { background: #e1ead8; }
 .timeline-chapters button span { color: #466157; font-size: 11px; }
 .event-picture img[src*="jensen-huang-2024"] { object-position: center 30%; }
+.event-heading.event-heading--text { grid-template-columns: minmax(0, 1fr); }
+.event-heading--text > div { max-width: 820px; }
+
+.timeline-latest {
+  margin-bottom: 30px;
+  padding: clamp(15px, 3vw, 24px);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #f4f7ee;
+}
+.timeline-latest h2 {
+  margin: 0 0 10px;
+  color: var(--dark);
+  font: 400 clamp(24px, 3vw, 31px)/1.15 var(--serif);
+}
+.timeline-latest ol { margin: 0; padding: 0; list-style: none; }
+.timeline-latest li + li { border-top: 1px solid var(--line); }
+.timeline-latest button {
+  display: grid;
+  grid-template-columns: minmax(95px, .3fr) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  padding: 9px 5px;
+  text-align: start;
+  border-radius: 5px;
+  color: var(--green);
+}
+.timeline-latest button:hover, .timeline-latest button:focus-visible { background: #e5eddb; }
+.timeline-latest time { color: #4b5e54; font-size: 12px; }
+.timeline-latest strong { overflow-wrap: anywhere; }
+.timeline-latest-arrow .icon { width: 17px; height: 17px; }
+@media (max-width: 560px) {
+  .timeline-latest button { grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; }
+  .timeline-latest time { grid-column: 1; }
+  .timeline-latest strong { grid-column: 1; }
+  .timeline-latest-arrow { grid-column: 2; grid-row: 1 / span 2; }
+}

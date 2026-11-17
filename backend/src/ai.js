@@ -1,10 +1,11 @@
 import { sameOriginMutation } from './auth.js';
-import { isDailyEvidencePublic, retrieveArticleSummaryEvidence, retrieveDailyEvidence, retrieveEvidence, retrieveStoryChanges } from './ai-evidence.js';
+import { isDailyEvidencePublic, retrieveArticleSummaryEvidence, retrieveDailyEvidence, retrieveEvidenceCandidates, retrieveStoryChanges } from './ai-evidence.js';
 import { generateClaims } from './ai-provider.js';
+import { rerankEvidence, selectEvidence } from './ai-retrieval.js';
 
 const LIMIT = 60;
 const MAX_BODY = 2048;
-const CACHE_VERSION = '2';
+const CACHE_VERSION = '3';
 const REASONS = {
   no_evidence: 'No closely matching public sources were found.',
   no_provider: 'AI is unavailable. Here are the sources retrieved for your question.',
@@ -118,19 +119,24 @@ export async function handleAsk(request, env, ctx) {
   if (blocked) return blocked;
   const input = await readInput(request);
   if (!input) return reply({ error: 'invalid_question' }, 400);
-  const evidence = await retrieveEvidence(env, input);
-  if (!evidence.length) return fallback('no_evidence', []);
-  if (!env.GEMINI_API_KEY && !env.AI) return fallback('no_provider', evidence);
+  const candidates = await retrieveEvidenceCandidates(env, input);
+  const sources = selectEvidence(candidates);
+  if (!sources.length) return fallback('no_evidence', []);
+  if (!env.GEMINI_API_KEY && !env.AI) return fallback('no_provider', sources);
   const cache = globalThis.caches?.default;
   const cacheKey = cache ? new Request(new URL('/api/ai/cache/' + await digest(JSON.stringify([
-    CACHE_VERSION, Boolean(env.GEMINI_API_KEY), input, evidence
+    CACHE_VERSION, Boolean(env.GEMINI_API_KEY), Boolean(env.AI), input, candidates
   ])), request.url)) : null;
   const cached = cache && await cache.match(cacheKey);
   if (cached) return reply(await cached.json());
-  if (!await reserve(env.DB)) return fallback('daily_budget', evidence);
+  if (!await reserve(env.DB)) return fallback('daily_budget', sources);
+  const { candidates: ranked, rankedByModel } = await rerankEvidence(env.AI, input.question, candidates);
+  const evidence = selectEvidence(ranked);
   const answer = await generateClaims(env, input.question, evidence);
   if (!answer) return fallback('incomplete_answer', evidence);
-  const output = { status: 'answered', ...answer, evidence };
+  const output = { status: 'answered', ...answer, evidence, retrieval: {
+    candidates: candidates.length, semanticRerank: rankedByModel
+  } };
   if (cache && ctx?.waitUntil) ctx.waitUntil(cache.put(cacheKey, Response.json(output, {
     headers: { 'cache-control': 'public, max-age=3600' }
   })).catch(() => {}));

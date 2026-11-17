@@ -47,3 +47,16 @@
 .article-summary-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 .article-summary-actions [hidden], .article-summary-actions [role="status"]:empty { display: none; }
 .article-summary-actions [role="status"] { flex-basis: 100%; color: #456155; font-size: 12px; }
+
+.updated-timelines { margin: 30px 0; }
+.updated-timelines header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; margin: 0 0 11px; }
+.updated-timelines h2 { color: var(--dark); font: 400 clamp(24px, 3vw, 32px)/1.12 var(--serif); }
+.updated-timelines header a { display: inline-flex; align-items: center; gap: 7px; color: var(--green); font-size: 13px; font-weight: 700; }
+.updated-timeline-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; }
+.updated-timeline-grid a { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 6px; align-items: end; min-height: 82px; padding: 12px 13px; border: 1px solid var(--line); border-radius: 10px; background: #f4f7ee; color: var(--green); }
+.updated-timeline-grid a:hover, .updated-timeline-grid a:focus-visible { background: #e9f0e1; }
+.updated-timeline-grid time { grid-column: 1 / -1; color: #4b5e54; font-size: 12px; }
+.updated-timeline-grid strong { overflow-wrap: anywhere; line-height: 1.4; }
+.updated-timelines .icon { width: 15px; height: 15px; }
+@media (max-width: 1060px) { .updated-timeline-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media (max-width: 430px) { .updated-timeline-grid { grid-template-columns: minmax(0,1fr); } .updated-timeline-grid a { min-height: 0; } }

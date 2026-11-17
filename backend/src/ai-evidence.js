@@ -1,16 +1,9 @@
 import { buildContentQuery, publicTimeline } from './content.js';
 import { hasPaidAccess } from './paypal.js';
+import { dateRelevance, matches, questionFeatures, relevantPassage, selectEvidence, shortlistEvidence, words } from './ai-retrieval.js';
 
-const STOP = new Set('the and what when how why who where which are was were has have had did does can could would should about into this that from with for will tell show give me of in a an it is to on at latest recent new changed change last please compare versus between since update updates'.split(' '));
 const asList = value => Array.isArray(value) ? value : [];
 const parse = (value, fallback) => { try { return JSON.parse(value) ?? fallback; } catch { return fallback; } };
-const words = text => (String(text).normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase().match(/[a-z0-9]{2,}/g) || []);
-const stem = word => word.length > 4 && word.endsWith('s') ? word.slice(0, -1) : word;
-const termsFor = question => [...new Set(words(question).filter(word => !STOP.has(word)).map(stem))].slice(0, 10);
-const hits = (haystack, terms) => {
-  const tokens = new Set(words(haystack).map(stem));
-  return terms.reduce((sum, word) => sum + Number(tokens.has(word)), 0);
-};
 const text = (value, size) => String(value ?? '').replace(/\s+/g, ' ').trim().slice(0, size);
 
 function linksFor(sources) {
@@ -32,46 +25,45 @@ function evidence({ title, excerpt, date, kind, href, sources, note = '' }) {
   return { title: text(title, 200), excerpt: text(excerpt, 400), date: text(date, 24), kind, href, links, note: text(note, 180) };
 }
 
-function milestoneEvidence(event, moment, note = '') {
+function milestoneEvidence(event, moment, note = '', groups = []) {
   return evidence({
-    title: moment.title, excerpt: moment.summary, date: moment.datePrecision === 'month' ? moment.date.slice(0, 7) : moment.date,
+    title: moment.title, excerpt: relevantPassage(moment.summary, groups), date: moment.datePrecision === 'month' ? moment.date.slice(0, 7) : moment.date,
     kind: moment.dateType === 'publication' ? 'Timeline · report date' : 'Timeline · event date',
     href: '/threads/' + encodeURIComponent(event.id), sources: asList(moment.sources), note
   });
 }
 
-function timelineEvidence(rows, question, terms, eventId, canReadFull) {
-  const ranked = rows.map(row => {
-    const event = parse(row.payload_json, {});
-    const name = [event.title, event.shortTitle, ...asList(event.keywords)].join(' ');
-    return { event, rank: hits(name, terms) * 3 + hits(event.description, terms) };
-  }).filter(({ rank }) => eventId || rank >= 3).sort((a, b) => b.rank - a.rank).slice(0, 2);
-  const recent = /\b(latest|recent|current|now|new|today|changed)\b/i.test(question);
-  const years = new Set(question.match(/\b(?:19|20)\d\d\b/g) || []);
+function timelineEvidence(rows, features, eventId, canReadFull, now) {
+  const { groups, timeline } = features;
   const items = [];
-  for (const { event, rank } of ranked) {
+  for (const row of rows) {
+    const event = parse(row.payload_json, {});
     if (!event.id) continue;
     const preview = canReadFull ? event : publicTimeline(event);
     const moments = asList(preview.milestones).slice().sort((a, b) => String(b.date).localeCompare(String(a.date)));
-    const selected = moments.map((moment, index) => ({
-      moment,
-      rank: 3 * hits(moment.title, terms) + hits(moment.summary, terms) + (years.has(String(moment.date).slice(0, 4)) ? 20 : 0)
-        + (moment.key ? 1 : 0) + (recent && index < 3 ? 7 - index : 0)
-    })).sort((a, b) => b.rank - a.rank).slice(0, ranked.length === 1 ? 6 : 3);
-    if (!recent && years.size === 0 && selected.length > 2 && !selected.some(({ moment }) => moment === moments.at(-1))) {
-      selected[selected.length - 1] = { moment: moments.at(-1) };
-    }
-    for (const { moment } of selected) {
+    const topicMatches = matches([event.title, event.shortTitle, ...asList(event.keywords)].join(' '), groups);
+    const ranked = moments.map((moment, index) => {
+      const titleMatches = matches(moment.title, groups);
+      const bodyMatches = matches(moment.summary, groups);
+      // A match in a particular public milestone can be more useful than a
+      // generic match in a timeline title. Rank only the allowed preview.
+      const relevant = eventId || topicMatches || titleMatches || bodyMatches;
+      const rank = 14 + topicMatches * 6 + titleMatches * 9 + bodyMatches * 5
+        + dateRelevance(moment.date, features, now) + (moment.key ? 3 : 0)
+        + (timeline && index === moments.length - 1 ? 8 : 0) + (eventId ? 17 : 0);
+      return relevant ? { moment, rank } : null;
+    }).filter(Boolean).sort((a, b) => b.rank - a.rank).slice(0, eventId ? 8 : 4);
+    for (const { moment, rank } of ranked) {
       const item = milestoneEvidence(event, moment, preview.previewTruncated
-        ? `Public timeline preview through ${preview.previewCutoff}` : `Timeline coverage through ${event.coverageEnd || moment.date}`);
-      if (item) items.push({ item, rank: rank + 20 + Number(Boolean(eventId)) * 50 });
+        ? `Public timeline preview through ${preview.previewCutoff}` : `Timeline coverage through ${event.coverageEnd || moment.date}`, groups);
+      if (item) items.push({ item, rank });
     }
   }
   return items;
 }
 
 const aliases = {
-  US: /\b(united states|america|usa|u\.?s\.)\b|\bUS\b/i,
+  US: /\b(united states|america|american|usa)\b|\bu\.s\.(?=\W|$)/i,
   GB: /\b(united kingdom|britain|british|uk)\b/i,
   KR: /\b(south korea|korea, rep\.|korea)\b/i,
   IN: /\bindian\b/i,
@@ -82,7 +74,8 @@ function economyEvidence(payload, question, countryCode) {
   if (!countryCode && !/\b(gdp|growth|economy|economic|cpi|inflation|prices|output)\b/i.test(question)) return [];
   const tokens = ` ${words(question).join(' ')} `;
   const countries = asList(payload.countries).filter(country =>
-    countryCode ? country.code === countryCode : tokens.includes(` ${words(country.name).join(' ')} `) || aliases[country.code]?.test(question)
+    countryCode ? country.code === countryCode : tokens.includes(` ${words(country.name).join(' ')} `)
+      || aliases[country.code]?.test(question) || (country.code === 'US' && /\bUS\b/.test(question))
   ).slice(0, 3);
   const requestedYear = Number(question.match(/\b(?:19|20)\d\d\b/)?.[0] || 0);
   const wantsGdp = /\b(gdp|growth|output)\b/i.test(question);
@@ -116,11 +109,11 @@ function economyEvidence(payload, question, countryCode) {
   return items;
 }
 
-function articleEvidence(row) {
+function articleEvidence(row, groups = []) {
   const source = parse(row.source_json, {});
   const headline = source.basis !== 'article' || !row.summary;
   return evidence({
-    title: row.title, excerpt: headline ? row.title : row.summary, date: row.published_at?.slice(0, 10),
+    title: row.title, excerpt: headline ? row.title : relevantPassage(row.summary, groups), date: row.published_at?.slice(0, 10),
     kind: headline ? 'Headline · report date' : 'Sourced brief · report date',
     href: '/news/' + encodeURIComponent(row.id), sources: [source, ...asList(parse(row.official_sources_json, []))]
   });
@@ -149,25 +142,40 @@ export async function retrieveArticleSummaryEvidence(env, id) {
   };
 }
 
-async function newsEvidence(db, env, terms, eventId) {
-  if (!terms.length && !eventId) return [];
-  const query = buildContentQuery(new URLSearchParams(), env, { cursor: false });
-  const conditions = terms.map(() => 'lower(title || \' \' || keywords) LIKE ?');
-  const filter = eventId ? 'event_id=?' : '(' + conditions.join(' OR ') + ')';
-  const matched = eventId ? [eventId] : terms.map(term => `%${term}%`);
-  const { results } = await db.prepare(`SELECT id,title,summary,published_at,source_json,official_sources_json,keywords
-    FROM news${query.where} AND ${filter} ORDER BY published_at DESC,id DESC LIMIT 36`)
-    .bind(...query.args, ...matched).all();
+async function newsEvidence(db, env, features, eventId, now) {
+  const { groups } = features;
+  if (!groups.length && !eventId) return [];
+  const query = buildContentQuery(new URLSearchParams(), env, { cursor: false, now });
+  const fields = 'id,title,summary,published_at,source_json,official_sources_json,keywords';
+  const { results } = eventId
+    ? await db.prepare(`SELECT ${fields} FROM news${query.where} AND event_id=?
+      ORDER BY published_at DESC,id DESC LIMIT 36`).bind(...query.args, eventId).all()
+    : await db.prepare(`WITH terms AS (SELECT value FROM json_each(?))
+      SELECT * FROM (
+        SELECT ${fields}, (SELECT COALESCE(SUM(CASE
+          WHEN instr(lower(replace(title,'-',' ')), terms.value) > 0 THEN 5
+          WHEN instr(lower(replace(keywords,'-',' ')), terms.value) > 0 THEN 3
+          WHEN json_extract(source_json,'$.basis')='article'
+            AND instr(lower(replace(summary,'-',' ')), terms.value) > 0 THEN 2
+          ELSE 0 END),0) FROM terms) AS lexical_score
+        FROM news${query.where}
+      ) WHERE lexical_score > 0 ORDER BY lexical_score DESC,published_at DESC,id DESC LIMIT 60`)
+      .bind(JSON.stringify([...new Set(groups.flat())]), ...query.args).all();
   const items = [];
   for (const row of asList(results)) {
     const source = parse(row.source_json, {});
     const headline = source.basis !== 'article' || !row.summary;
-    const match = hits(row.title, terms) * 2 + hits(row.keywords, terms);
-    if (!eventId && match < 2) continue;
-    const item = articleEvidence(row);
-    if (item) items.push({ item, rank: (eventId ? 45 : 10) + match * 4 + Number(!headline) * 4 });
+    const titleMatches = matches(row.title, groups);
+    const bodyMatches = headline ? 0 : matches(row.summary, groups);
+    const keywordMatches = matches(row.keywords, groups);
+    if (!eventId && !titleMatches && !bodyMatches && !keywordMatches) continue;
+    const item = articleEvidence(row, groups);
+    const coverage = matches([row.title, row.keywords, headline ? '' : row.summary].join(' '), groups);
+    const rank = (eventId ? 26 : 12) + titleMatches * 8 + bodyMatches * 6 + keywordMatches * 4 + coverage * 5
+      + (headline ? 0 : 8) + dateRelevance(item?.date, features, now);
+    if (item) items.push({ item, rank });
   }
-  return items.sort((a, b) => b.rank - a.rank).slice(0, eventId ? 3 : 6);
+  return items;
 }
 
 export function divideMilestones(event, since, through) {
@@ -258,27 +266,28 @@ export async function isDailyEvidencePublic(env, evidence, now) {
   return row?.total === ids.length;
 }
 
-export async function retrieveEvidence(env, { question, eventId, countryCode }) {
-  const db = env.DB, terms = termsFor(question);
-  const expectEconomy = countryCode || /\b(gdp|growth|economy|economic|cpi|inflation|prices|output)\b/i.test(question);
+export async function retrieveEvidenceCandidates(env, { question, eventId, countryCode }, now = new Date()) {
+  const db = env.DB, features = questionFeatures(question);
+  if (!eventId && !countryCode && !features.groups.length) {
+    if (!features.recent) return [];
+    return (await retrieveDailyEvidence(env, now)).map(({ id, recordId, ...item }, index) => ({ item, rank: 20 - index }));
+  }
+  const expectEconomy = countryCode || /\b(gdp|growth|economy|economic|cpi|inflation|prices|output|hicp|cost of living)\b/i.test(question);
   const [events, economy, news, canReadFull] = await Promise.all([
     countryCode ? null : eventId
       ? db.prepare('SELECT payload_json FROM event_payloads WHERE id=?').bind(eventId).all()
       : db.prepare('SELECT payload_json FROM event_payloads ORDER BY updated_at DESC LIMIT 24').all(),
     expectEconomy && !eventId ? db.prepare("SELECT payload_json FROM content_documents WHERE id='economy'").first() : null,
-    countryCode ? [] : newsEvidence(db, env, terms, eventId),
-    countryCode ? false : hasPaidAccess(env, null)
+    countryCode ? [] : newsEvidence(db, env, features, eventId, now),
+    countryCode ? false : hasPaidAccess(env, null, Math.floor(now.getTime() / 1000))
   ]);
-  const candidates = [
+  return shortlistEvidence([
     ...economyEvidence(parse(economy?.payload_json, {}), question, countryCode),
-    ...timelineEvidence(asList(events?.results), question, terms, eventId, canReadFull),
+    ...timelineEvidence(asList(events?.results), features, eventId, canReadFull, now),
     ...news
-  ].sort((a, b) => b.rank - a.rank);
-  const seen = new Set();
-  return candidates.filter(({ item }) => {
-    const key = `${item.kind}|${item.title.toLowerCase()}|${item.date}`;
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  }).slice(0, 9).map(({ item }, index) => ({ id: index + 1, ...item }));
+  ]);
+}
+
+export async function retrieveEvidence(env, input, now) {
+  return selectEvidence(await retrieveEvidenceCandidates(env, input, now));
 }
