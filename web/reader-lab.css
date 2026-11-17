@@ -1,0 +1,12 @@
+.reader-lab { margin: 24px 0; padding: clamp(16px, 3vw, 26px); border: 1px solid #cbd9cb; border-radius: 14px; background: #f2f6ed; color: #183528; }
+.reader-lab h2 { margin: 0 0 7px; }
+.reader-lab p { margin: 6px 0 13px; }
+.reader-lab-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.reader-lab-controls label { font-size: .86rem; }
+.reader-lab-status { font-size: .88rem; }
+.reader-lab-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px),1fr)); gap: 12px; }
+.reader-lab-grid article { min-width: 0; border: 1px solid #d4dfd1; border-radius: 10px; padding: 14px; background: #fff; overflow-wrap: anywhere; }
+.reader-lab-grid h3 { font-size: 1rem; margin: 4px 0 12px; }
+.reader-lab-grid a, .reader-lab-status a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.reader-lab-grid small { display: block; margin: 4px 0 10px; }
+.reader-lab .reader-lab-meta { margin: 0 0 7px; font-size: .8rem; color: #526358; }

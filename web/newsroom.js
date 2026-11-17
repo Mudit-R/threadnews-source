@@ -14,7 +14,7 @@ globalThis.createNewsroom = function createNewsroom(ui) {
   let facets={topics:[],regions:[],publishers:[],evidence:[],total:0},facetsReady=false,facetsError='',eventSummaries=[],eventMeta={},eventsError='',eventsLoading=false,economyLoading=production,economyError='',feedTimer;
   const feed={loading:production,request:0,controller:null,nextCursor:null,hasMore:false,total:null,started:false,filterKey:''};
   if(production){stories.splice(0,stories.length);globalThis.ECONOMY_SNAPSHOT={countries:[],meta:{mode:'connecting'}};}
-  let economy,coveragePage,askPage,impactPanel;
+  let economy,coveragePage,askPage,impactPanel,recommendationPanel,watchlistPanel,watchlistSignature;
   let providers=[{id:'google',label:'Continue with Google',enabled:false,reason:'Google sign-in needs a registered OAuth client on the public deployment.'},{id:'apple',label:'Continue with Apple',enabled:false,reason:'Apple sign-in needs an Apple Developer configuration. It is not available on the zero-budget preview.'}];
   const read=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key))??fallback;}catch{return fallback;}};
   const initialInterests=read('threadline-interests',[]),initialBookmarks=read('threadline-news-saved',[]);
@@ -98,6 +98,20 @@ globalThis.createNewsroom = function createNewsroom(ui) {
     if(impactPanel){placeholder.replaceWith(impactPanel);return;}
     impactPanel=placeholder;
     globalThis.ThreadNewsPersonalImpact.mount(impactPanel,{loadCandidates:loadImpactCandidates});
+  }
+  function mountReaderLab() {
+    const lab=globalThis.ThreadNewsReaderLab;
+    const recommendation=$('#recommendation-mount');
+    if(recommendation&&lab){
+      if(recommendationPanel)recommendation.replaceWith(recommendationPanel);
+      else { recommendationPanel=recommendation; lab.mountRecommendations(recommendationPanel,loadImpactCandidates); }
+    }
+    const watchlist=$('#watchlist-mount');
+    if(watchlist&&lab){
+      const signature=JSON.stringify([session.user?.id||null,[...getTimelineSaved()].sort()]);
+      if(watchlistPanel&&signature===watchlistSignature)watchlist.replaceWith(watchlistPanel);
+      else { watchlistPanel=watchlist; watchlistSignature=signature; lab.mountWatchlist(watchlistPanel,apiBase); }
+    }
   }
   function queryParams(){const p=new URLSearchParams({limit:'50',evidence:state.evidence});if(state.query.trim())p.set('q',state.query.trim());if(state.category!=='All news')p.set('topic',state.category);if(state.region!=='Everywhere')p.set('region',state.region);if(state.publisher!=='All sources')p.set('publisher',state.publisher);if(state.mode==='for-you'&&interests.size)p.set('priorities',[...interests].join(','));return p;}
   function stopFeed(){clearTimeout(feedTimer);feed.controller?.abort();feed.request++;}
@@ -219,11 +233,13 @@ globalThis.createNewsroom = function createNewsroom(ui) {
     ${personal&&!following?`<div class="personal-note">${icon('compass')}<p>${interests.size?`Your interests move to the front: <strong>${esc([...interests].join(', '))}</strong>. Other topics stay in the edition.`:'Pick the topics you care about. No account needed to personalise this browser.'}</p><button data-action="interests">${interests.size?'Adjust':'Choose topics'} ${icon('arrow')}</button></div>`:''}
     <div class="edition-note ${homeError?'refresh-error':''}" ${homeError?'role="alert"':'role="status"'}>${icon('clock')}<span>${following?collectionNotice():editionNotice()}</span>${homeError?'<button data-action="news-retry">Try again</button>':'<a href="#/coverage">How this collection works '+icon('up')+'</a>'}</div>
     ${filterBar(following)}${neutral?leading(found)+(connected&&globalThis.ThreadNewsPersonalImpact?'<div id="personal-impact-mount"></div>':'')+updatedTimelineRail():''}
+    ${connected&&globalThis.ThreadNewsReaderLab?(following?'<div id="watchlist-mount"></div>':neutral?'<div id="recommendation-mount"></div>':''):''}
     <section class="news-collection" aria-label="${following?'Saved articles':'News collection'}"><div class="section-heading"><div><span class="eyebrow">${following?'YOUR COLLECTION':state.query?'SEARCH RESULTS':personal?'YOUR INTERESTS, WITH A WIDER LENS':'ACROSS THE HEADLINES'}</span><h2>${following?'Saved articles':state.query?'The stories we found':state.category!=='All news'?esc(state.category):'The latest threads'}<span class="result-count">${following?bookmarks.size:loading&&!news.length?'…':resultTotal}</span></h2></div><div class="collection-controls"><select id="news-sort" aria-label="Sort news"><option value="editorial" ${state.sort==='editorial'?'selected':''}>Everyday impact</option><option value="latest" ${state.sort==='latest'?'selected':''}>Newest first</option></select><div class="view-controls"><button class="icon-button ${state.view==='grid'?'selected':''}" data-action="news-view" data-value="grid" aria-label="News grid view" aria-pressed="${state.view==='grid'}">${icon('grid')}</button><button class="icon-button ${state.view==='list'?'selected':''}" data-action="news-view" data-value="list" aria-label="News list view" aria-pressed="${state.view==='list'}">${icon('list')}</button></div></div></div><div class="news-grid ${state.view==='list'?'news-list-view':''}">${visible.map(n=>newsCard(n)).join('')}</div>${following&&unavailableArticles.length?`<div class="news-grid">${unavailableArticles.map(id=>savedUnavailable('article',id)).join('')}</div>`:''}${!count&&(!following||!bookmarks.size||!unavailableArticles.length&&!collection.loading)?`<div class="empty-state" role="status">${icon(following?'bookmark':'search')}<h3>${following?(bookmarks.size?'No saved articles match these filters.':'Keep a story for later.'):loading&&connected?'Loading the news archive…':homeError?'News is temporarily unavailable.':'No threads match these filters.'}</h3><p>${homeError?'The archive response could not be loaded. Try again to reconnect.':loading&&connected?'Matching records are on their way.':following?connected?'Saved articles are retrieved directly from the archive.':'Use the bookmark on any article to save it here.':'Try another topic, source or search term.'}</p>${!loading?`<button class="button primary" data-action="${homeError?'news-retry':'news-reset'}">${homeError?'Try again':following?'Browse news':'Reset filters'} ${icon('arrow')}</button>`:''}</div>`:''}${feedFooter(count,following)}</section>
     ${connected&&!following?`<p class="news-method-note">${icon('info')} For you prioritises your chosen topics across the matching archive. Everyday impact sorts loaded stories using a transparent score for public-impact topics. Load further pages to keep exploring.</p>`:''}
     ${following?`<section class="saved-timelines"><div class="section-heading"><div><span class="eyebrow">THE LONG VIEW</span><h2>Timelines you follow <span class="result-count">${getTimelineSaved().length}</span></h2></div><a href="#/timelines">Explore timelines ${icon('arrow')}</a></div>${timelineSaved.length?`<div class="story-grid">${timelineSaved.map(timelineCard).join('')}</div>`:''}${unavailableTimelines.length?`<div class="news-grid">${unavailableTimelines.map(id=>savedUnavailable('timeline',id)).join('')}</div>`:''}${!getTimelineSaved().length?'<p class="saved-empty">Follow an ongoing story from its timeline to keep it here.</p>':''}</section>`:''}
     <aside class="news-method-note">${icon('layers')}<div><strong>Reporting you can trace.</strong><p>Each item shows whether its brief comes from the source report or headline metadata. Institutional records are labelled separately.</p></div><a href="#/sources">Meet the sources ${icon('up')}</a></aside>`;
     mountImpactPanel();
+    mountReaderLab();
     if(impactFocus?.isConnected)impactFocus.focus({preventScroll:true});
     renderNav();
   }

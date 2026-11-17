@@ -6,11 +6,12 @@ const parser=new XMLParser({ignoreAttributes:false,attributeNamePrefix:'@_',text
 const list=v=>v==null?[]:Array.isArray(v)?v:[v];
 const text=v=>typeof v==='string'||typeof v==='number'?String(v):v&&typeof v==='object'?text(v['#text']):'';
 export function plainText(v,max=600){return text(v).replace(/<[^>]*>/g,' ').replace(/&(?:amp|lt|gt|quot|apos|#39|#x27);/gi,e=>({'&amp;':'&','&lt;':'<','&gt;':'>','&quot;':'"','&apos;':"'",'&#39;':"'",'&#x27;':"'"}[e.toLowerCase()]||e)).replace(/[\u0000-\u001f\u007f]/g,' ').replace(/\s+/g,' ').trim().slice(0,max);}
-function feedBrief(){
-  // RSS description/summary fields can contain copied article text, so they
-  // remain discovery metadata only. Automated collectors publish headlines
-  // and source links; article digests require separate review of the article.
-  return '';
+function feedBrief(item,feed,url,title){
+  // A registry entry can explicitly permit a first-party synopsis from a
+  // government feed. No content body, discovery text or third-party link.
+  if(!feed.licensedFeedSummary||feed.discovery||new URL(url).origin!==new URL(feed.url).origin)return '';
+  const brief=plainText(item.summary,321);
+  return brief.length>=25&&brief.length<=320&&brief.toLowerCase()!==title.toLowerCase()?brief:'';
 }
 function relatedHeadlines(item,feed,currentUrl,currentPublisher){
   if(!feed.discovery)return [];
@@ -91,12 +92,13 @@ export async function parseFeed(xml,feed,now=new Date(),maxItems=50){
     if(at.getTime()<now.getTime()-30*86400000)continue;
     seen.add(url);
     const official=feed.sourceType==='Official source', thumbnail=thumbnailUrl(item);
-    const brief=feedBrief(), secondarySources=relatedHeadlines(item,feed,url,canonicalPublisher(publisher));
+    const brief=feedBrief(item,feed,url,title), secondarySources=relatedHeadlines(item,feed,url,canonicalPublisher(publisher));
+    if(brief)publisher=feed.publisher;
     results.push({id:'feed-'+(await sha256(url)).slice(0,24),title,originalHeadline,
       summary:brief|| (official?'Official-source headline. Open the original release for details; it has not been independently corroborated here.':'Headline-based discovery item. Open the original reporting for the full context; no article summary has been generated.'),
       digestBasis:brief?'feed-description':'headline-only',
       category:feed.category,region:feed.region,keywords:'',publishedAt:at.toISOString(),ingestedAt:now.toISOString(),
-      source:{publisher:canonicalPublisher(publisher),url,discoveryUrl:feed.discovery?url:feed.url,sourceType:feed.sourceType,basis:brief?'feed-description':'headline',feedId:feed.id,discoverySource:feed.discovery||feed.publisher,...(!item.pubDate&&!item.published&&item.updated?{dateBasis:'updated'}:{}),...(thumbnail?{thumbnailUrl:thumbnail}:{})},
+      source:{publisher:canonicalPublisher(publisher),url,discoveryUrl:feed.discovery?url:feed.url,sourceType:feed.sourceType,basis:brief?'feed-description':'headline',feedId:feed.id,discoverySource:feed.discovery||feed.publisher,...(!item.pubDate&&!item.published&&item.updated?{dateBasis:'updated'}:{}),...(brief?{reusePolicyUrl:feed.terms,freeAccessDisclosure:'Contains public sector information licensed under the Open Government Licence v3.0.'}:{}),...(thumbnail?{thumbnailUrl:thumbnail}:{})},
       officialSources:[],secondarySources,eventId:null});
   }
   return results.slice(0,50);

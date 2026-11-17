@@ -109,7 +109,7 @@ export async function publicPlans(env) {
     enabled: ready && catalog.some(plan => plan.available),
     environment: API_BY_ENV[env.PAYPAL_ENV] ? env.PAYPAL_ENV : 'disabled',
     billing: sandboxImmediateBilling(env) ? { ...planConfig.billing, billingStartsAt:'2000-01-01T00:00:00.000Z', billingStartLabel:'Immediately, using fictitious PayPal sandbox funds only' } : planConfig.billing,
-    freeTier: planConfig.freeTier,
+    freeTier: env.PUBLIC_TIMELINES === 'true' ? { ...planConfig.freeTier, timelineMilestones: null, fullTimelines: true } : planConfig.freeTier,
     freePeriodActive: !sandboxImmediateBilling(env) && Date.now() < Date.parse(planConfig.billing.billingStartsAt),
     missingSetup: [...setupMissing(env), ...(!schemaReady && env.DB ? ['Apply the D1 billing migration before enabling checkout.'] : [])],
     subscriptionsAccessRequired: env.PAYPAL_SUBSCRIPTIONS_ACCESS !== 'true',
@@ -141,7 +141,7 @@ export function entitlementFromRow(row, now = epochNow()) {
 
 function epochNow() { return Math.floor(Date.now() / 1000); }
 
-export async function hasPaidAccess(env, userId, now = epochNow()) {
+export async function hasPaidAccess(env, userId, now = epochNow(), { failOpen = true } = {}) {
   const startsAt = Math.floor(Date.parse(planConfig.billing.billingStartsAt) / 1000);
   // The site-wide free period applies to guests as well as signed-in readers.
   if (!sandboxImmediateBilling(env) && now < startsAt) return true;
@@ -155,7 +155,7 @@ export async function hasPaidAccess(env, userId, now = epochNow()) {
   try {
     const row = await env.DB.prepare('SELECT status,checkout_kind,plan_key,last_payment_at,access_until,grace_until FROM billing_subscriptions WHERE user_id=?').bind(userId).first();
     return entitlementFromRow(row, now);
-  } catch { return true; }
+  } catch (error) { if (!failOpen) throw error; return true; }
 }
 
 function statusPayload(row, entitled) {

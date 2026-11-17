@@ -200,7 +200,8 @@ export async function retrieveStoryChanges(env, eventId, days, now) {
   const row = await db.prepare('SELECT payload_json FROM event_payloads WHERE id=?').bind(eventId).first();
   if (!row) return null;
   const full = parse(row.payload_json, {});
-  const event = await hasPaidAccess(env, null, Math.floor(now.getTime() / 1000)) ? full : publicTimeline(full);
+  const open = env.PUBLIC_TIMELINES === 'true' || await hasPaidAccess(env, null, Math.floor(now.getTime() / 1000));
+  const event = open ? full : publicTimeline(full);
   const { baseline, recent } = divideMilestones(event, since, through);
   const query = buildContentQuery(new URLSearchParams(), env, { now, cursor: false });
   const reportSince = new Date(Math.max(Date.parse(since), now.getTime() - Math.min(query.feedDays, query.retentionDays) * 86400000)).toISOString();
@@ -280,7 +281,7 @@ export async function retrieveEvidenceCandidates(env, { question, eventId, count
       : db.prepare('SELECT payload_json FROM event_payloads ORDER BY updated_at DESC LIMIT 24').all(),
     expectEconomy && !eventId ? db.prepare("SELECT payload_json FROM content_documents WHERE id='economy'").first() : null,
     countryCode ? [] : newsEvidence(db, env, features, eventId, now),
-    countryCode ? false : hasPaidAccess(env, null, Math.floor(now.getTime() / 1000))
+    countryCode ? false : env.PUBLIC_TIMELINES === 'true' || hasPaidAccess(env, null, Math.floor(now.getTime() / 1000))
   ]);
   return shortlistEvidence([
     ...economyEvidence(parse(economy?.payload_json, {}), question, countryCode),

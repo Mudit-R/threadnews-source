@@ -11,6 +11,7 @@ import { handleBillingTest } from './billing-test.js';
 import { handleReaderUpdates,dispatchReaderUpdates } from './reader-updates.js';
 import { handleArticleSummary, handleAsk, handleDailyBrief, handleStoryChanges } from './ai.js';
 import { refreshSourceSummaries } from './source-summary.js';
+import { handleWatchlist } from './watchlist.js';
 
 const json = (body, status = 200, headers = {}) => Response.json(body, { status, headers: { 'x-content-type-options': 'nosniff', 'referrer-policy': 'strict-origin-when-cross-origin', ...headers } });
 const normalizedTopic = value => {
@@ -74,6 +75,7 @@ export default {
       if (path === '/api/ai/daily') return await handleDailyBrief(request, env);
       if (path === '/api/ai/changes') return await handleStoryChanges(request, env, ctx);
       if (path === '/api/ai/article') return await handleArticleSummary(request, env);
+      if (path === '/api/watchlist' || path === '/api/watchlist/ack') return await handleWatchlist(request, env);
       const billingTest = await handleBillingTest(request, env);
       if (billingTest) return billingTest;
       const readerUpdates = await handleReaderUpdates(request,env);
@@ -171,7 +173,7 @@ export default {
       const publicRead=request.method==='GET'&&(/^\/api\/(?:news|events)(?:\/|$)/.test(path)||['/api/facets','/api/economy'].includes(path))&&!requestsArchive&&!eventDetail&&!eventCoverage;
       const cache=publicRead?globalThis.caches?.default:null,cacheKey=publicRead?new Request(request.url,{method:'GET'}):null;
       if(cache){const hit=await cache.match(cacheKey);if(hit)return hit;}
-      const content = await handleContent(request, env, ctx, { canAccessArchive: paidAccess, canAccessFullTimelines: eventDetail && paidAccess });
+      const content = await handleContent(request, env, ctx, { canAccessArchive: paidAccess, canAccessFullTimelines: eventDetail && (env.PUBLIC_TIMELINES === 'true' || paidAccess) });
       if (content) {
         if (env.NEWS_STORAGE !== 'static' && env.FEED_AUTO_REFRESH === 'true' && path === '/api/news' && ctx?.waitUntil) ctx.waitUntil(refreshNews(env));
         if (path === '/api/ingest' && content.ok && ctx?.waitUntil) ctx.waitUntil(dailyCleanup(env));

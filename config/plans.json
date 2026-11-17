@@ -26,13 +26,12 @@
       "checkout": "subscription",
       "planIdVariable": "PAYPAL_PLAN_MONTHLY_ID",
       "features": [
-        "Full event timelines",
+        "Followed story updates with unread tracking",
         "Long-term source coverage archive"
       ],
       "plannedFeatures": [
         "Historical evidence filters",
-        "Email alerts",
-        "Since-last-visit updates"
+        "Email alerts"
       ]
     },
     {
@@ -46,13 +45,12 @@
       "checkout": "subscription",
       "planIdVariable": "PAYPAL_PLAN_ANNUAL_ID",
       "features": [
-        "Full event timelines",
+        "Followed story updates with unread tracking",
         "Long-term source coverage archive"
       ],
       "plannedFeatures": [
         "Historical evidence filters",
-        "Email alerts",
-        "Since-last-visit updates"
+        "Email alerts"
       ]
     }
   ]

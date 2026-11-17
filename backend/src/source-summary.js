@@ -27,6 +27,7 @@ export function shortSourceSummary(generated, article, paragraphs) {
 
 export async function refreshSourceSummaries(env, { now = new Date(), fetchImpl = fetch, generate = generateClaims } = {}) {
   const db = env.DB;
+  if (env.SOURCE_SUMMARY_AI_ENABLED === 'false') return { ok: true, skipped: 'scheduled_ai_disabled' };
   if (!db || env.NEWS_STORAGE === 'static' || (!env.GEMINI_API_KEY && !env.AI)) return { ok: true, skipped: 'not_configured' };
   const at = now.toISOString(), day = at.slice(0, 10);
   const cutoff = new Date(+now - contentConfig(env).retentionDays * 24 * HOUR).toISOString();

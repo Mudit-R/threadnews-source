@@ -3,24 +3,32 @@ const clean=(value,max=500)=>typeof value==='string'?value.trim().slice(0,max):'
 const html=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function membershipTerms(env={}){
   const seller={name:clean(env.LEGAL_SELLER_NAME,160),type:clean(env.LEGAL_SELLER_TYPE,40),address:clean(env.LEGAL_SELLER_ADDRESS),country:clean(env.LEGAL_SELLER_COUNTRY,80)};
-  const refundDays=Number(env.REFUND_WINDOW_DAYS),version=clean(env.TERMS_VERSION,60);
+  const refundWindow=clean(env.REFUND_WINDOW_DAYS,8),version=clean(env.TERMS_VERSION,60);
+  const refundDays=/^(?:[0-9]|[12][0-9]|30)$/.test(refundWindow) ? Number(refundWindow) : null;
   const complete=!!seller.name&&['individual','sole_proprietor','business'].includes(seller.type)&&!!seller.address&&!!seller.country
-    &&Number.isInteger(refundDays)&&refundDays>=1&&refundDays<=30&&/^[A-Za-z0-9_.-]{1,60}$/.test(version);
+    &&refundDays!==null&&/^[A-Za-z0-9_.-]{1,60}$/.test(version);
   return {published:env.TERMS_PUBLISHED==='true'&&complete,version:version||'draft-2026-11-04',seller,
-    refundDays:Number.isInteger(refundDays)&&refundDays>=1&&refundDays<=30?refundDays:14,
+    refundDays:refundDays??14,
     supportEmail:'contactus@threadnews.online',billing:plans.billing};
 }
 export function termsReady(env){return membershipTerms(env).published;}
 export function termsMarkup(env){
-  const t=membershipTerms(env),seller=t.seller.name?`${html(t.seller.name)} (${html(t.seller.type.replace('_',' '))})`:'ThreadNews — seller details awaiting publication';
+  const t=membershipTerms(env);
+  const seller=t.seller.name
+    ? [html(t.seller.name), t.seller.type && `(${html(t.seller.type.replace('_',' '))})`].filter(Boolean).join(' ')
+    : 'ThreadNews — seller details awaiting publication';
   const notice=t.published?`<p>Version ${html(t.version)}. These terms apply to ThreadNews memberships and use of this website.</p>`:'<p><strong>Draft — operator review is still required; live checkout is not active.</strong> Seller details and the proposed refund policy must be approved before paid subscriptions open.</p>';
+  const refundPolicy=t.refundDays===0
+    ? 'ThreadNews memberships are digital. Subscription payments are nonrefundable except where required by law.'
+    : `${t.published?'Our refund policy':'Proposed policy for operator approval'}: request a refund of any subscription payment within ${t.refundDays} days of that payment.`;
   return ['Terms of use'+(t.published?'':' — draft'),'Membership, renewal, cancellation and refund terms for ThreadNews.',`${notice}
 <h2>Who provides ThreadNews</h2><p>${seller}.${t.seller.address?` Business contact address: ${html(t.seller.address)}, ${html(t.seller.country)}.`:''} Contact <a href="mailto:${t.supportEmail}">${t.supportEmail}</a> for support, cancellation or refunds.</p>
 <h2>The service</h2><p>ThreadNews collects news links, source-attributed briefs, event timelines and economic observations. Sources retain their own rights and may require subscriptions. Membership buys ThreadNews features, not access to a publisher's paywall. Coverage may contain gaps or revisions. Economic information is general reporting, not individual financial advice.</p>
+${env.PUBLIC_TIMELINES==='true'?'<p>Current news and full published timelines are open to everyone. Supporter tools include followed story updates and the longer source coverage archive.</p>':''}
 <h2>Free launch and prices</h2><p>Reading is free for everyone through 30 November 2026. Supporter membership is $2 USD per month and $20 USD per year. A subscription approved before the end of the free launch is scheduled to take its first payment on 1 December 2026 at 00:00 India Standard Time. An incomplete checkout setup keeps reading open. The PayPal approval screen must show the price and billing date before you agree. Any required tax must be disclosed before approval. Your payment provider may apply currency conversion charges.</p>
 <h2>Automatic renewal and consent</h2><p>Monthly and annual subscriptions renew at the selected interval until cancelled. Creating an account or using free access does not authorise a charge. Paid access requires your explicit approval of the selected recurring plan in PayPal and these membership terms. Material price changes require advance notice and any consent required by law.</p>
 <h2>Cancellation</h2><p>Cancel through Membership in your ThreadNews account or through your PayPal recurring-payment controls before the next payment. Cancellation stops future renewals. If you cancel before the first scheduled payment, no subscription payment is taken. For an already paid period, access continues until its end unless the payment is refunded or reversed. There is no separate cancellation fee.</p>
-<h2>Refunds and consumer rights</h2><p>${t.published?'Our refund policy':'Proposed policy for operator approval'}: request a refund of any subscription payment within ${t.refundDays} days of that payment by contacting ${t.supportEmail}, with the payment date and PayPal transaction reference. Never send card or bank details. A refunded payment ends the paid access associated with that payment. Statutory cancellation, withdrawal, refund and other consumer rights remain available where applicable. Nothing here waives mandatory rights or requires you to waive a cooling-off period merely to read the website.</p>
+<h2>Refunds and consumer rights</h2><p>${refundPolicy} To request a refund or exercise a statutory right, email <a href="mailto:${t.supportEmail}">${t.supportEmail}</a> with the payment date and PayPal transaction reference, if available. Never send card or bank details. A refunded payment ends the paid access associated with that payment. Statutory cancellation, withdrawal, refund and other consumer rights remain available where applicable. Nothing here waives mandatory rights or requires you to waive a cooling-off period merely to read the website.</p>
 <h2>Sources available without membership</h2><p>Some information, including ECB-derived information, is available freely from its original institution. You can access ECB material directly at <a href="https://www.ecb.europa.eu/" rel="noopener noreferrer">the European Central Bank</a>. Membership is for ThreadNews's organisation and features.</p>
 <h2>Accounts, privacy and email</h2><p>Keep your sign-in account secure. You can export or delete your ThreadNews account. Any active recurring agreement must be cancelled before account deletion completes. Optional email updates require separate confirmation and can be unsubscribed at any time. See our <a href="/privacy">privacy notice</a> for data handling and providers.</p>
 <h2>Corrections, acceptable use and availability</h2><p>Report errors through <a href="/corrections">Corrections</a>. Do not misuse access controls, scrape private reader data or disrupt the service. We may correct or remove records, and suspend misuse proportionately. We do not promise uninterrupted availability or complete coverage of every event. These terms do not exclude liability or remedies that cannot lawfully be excluded.</p>
