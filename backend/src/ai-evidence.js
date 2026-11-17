@@ -119,9 +119,10 @@ function articleEvidence(row, groups = []) {
   });
 }
 
-export async function retrieveArticleSummaryEvidence(env, id) {
-  const query = buildContentQuery(new URLSearchParams(), env, { cursor: false });
-  const row = await env.DB.prepare(`SELECT id,title,original_headline,summary,published_at,source_json,official_sources_json,metadata_json
+export async function retrieveArticleSummaryEvidence(env, id, { now = new Date(), archive = false } = {}) {
+  const params = new URLSearchParams(archive ? { archive: '1' } : {});
+  const query = buildContentQuery(params, env, { cursor: false, now, canAccessArchive: archive });
+  const row = await env.DB.prepare(`SELECT id,title,original_headline,summary,published_at,source_json,metadata_json,event_id
     FROM news${query.where} AND id=?`).bind(...query.args, id).first();
   if (!row) return null;
   const source = parse(row.source_json, {});
@@ -136,7 +137,7 @@ export async function retrieveArticleSummaryEvidence(env, id) {
   return {
     basis: summarized ? 'source_brief' : 'headline',
     publishedSummary: summarized && ['source-summary','article-reviewed'].includes(basis),
-    publisher: source.publisher || 'The publisher',
+    publisher: source.publisher || 'The publisher', eventId: row.event_id || null,
     text: summarized ? row.summary : headline,
     evidence: record ? [{ ...record, id: 1 }] : []
   };
@@ -266,10 +267,10 @@ export async function isDailyEvidencePublic(env, evidence, now) {
   return row?.total === ids.length;
 }
 
-export async function retrieveEvidenceCandidates(env, { question, eventId, countryCode }, now = new Date()) {
-  const db = env.DB, features = questionFeatures(question);
+export async function retrieveEvidenceCandidates(env, { question, eventId, countryCode, article }, now = new Date()) {
+  const db = env.DB, features = questionFeatures(article ? `${article.title} ${question}` : question);
   if (!eventId && !countryCode && !features.groups.length) {
-    if (!features.recent) return [];
+    if (article || !features.recent) return [];
     return (await retrieveDailyEvidence(env, now)).map(({ id, recordId, ...item }, index) => ({ item, rank: 20 - index }));
   }
   const expectEconomy = countryCode || /\b(gdp|growth|economy|economic|cpi|inflation|prices|output|hicp|cost of living)\b/i.test(question);
@@ -284,7 +285,7 @@ export async function retrieveEvidenceCandidates(env, { question, eventId, count
   return shortlistEvidence([
     ...economyEvidence(parse(economy?.payload_json, {}), question, countryCode),
     ...timelineEvidence(asList(events?.results), features, eventId, canReadFull, now),
-    ...news
+    ...news.filter(({ item }) => !article || item.href !== article.href)
   ]);
 }
 

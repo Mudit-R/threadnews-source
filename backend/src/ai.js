@@ -1,13 +1,17 @@
-import { sameOriginMutation } from './auth.js';
+import { currentSession, sameOriginMutation } from './auth.js';
 import { isDailyEvidencePublic, retrieveArticleSummaryEvidence, retrieveDailyEvidence, retrieveEvidenceCandidates, retrieveStoryChanges } from './ai-evidence.js';
 import { generateClaims } from './ai-provider.js';
 import { rerankEvidence, selectEvidence } from './ai-retrieval.js';
+import { hasPaidAccess } from './paypal.js';
 
 const LIMIT = 60;
 const MAX_BODY = 2048;
 const CACHE_VERSION = '3';
 const REASONS = {
   no_evidence: 'No closely matching public sources were found.',
+  article_unavailable: 'This article is unavailable to this reader.',
+  article_no_source: 'There is no accessible source link for this article.',
+  sources_only: 'Related records from the ThreadNews archive.',
   no_provider: 'AI is unavailable. Here are the sources retrieved for your question.',
   daily_budget: 'Today’s AI allowance has been used. You can still browse the matching sources.',
   incomplete_answer: 'An answer could not be verified against the retrieved sources.'
@@ -37,10 +41,14 @@ async function readInput(request) {
     if (typeof value?.question !== 'string') return null;
     const question = value.question.normalize('NFKC').replace(/\s+/gu, ' ').trim();
     if (question.length < 8 || question.length > 240 || /[\p{Cc}\p{Cf}]/u.test(question)) return null;
-    if (value.eventId != null && (typeof value.eventId !== 'string' || !/^[a-zA-Z0-9][a-zA-Z0-9_.:-]{0,119}$/.test(value.eventId))) return null;
+    for (const id of [value.eventId, value.articleId]) {
+      if (id != null && (typeof id !== 'string' || !/^[a-zA-Z0-9][a-zA-Z0-9_.:-]{0,119}$/.test(id))) return null;
+    }
     if (value.countryCode != null && (typeof value.countryCode !== 'string' || !/^[A-Z]{2}$/.test(value.countryCode))) return null;
-    if (value.eventId && value.countryCode) return null;
-    return { question, eventId: value.eventId || null, countryCode: value.countryCode || null };
+    if ([value.eventId, value.countryCode, value.articleId].filter(Boolean).length > 1) return null;
+    if (value.sourcesOnly != null && typeof value.sourcesOnly !== 'boolean') return null;
+    return { question, eventId: value.eventId || null, countryCode: value.countryCode || null,
+      articleId: value.articleId || null, sourcesOnly: value.sourcesOnly === true };
   } catch { return null; }
   finally { reader.releaseLock(); }
 }
@@ -119,23 +127,42 @@ export async function handleAsk(request, env, ctx) {
   if (blocked) return blocked;
   const input = await readInput(request);
   if (!input) return reply({ error: 'invalid_question' }, 400);
-  const candidates = await retrieveEvidenceCandidates(env, input);
-  const sources = selectEvidence(candidates);
+  const now = new Date();
+  let article = input.articleId ? await retrieveArticleSummaryEvidence(env, input.articleId, { now }) : null;
+  let archive = false;
+  if (input.articleId && !article) {
+    const { user } = await currentSession(request, env);
+    if (await hasPaidAccess(env, user?.id, Math.floor(now.getTime() / 1000))) {
+      article = await retrieveArticleSummaryEvidence(env, input.articleId, { now, archive: true });
+      archive = Boolean(article);
+    }
+  }
+  if (input.articleId && !article) return fallback('article_unavailable', []);
+  const [record] = article?.evidence ?? [];
+  if (article && !record) return fallback('article_no_source', []);
+  const focus = record ? { item: { ...record, role: 'focus' } } : null;
+  const candidates = await retrieveEvidenceCandidates(env, {
+    ...input, eventId: article?.eventId || input.eventId, article: record
+  }, now);
+  const withFocus = ranked => selectEvidence(focus ? [focus, ...ranked] : ranked);
+  const sources = withFocus(candidates);
   if (!sources.length) return fallback('no_evidence', []);
+  if (input.sourcesOnly) return fallback('sources_only', sources);
   if (!env.GEMINI_API_KEY && !env.AI) return fallback('no_provider', sources);
-  const cache = globalThis.caches?.default;
+  const cache = archive ? null : globalThis.caches?.default;
   const cacheKey = cache ? new Request(new URL('/api/ai/cache/' + await digest(JSON.stringify([
-    CACHE_VERSION, Boolean(env.GEMINI_API_KEY), Boolean(env.AI), input, candidates
+    CACHE_VERSION, Boolean(env.GEMINI_API_KEY), Boolean(env.AI), input, focus, candidates
   ])), request.url)) : null;
   const cached = cache && await cache.match(cacheKey);
   if (cached) return reply(await cached.json());
   if (!await reserve(env.DB)) return fallback('daily_budget', sources);
-  const { candidates: ranked, rankedByModel } = await rerankEvidence(env.AI, input.question, candidates);
-  const evidence = selectEvidence(ranked);
+  const retrievalQuestion = focus ? `${record.title}\n${input.question}` : input.question;
+  const { candidates: ranked, rankedByModel } = await rerankEvidence(env.AI, retrievalQuestion, candidates);
+  const evidence = withFocus(ranked);
   const answer = await generateClaims(env, input.question, evidence);
   if (!answer) return fallback('incomplete_answer', evidence);
   const output = { status: 'answered', ...answer, evidence, retrieval: {
-    candidates: candidates.length, semanticRerank: rankedByModel
+    candidates: candidates.length + Number(Boolean(focus)), semanticRerank: rankedByModel
   } };
   if (cache && ctx?.waitUntil) ctx.waitUntil(cache.put(cacheKey, Response.json(output, {
     headers: { 'cache-control': 'public, max-age=3600' }

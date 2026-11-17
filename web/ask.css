@@ -14,6 +14,7 @@
 .ask-form-bottom .button:disabled { opacity: .58; }
 .ask-scope { padding: 8px 12px; border-radius: 7px; background: #edf3e4; overflow-wrap: anywhere; }
 .ask-scope a, .ask-offline a { text-decoration: underline; text-underline-offset: 2px; }
+.ask-form-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
 .ask-examples { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 205px), 1fr)); gap: 10px; margin-top: 14px; }
 .ask-examples button { display: grid; grid-template-columns: 1fr auto; align-content: start; gap: 7px; padding: 15px 16px; border: 1px solid #dce3d6; border-radius: 10px; background: #f2f5ec; text-align: left; }
 .ask-examples button:hover { background: #e7efe0; border-color: #aec2a7; }

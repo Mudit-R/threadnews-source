@@ -40,6 +40,20 @@ const get = async (env, path, access = false) => {
 };
 const event = () => ({ id: 'sample-event', title: 'A documented event', category: 'Politics', region: 'Europe', coverageEnd: ago(2).slice(0, 10), context: 'Full context survives import.', milestones: [{ date: ago(2).slice(0, 10), dateType: 'event', title: 'A significant development', summary: 'An attributed account.', kind: 'Official record', key: true, sources: [{ publisher: 'Agency', type: 'Official record', title: 'A release', published: ago(2).slice(0, 10), url: 'https://agency.example.com/release' }] }] });
 
+test('the impact pool mixes recent categories and never accepts or needs reader attributes', async () => {
+  const db = database(), env = { DB: db.DB, NEWS_FEED_DAYS: '4' };
+  await storeArticles(env, [
+    fixture('newest', { publishedAt: ago(1) }),
+    fixture('next', { publishedAt: ago(2) }),
+    fixture('other', { category: 'Health', region: 'India', publishedAt: ago(3) }),
+    fixture('expired', { publishedAt: ago(5) })
+  ], 'fixture', 'curated');
+  const { data } = await get(env, '/api/news/impact');
+  assert.deepEqual(data.articles.map(item => item.id), ['newest', 'other', 'next']);
+  assert.ok(data.articles.every(item => item.summary === ''));
+  assert.equal((await get(env, '/api/news/impact?region=India')).response.status, 400);
+});
+
 test('later automated headline refreshes preserve stronger reviewed text and its publication context while recording source lineage', async () => {
   const db = database(), env = { DB: db.DB };
   const reviewed = fixture('reviewed', { title: 'The reviewed account', summary: 'A source-reviewed brief.', digestBasis: 'article-reviewed', source: { publisher: 'Example News', url: 'https://news.example.com/reviewed', basis: 'article', sourceType: 'News report' } });

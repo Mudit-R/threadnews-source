@@ -375,6 +375,26 @@ async function news(request, env, options) {
   const articles = await attachRelatedCoverage(env, page.map(rowArticle));
   return json({ articles, meta: { mode: 'database', total: count?.total || 0, limit: query.limit, nextCursor, hasMore, archive: query.archive, personalized: query.personalized, priorities: query.priorities, feedDays: query.feedDays, retentionDays: query.retentionDays, cutoff: query.cutoff, lastIngestedAt: ingestion?.at || null, lastCheckedAt: state?.at || null, coverageNote: 'Related links are grouped by similar headlines, category and publication time. Similar headlines may still describe different developments; source counts do not establish independent corroboration.' } });
 }
+async function impactCandidates(env) {
+  const query = buildContentQuery(new URLSearchParams(), env, { cursor: false });
+  const { results } = await env.DB.prepare(`SELECT id,title,category,region,published_at,keywords,publisher,source_type,official_count,
+      json_extract(source_json,'$.basis') AS basis,
+      json_extract(metadata_json,'$.digestBasis') AS digest_basis,
+      json_extract(metadata_json,'$.countries') AS countries,
+      json_extract(metadata_json,'$.impactScore') AS impact_score,
+      CASE WHEN json_extract(source_json,'$.basis')='article' THEN substr(summary,1,500) ELSE '' END AS summary
+    FROM news${query.baseWhere}
+    ORDER BY ROW_NUMBER() OVER (PARTITION BY category,region ORDER BY published_at DESC,id DESC),published_at DESC,id DESC
+    LIMIT 160`).bind(...query.baseArgs).all();
+  const articles = (results || []).map(row => ({
+    id: row.id, title: row.title, category: row.category, region: row.region, publishedAt: row.published_at,
+    keywords: parse(row.keywords, []), countries: parse(row.countries, []), summary: row.summary,
+    digestBasis: row.digest_basis, impactScore: row.impact_score, officialCount: row.official_count,
+    source: { publisher: row.publisher, sourceType: row.source_type, basis: row.basis }
+  }));
+  return json({ articles, meta: { cutoff: query.cutoff, maxCandidates: 160 } });
+}
+
 async function singleArticle(request, env, options, id) {
   identity(id, 'article id');
   const params = new URLSearchParams();
@@ -584,6 +604,10 @@ export async function handleContent(request, env, ctx, { canAccessArchive = fals
     const coverage = await handleEventCoverage(request, env);
     if (coverage) return coverage;
     if (path === '/api/news') return await news(request, env, { canAccessArchive });
+    if (path === '/api/news/impact') {
+      if (new URL(request.url).search) fail('This endpoint does not accept parameters');
+      return await impactCandidates(env);
+    }
     if (path.startsWith('/api/news/')) return await singleArticle(request, env, { canAccessArchive }, decodeURIComponent(path.slice('/api/news/'.length)));
     if (path === '/api/facets') return await facets(request, env, { canAccessArchive });
     if (path === '/api/pipeline/status') return await pipeline(env);

@@ -125,3 +125,36 @@ test('a model claim cannot flip the direction of a cited numeric value', () => {
   assert.equal(validateClaims({ claims: [{ text: 'The reading was 2.5%.', citations: [1] }] }, evidence), null);
   assert.ok(validateClaims({ claims: [{ text: 'The reading was -2.5%.', citations: [1] }] }, evidence));
 });
+
+test('article Ask pins the original headline, retrieves related public records, and can skip inference', async t => {
+  const { sqlite, env } = database(t);
+  report(sqlite, { id: 'focus', title: 'Japan opens harbor talks', summary: 'Unverified article text.', source: { ...publisher, basis: 'headline' } });
+  report(sqlite, { id: 'context', title: 'Japan and harbor delegates set an agenda', summary: 'The delegates will meet on Thursday.' });
+  report(sqlite, { id: 'excluded', title: 'Japan opens harbor talks', summary: 'Withdrawn report.', hidden: true });
+  const ask = async overrides => {
+    const response = await handleAsk(new Request(appOrigin + '/api/ai/ask', {
+      method: 'POST', headers: { origin: appOrigin, 'content-type': 'application/json' },
+      body: JSON.stringify({ question: 'What does this report say?', articleId: 'focus', ...overrides })
+    }), env);
+    return response.json();
+  };
+  let calls = 0;
+  env.AI = { async run(model, request) {
+    calls++;
+    const { evidence } = JSON.parse(request.messages[1].content);
+    assert.equal(evidence[0].role, 'focus');
+    assert.equal(evidence[0].excerpt, 'Japan opens harbor talks');
+    return { response: JSON.stringify({ claims: [{ text: 'The headline reports that Japan opened harbor talks.', citations: [1] }] }) };
+  } };
+  const sources = await ask({ sourcesOnly: true });
+  assert.equal(sources.reason, 'sources_only');
+  assert.deepEqual(sources.evidence.map(item => item.href), ['/news/focus', '/news/context']);
+  assert.equal(sources.evidence[0].kind, 'Publisher headline');
+  assert.equal(calls, 0);
+  assert.equal((await ask({ articleId: 'excluded' })).reason, 'article_unavailable');
+  assert.equal((await ask({ eventId: 'unrelated' })).error, 'invalid_question');
+  const answer = await ask({});
+  assert.equal(answer.status, 'answered');
+  assert.equal(calls, 1);
+  assert.equal(answer.evidence[answer.claims[0].citations[0] - 1].href, '/news/focus');
+});

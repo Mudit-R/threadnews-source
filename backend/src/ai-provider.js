@@ -8,6 +8,7 @@ const SYSTEM = [
   'Every claim must cite the numbered evidence that directly supports it. Cite only evidence IDs and write plain text without URLs or inline citation markers.',
   'When comparing two reports or measurements, cite evidence for both and keep their dates, units, and methodologies distinct.',
   'Preserve dates, units, time periods, and attributions. A report date is not an event date. Headline evidence supports only what the headline reports.',
+  'When a record has the focus role, interpret this report as referring to that record. Cite it for what the report says. Use other records for context and distinguish their claims from the focus report. Multiple links do not establish independent confirmation.',
   'If the evidence is unrelated, too old to answer, or insufficient to establish a fact, omit that fact. Return an empty claims array if nothing answers the question.'
 ].join(' ');
 

@@ -24,14 +24,20 @@
 
   function getScope() {
     const params = new URLSearchParams(location.search);
-    const eventId = params.get('event'), countryCode = params.get('country');
+    const eventId = params.get('event'), countryCode = params.get('country'), articleId = params.get('article');
     const topic = params.get('topic')?.trim().slice(0, 110);
+    if (scopeId.test(articleId || '')) return { topic: topic || 'This report', articleId };
     if (scopeId.test(eventId || '')) return { topic: topic || 'This timeline', eventId };
     if (countryId.test(countryCode || '')) return { topic: topic || countryCode, countryCode };
     return {};
   }
 
   function exampleQuestions(scope) {
+    if (scope.articleId) return [
+      { label: 'Key claims', question: 'What does this report say?' },
+      { label: 'Context', question: 'What earlier developments help explain this report?' },
+      { label: 'Evidence limits', question: 'What can we establish from this report and what remains unclear?' }
+    ];
     if (scope.eventId) return [
       { label: 'Timeline', question: 'What are the key turning points in this timeline?' },
       { label: 'Recent coverage', question: 'What changed in the latest published records?' }
@@ -50,7 +56,7 @@
       return url ? `<a href="${url}" target="_blank" rel="noopener noreferrer">${escape(link.publisher || link.title || 'Original source')} <span aria-hidden="true">↗</span></a>` : '';
     }).join('');
     return `<article class="ask-source" id="ask-source-${item.id}" tabindex="-1">
-      <div class="ask-source-meta"><span class="ask-number">${item.id}</span><span>${escape(item.kind)}${item.date ? ' · ' + escape(item.date) : ''}</span></div>
+      <div class="ask-source-meta"><span class="ask-number">${item.id}</span><span>${item.role === 'focus' ? 'Report in focus · ' : ''}${escape(item.kind)}${item.date ? ' · ' + escape(item.date) : ''}</span></div>
       <h3>${escape(item.title)}</h3>
       <p>${escape(item.excerpt)}</p>
       ${item.note ? `<p class="ask-source-note">${escape(item.note)}</p>` : ''}
@@ -74,16 +80,17 @@
       ).join(' ')}</p></li>`).join('')}</ol>
       <p class="ask-note">AI-generated from ${citedIds.size} cited ${citedIds.size === 1 ? 'record' : 'records'}. Follow a citation to inspect its source.</p>
       ${navigator.clipboard ? '<button type="button" class="button ask-copy" data-ask-copy>Copy answer with sources</button><span class="ask-copy-status" role="status"></span>' : ''}`
-      : `<p class="ask-note">${escape(data.message || 'An AI answer is unavailable for this request.')}${data.status === 'insufficient'
+      : `<p class="ask-note">${escape(data.message || 'An AI answer is unavailable for this request.')}${data.reason === 'no_evidence'
         ? ' Try adding a country, event name or year.'
         : ''}</p>`;
     const cited = evidence.filter(item => citedIds.has(item.id));
-    const related = evidence.filter(item => !citedIds.has(item.id));
+    const focus = evidence.find(item => item.role === 'focus' && !citedIds.has(item.id));
+    const related = evidence.filter(item => !citedIds.has(item.id) && item !== focus);
     const sources = answered
-      ? `${cited.map(evidenceCard).join('')}${related.length ? `<details class="ask-related"><summary>${related.length} other retrieved ${related.length === 1 ? 'record' : 'records'}</summary>${related.map(evidenceCard).join('')}</details>` : ''}`
+      ? `${cited.map(evidenceCard).join('')}${focus ? evidenceCard(focus) : ''}${related.length ? `<details class="ask-related"><summary>${related.length} other retrieved ${related.length === 1 ? 'record' : 'records'}</summary>${related.map(evidenceCard).join('')}</details>` : ''}`
       : evidence.map(evidenceCard).join('');
     panel.innerHTML = `<div class="ask-answer">${titleMarkup}${body}</div>
-      ${evidence.length ? `<aside class="ask-evidence" aria-label="Evidence"><header><h2>${answered ? 'Cited sources' : 'Matching sources'}</h2><span>${answered ? cited.length : evidence.length} ${(answered ? cited.length : evidence.length) === 1 ? 'record' : 'records'}</span></header>${sources}</aside>` : ''}`;
+      ${evidence.length ? `<aside class="ask-evidence" aria-label="Evidence"><header><h2>${answered ? 'Evidence' : 'Matching sources'}</h2><span>${answered ? `${cited.length} cited` : `${evidence.length} ${evidence.length === 1 ? 'record' : 'records'}`}</span></header>${sources}</aside>` : ''}`;
     panel.querySelector('[data-ask-copy]')?.addEventListener('click', async () => {
       const citations = cited.map(item => {
         const direct = Array.isArray(item.links) ? item.links.find(link => sourceURL(link?.url)) : null;
@@ -115,12 +122,12 @@
       </header>
       ${apiBase === null ? '<p class="ask-offline">Answers are available on the <a href="https://threadnews.online/ask">live ThreadNews site</a>.</p>' : `
       <form class="ask-form">
-        ${scope.topic ? `<div class="ask-scope"><span>Focused on ${escape(scope.topic)}</span><a href="/ask">Search all coverage</a></div>` : ''}
+        ${scope.topic ? `<div class="ask-scope"><span>Focused on ${escape(scope.topic)}</span><div class="ask-form-actions">${scope.articleId ? `<a href="/news/${encodeURIComponent(scope.articleId)}">Back to the article</a>` : ''}<a href="/ask">Search all coverage</a></div></div>` : ''}
         <label for="ask-question">Your question</label>
         <textarea id="ask-question" rows="2" maxlength="${maxLength}" minlength="8" required placeholder="What happened, and how did we get here?" aria-describedby="ask-input-note"></textarea>
         <div class="ask-form-bottom">
           <span id="ask-input-note">Questions are sent to an AI provider. Keep personal details out.</span>
-          <button type="submit" class="button primary">Find an answer <span aria-hidden="true">→</span></button>
+          <div class="ask-form-actions"><button type="submit" class="button primary">Find an answer <span aria-hidden="true">→</span></button>${scope.articleId ? '<button type="submit" class="button" data-sources-only formnovalidate>Browse sources</button>' : ''}</div>
         </div>
       </form>
       <div class="ask-examples" aria-label="Suggested questions">${suggestions.map(({ label, question }, index) =>
@@ -132,12 +139,13 @@
     if (apiBase === null) return () => {};
     const page = container.querySelector('.ask-page');
     const form = page.querySelector('form'), input = page.querySelector('textarea');
-    const button = form.querySelector('button[type="submit"]');
+    const buttons = [...form.querySelectorAll('button[type="submit"]')];
     const results = page.querySelector('.ask-results'), status = page.querySelector('.ask-status');
     page.querySelector('.ask-examples').addEventListener('click', event => {
       const suggestion = suggestions[Number(event.target.closest('button')?.dataset.question)];
       if (!suggestion || request) return;
       input.value = suggestion.question;
+      input.setCustomValidity('');
       form.requestSubmit();
     });
     input.addEventListener('input', () => input.setCustomValidity(''));
@@ -155,7 +163,8 @@
     form.addEventListener('submit', async event => {
       event.preventDefault();
       if (request) return;
-      const question = input.value.trim();
+      const sourcesOnly = event.submitter?.hasAttribute('data-sources-only') === true;
+      const question = input.value.trim() || (sourcesOnly ? 'What records give context to this report?' : '');
       if (question.length < 8) {
         input.setCustomValidity('Enter a question with at least eight characters.');
         input.reportValidity();
@@ -164,14 +173,14 @@
       const controller = new AbortController();
       request = controller;
       const timeout = setTimeout(() => controller.abort(), 35_000);
-      button.disabled = true;
-      status.textContent = 'Finding related records and checking citations…';
+      buttons.forEach(button => { button.disabled = true; });
+      status.textContent = sourcesOnly ? 'Finding related records…' : 'Finding related records and checking citations…';
       results.replaceChildren();
       results.setAttribute('aria-busy', 'true');
       try {
         const response = await fetch(apiBase + '/api/ai/ask', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ question, eventId: scope.eventId, countryCode: scope.countryCode }),
+          body: JSON.stringify({ question, eventId: scope.eventId, countryCode: scope.countryCode, articleId: scope.articleId, sourcesOnly }),
           signal: controller.signal
         });
         if (response.status === 429) {
@@ -194,7 +203,7 @@
       } finally {
         clearTimeout(timeout);
         request = null;
-        button.disabled = false;
+        buttons.forEach(button => { button.disabled = false; });
         results.setAttribute('aria-busy', 'false');
       }
     });
@@ -203,6 +212,7 @@
 
   globalThis.ThreadNewsAsk = Object.freeze({
     render, glyph,
+    articleLink: (id, title) => path('article', id, title.slice(0, 110)),
     eventLink: (id, title) => path('event', id, title),
     countryLink: (id, title) => path('country', id, title)
   });
