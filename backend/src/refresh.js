@@ -109,7 +109,9 @@ export async function refreshNews(env, { force = false, fetchImpl = fetch, now }
         stage = 'feed_store';
         const stored = await storeArticles(env, articles, feed.id, 'automatic', { now: at });
         await env.DB.prepare(`INSERT INTO feed_state (id,last_attempt_at,last_success_at,etag,modified,error,item_count) VALUES (?,?,?,?,?,NULL,?) ON CONFLICT(id) DO UPDATE SET last_attempt_at=excluded.last_attempt_at,last_success_at=excluded.last_success_at,etag=excluded.etag,modified=excluded.modified,error=NULL,item_count=excluded.item_count`).bind(feed.id, at.toISOString(), at.toISOString(), header(response.headers.get('etag')), header(response.headers.get('last-modified')), articles.length).run();
-        result = { ok: true, feed: feed.id, items: stored.accepted, rejectedByCategory: stored.rejectedByCategory, checkedAt: at.toISOString(), evidence: 'headline/link metadata; full articles were not copied or independently summarised' };
+        result = { ok: true, feed: feed.id, items: stored.accepted, rejectedByCategory: stored.rejectedByCategory,
+          ...(stored.attributionConflicts ? { attributionConflicts:stored.attributionConflicts } : {}),
+          checkedAt: at.toISOString(), evidence: 'Headlines, source links and permitted first-party feed descriptions.' };
       }
     }
   } catch (error) {

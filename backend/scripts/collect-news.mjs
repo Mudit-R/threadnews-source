@@ -59,7 +59,7 @@ export async function collectNews({ env = process.env, fetchImpl = fetch, clock 
   collectorConfig(env);
   const { feeds, warnings } = selectNewsFeeds(env), successes = [], errors = [];
   for (const feed of feeds) {
-    const attempt = clock().toISOString(); let stage = 'feed_fetch', accepted = 0, rejectedByCategory = 0;
+    const attempt = clock().toISOString(); let stage = 'feed_fetch', accepted = 0, rejectedByCategory = 0, attributionConflicts = 0;
     try {
       const response = await fetchSource(feed, { fetchImpl, headers: { accept: feed.format==='gdelt'?'application/json':'application/rss+xml, application/atom+xml, application/xml', 'user-agent': 'ThreadNews/0.3 (headline/link metadata collector)' }, signal: AbortSignal.timeout(25000) });
       if (!response.ok) throw new CollectorError('feed_http_' + response.status);
@@ -72,8 +72,9 @@ export async function collectNews({ env = process.env, fetchImpl = fetch, clock 
         const result = await postIngest({ articles: batch, feedId: feed.id, mode: 'automatic', ...(final ? { feedState: { lastAttemptAt: attempt, lastSuccessAt: clock().toISOString(), itemCount: articles.length, error: null } } : {}) }, { env, fetchImpl });
         accepted += Number(result.articles?.accepted) || 0;
         rejectedByCategory += Number(result.articles?.rejectedByCategory) || 0;
+        attributionConflicts += Number(result.articles?.attributionConflicts) || 0;
       }
-      successes.push({ id: feed.id, items: articles.length, accepted, rejectedByCategory });
+      successes.push({ id: feed.id, items: articles.length, accepted, rejectedByCategory, ...(attributionConflicts ? { attributionConflicts } : {}) });
     } catch (error) {
       const note = failure(error, stage + '_failed');
       const entry = { id: feed.id, stage, note, healthRecorded: false };

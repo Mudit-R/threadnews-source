@@ -223,6 +223,7 @@ export async function storeArticles(env, articles, feedId = 'manual', mode = 'ma
   const categoryRejected = normalized.filter(a => a.categoryRejectReason && !allowedUrls.has(a.source.url));
   const prepared = categoryAllowed.filter(isImpactNews);
   const seen = new Set(), values = [];
+  let attributionConflicts = 0;
   const existing = prepared.length ? await env.DB.prepare(`SELECT ${COLS} FROM news WHERE canonical_url IN (SELECT value FROM json_each(?)) OR id IN (SELECT value FROM json_each(?))`)
     .bind(JSON.stringify(prepared.map(a => a.source.url)), JSON.stringify(prepared.map(a => a.id))).all() : { results: [] };
   const existingRows = existing.results || [];
@@ -231,11 +232,17 @@ export async function storeArticles(env, articles, feedId = 'manual', mode = 'ma
       if (values.find(row => row.url === a.source.url)?.publisher !== a.source.publisher) fail('Duplicate URL has conflicting publisher attribution', 409);
       continue;
     }
-    seen.add(a.source.url);
     if (existingRows.some(row => row.id === a.id && row.canonical_url !== a.source.url) || values.some(row => row.id === a.id && row.url !== a.source.url)) fail('Article id already belongs to a different URL', 409);
     const before = existingRows.find(row => row.canonical_url === a.source.url);
     const publisher = before?.publisher || parse(before?.source_json || '{}', {}).publisher;
-    if (publisher && publisher !== a.source.publisher) fail('Canonical URL already belongs to a different publisher', 409);
+    if (publisher && publisher !== a.source.publisher) {
+      if (mode !== 'automatic') fail('Canonical URL already belongs to a different publisher', 409);
+      // Two automated feeds may list one joint announcement. Keep the existing
+      // attribution while allowing the other records to proceed.
+      attributionConflicts++;
+      continue;
+    }
+    seen.add(a.source.url);
     const id = before?.id || a.id;
     values.push({ ...a, id, url: a.source.url, publisher: a.source.publisher, at: now.toISOString(), feedId, sourceJson: JSON.stringify(a.source), officialJson: JSON.stringify(a.officialSources), keywordsJson: JSON.stringify(a.keywords), metadataJson: JSON.stringify(a.metadata) });
   }
@@ -274,7 +281,9 @@ export async function storeArticles(env, articles, feedId = 'manual', mode = 'ma
   }
   if (statements.length) await env.DB.batch(statements);
   const linked = values.length ? await linkArticlesToEvents(env, values, { now }) : null;
-  return { accepted: values.length, duplicatesInRequest: prepared.length - values.length, excludedByPolicy: categoryAllowed.length-prepared.length, rejectedByCategory: categoryRejected.length, ...(linked?{eventCoverage:linked}:{}) };
+  return { accepted: values.length, duplicatesInRequest: prepared.length - values.length - attributionConflicts,
+    ...(attributionConflicts ? { attributionConflicts } : {}), excludedByPolicy: categoryAllowed.length-prepared.length,
+    rejectedByCategory: categoryRejected.length, ...(linked?{eventCoverage:linked}:{}) };
 }
 
 function encodeCursor(value) {

@@ -92,6 +92,11 @@ test('explicit import backfills legacy rows, updates metadata, preserves prior r
   assert.equal(db.sqlite.prepare('SELECT COUNT(*) AS n FROM article_source_lineage').get().n, 2);
   const otherPublisher = { ...item, source: { ...item.source, publisher: 'Different Publisher' } };
   await assert.rejects(storeArticles(env, [otherPublisher], 'other'), /different publisher/);
+  const safe = await storeArticles(env, [otherPublisher, fixture('unrelated')], 'other','automatic');
+  assert.equal(safe.attributionConflicts,1);
+  assert.equal(safe.accepted,1);
+  assert.equal(db.sqlite.prepare("SELECT publisher FROM news WHERE id='legacy'").get().publisher,'Example News');
+  assert.equal(db.sqlite.prepare("SELECT COUNT(*) AS n FROM article_source_lineage WHERE news_id='legacy' AND feed_id='other'").get().n,0);
 });
 
 test('canonical URL dedup keeps independent publisher reports and bulk ingestion has a bounded query count', async () => {
