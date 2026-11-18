@@ -101,14 +101,16 @@ globalThis.createBillingView = function createBillingView({ connected, apiBase, 
     const oneTime = plan.checkout === 'order';
     const schedule = billingTerms();
     const beforeFirstCharge = schedule.billingStartsAt && Date.now() < Date.parse(schedule.billingStartsAt);
+    const payNow = !oneTime && beforeFirstCharge && schedule.allowImmediateCheckout === true;
     const firstChargeNote = !oneTime && beforeFirstCharge
-      ? `<p class="billing-schedule-note">No charge today. First payment is scheduled for ${esc(schedule.billingStartLabel || dateLabel(schedule.billingStartsAt))}.</p>`
+      ? `<p class="billing-schedule-note">${payNow ? 'Choose to pay when you approve in PayPal, or schedule your first payment for' : 'No charge today. First payment is scheduled for'} ${esc(schedule.billingStartLabel || dateLabel(schedule.billingStartsAt))}.</p>`
       : '';
     let action;
     if (!connected) action = '<span class="billing-unavailable">Checkout is available on the connected deployment.</span>';
     else if (!available) action = `<button class="button" type="button" disabled>${plan.checkout === 'subscription' && plansData?.subscriptionsAccessRequired ? 'Recurring plan unavailable' : 'Membership not open yet'}</button>`;
     else if (!getSession()?.user) action = '<button class="button primary" type="button" data-action="billing-signin">Sign in to continue</button>';
     else if (billingStatus?.entitled) action = '<span class="billing-current">Your supporter access is active</span>';
+    else if (payNow) action = `<div class="billing-checkout-options"><button class="button primary" type="button" data-action="billing-checkout" data-plan="${esc(key)}" data-start="immediate" ${busy ? 'disabled' : ''}>Pay ${esc(amount)} now</button><button class="button" type="button" data-action="billing-checkout" data-plan="${esc(key)}" data-start="scheduled" ${busy ? 'disabled' : ''}>Start payments Dec 1</button></div>`;
     else action = `<button class="button primary" type="button" data-action="billing-checkout" data-plan="${esc(key)}" ${busy ? 'disabled' : ''}>${busy ? 'Connecting to PayPal…' : oneTime ? 'Buy 12-month pass' : 'Continue with PayPal'}</button>`;
     const label = oneTime ? 'ONE-TIME PASS' : key === 'founding' ? 'LIMITED FOUNDING OFFER' : key === 'annual' ? 'BEST VALUE' : 'FLEXIBLE';
     return `<article class="billing-plan ${key === 'annual' ? 'billing-plan-featured' : ''}"><div class="billing-plan-top"><span class="eyebrow">${label}</span>${key === 'annual' ? '<span class="billing-plan-badge">Support the long view</span>' : ''}</div><h3>${name}</h3><p class="billing-price"><strong>${esc(amount)}</strong><span>${esc(cadence)}</span></p>${featureSummary(plan)}${firstChargeNote}${action}</article>`;
@@ -128,7 +130,7 @@ globalThis.createBillingView = function createBillingView({ connected, apiBase, 
     const freeUntil = schedule.freeThroughDate ? dateLabel(`${schedule.freeThroughDate}T12:00:00`) : 'the published free period';
     const beforeBillingStart = schedule.billingStartsAt && Date.now() < Date.parse(schedule.billingStartsAt);
     const freePeriodCopy = plansData?.enabled
-      ? `If you subscribe early, your first charge is scheduled for ${esc(firstCharge)}. You can cancel before then.`
+      ? schedule.allowImmediateCheckout ? `Supporters can pay when they approve in PayPal or choose their first charge on ${esc(firstCharge)}.` : `If you subscribe early, your first charge is scheduled for ${esc(firstCharge)}. You can cancel before then.`
       : `Live checkout is still being configured. If it is not ready by then, access will remain free until it is.`;
     const freeNotice = beforeBillingStart
       ? `<div class="billing-free-notice" role="status"><strong>${plansData?.freeTier?.fullTimelines?`Supporter tools are open through ${esc(freeUntil)}. Reading stays free.`:`Free for everyone through ${esc(freeUntil)}.`}</strong><span>${freePeriodCopy}</span></div>`
@@ -175,18 +177,21 @@ globalThis.createBillingView = function createBillingView({ connected, apiBase, 
     finally { loading = false; render(); }
   }
 
-  async function checkout(planKey) {
+  async function checkout(planKey, startChoice = 'scheduled') {
     if (busy) return;
     if (!getSession()?.user) { signIn(); return; }
     if (!['sandbox', 'live'].includes(plansData?.environment)) { error = 'PayPal checkout is not configured for this page.'; render(); return; }
     const plan = plansData?.plans?.find(item => item.key === planKey);
     if (!plan || !plan.available || !plansData.enabled || !['subscription', 'order'].includes(plan.checkout)) { error = 'That plan is not available for PayPal checkout.'; render(); return; }
     const terms=plansData.terms;
-    if(terms?.published&&!window.confirm(`This plan renews at ${price(plan)} ${interval(plan)} until cancelled. Read /terms for the first billing date, cancellation and refunds. Do you agree to membership terms ${terms.version} and this recurring plan?`))return;
+    const schedule=billingTerms();
+    const future=startChoice!=='immediate'&&Date.now()<Date.parse(schedule.billingStartsAt);
+    const charge=future?`Your first payment is scheduled for ${schedule.billingStartLabel || dateLabel(schedule.billingStartsAt)}.`:`You will be charged ${price(plan)} when you approve in PayPal.`;
+    if(terms?.published&&!window.confirm(`${charge} This plan renews at ${price(plan)} ${interval(plan)} until cancelled. Read /terms for cancellation and refunds. Do you agree to membership terms ${terms.version} and this recurring plan?`))return;
     busy = true; error = ''; render();
     try {
       const endpoint = plan.checkout === 'order' ? '/api/billing/orders' : '/api/billing/subscriptions';
-      const result = await request(endpoint, { method: 'POST', body: { planKey,...(terms?.published?{acceptTerms:true,termsVersion:terms.version}:{}) } });
+      const result = await request(endpoint, { method: 'POST', body: { planKey,...(startChoice==='immediate'?{startChoice}:{}),...(terms?.published?{acceptTerms:true,termsVersion:terms.version}:{}) } });
       const approval = new URL(result.approvalUrl);
       const liveHost = ['paypal.com', 'www.paypal.com', 'checkout.paypal.com'].includes(approval.hostname.toLowerCase());
       const sandboxHost = ['www.sandbox.paypal.com', 'sandbox.paypal.com', 'checkout.sandbox.paypal.com'].includes(approval.hostname.toLowerCase());
@@ -213,7 +218,7 @@ globalThis.createBillingView = function createBillingView({ connected, apiBase, 
     const action = button?.dataset?.action;
     if (!action?.startsWith('billing-')) return false;
     event.preventDefault();
-    if (action === 'billing-checkout') void checkout(button.dataset.plan || '');
+    if (action === 'billing-checkout') void checkout(button.dataset.plan || '',button.dataset.start || 'scheduled');
     if (action === 'billing-cancel') void cancel();
     if (action === 'billing-retry') { loadedAt = 0; void load(true); }
     if (action === 'billing-signin') signIn();

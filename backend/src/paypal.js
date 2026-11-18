@@ -108,7 +108,9 @@ export async function publicPlans(env) {
   return {
     enabled: ready && catalog.some(plan => plan.available),
     environment: API_BY_ENV[env.PAYPAL_ENV] ? env.PAYPAL_ENV : 'disabled',
-    billing: sandboxImmediateBilling(env) ? { ...planConfig.billing, billingStartsAt:'2000-01-01T00:00:00.000Z', billingStartLabel:'Immediately, using fictitious PayPal sandbox funds only' } : planConfig.billing,
+    billing: sandboxImmediateBilling(env)
+      ? { ...planConfig.billing, billingStartsAt:'2000-01-01T00:00:00.000Z', billingStartLabel:'Immediately, using fictitious PayPal sandbox funds only' }
+      : { ...planConfig.billing, allowImmediateCheckout: env.PAYPAL_ENV === 'live' && env.PAYPAL_IMMEDIATE_CHECKOUT_ENABLED === 'true' },
     freeTier: env.PUBLIC_TIMELINES === 'true' ? { ...planConfig.freeTier, timelineMilestones: null, fullTimelines: true } : planConfig.freeTier,
     freePeriodActive: !sandboxImmediateBilling(env) && Date.now() < Date.parse(planConfig.billing.billingStartsAt),
     missingSetup: [...setupMissing(env), ...(!schemaReady && env.DB ? ['Apply the D1 billing migration before enabling checkout.'] : [])],
@@ -280,36 +282,40 @@ function approvalLink(resource, allowOrder = false, environment = 'sandbox') {
   } catch { return null; }
 }
 
-function newRequestId(existing, planKey, checkoutKind) {
-  if (existing?.status === 'ERROR' && existing.plan_key === planKey && existing.checkout_kind === checkoutKind && existing.request_id) return existing.request_id;
+function sameCheckout(row, planKey, kind, startChoice) {
+  return row?.plan_key === planKey && row.checkout_kind === kind && (row.billing_start_choice || 'scheduled') === startChoice;
+}
+
+function newRequestId(existing, planKey, checkoutKind, startChoice) {
+  if (existing?.status === 'ERROR' && sameCheckout(existing, planKey, checkoutKind, startChoice) && existing.request_id) return existing.request_id;
   return crypto.randomUUID();
 }
 
-async function reserveCheckout(env, userId, plan, checkoutKind) {
+async function reserveCheckout(env, userId, plan, checkoutKind, startChoice = 'scheduled') {
   const now = epochNow();
   const existing = await env.DB.prepare('SELECT * FROM billing_subscriptions WHERE user_id=?').bind(userId).first();
   if (entitlementFromRow(existing, now)) throw new BillingError('plan_already_active', 409, 'A paid ThreadNews plan is already active on this account.');
   if (existing && ['CREATING', 'APPROVAL_PENDING', 'AWAITING_PAYMENT', 'PAYMENT_FAILED', 'SUSPENDED'].includes(existing.status)) {
-    if (existing.approval_url && Number(existing.updated_at) > now - 86400 && existing.plan_key === plan.key && existing.checkout_kind === checkoutKind) return { existing, reused: true };
-    throw new BillingError('checkout_in_progress', 409, 'A checkout is already in progress. Complete or cancel it before choosing another plan.');
+    if (existing.approval_url && Number(existing.updated_at) > now - 86400 && sameCheckout(existing, plan.key, checkoutKind, startChoice)) return { existing, reused: true };
+    throw new BillingError('checkout_in_progress', 409, 'A checkout is already in progress. Complete or cancel it before choosing a different plan or start date.');
   }
-  const requestId = newRequestId(existing, plan.key, checkoutKind);
+  const requestId = newRequestId(existing, plan.key, checkoutKind, startChoice);
   const result = await env.DB.prepare(`INSERT INTO billing_subscriptions
-    (user_id,checkout_kind,plan_key,paypal_plan_id,subscription_id,order_id,request_id,approval_url,status,next_billing_time,last_payment_at,last_payment_ref,access_until,grace_until,created_at,updated_at)
-    VALUES (?,?,?,?,NULL,NULL,?,NULL,'CREATING',NULL,NULL,NULL,NULL,NULL,?,?)
+    (user_id,checkout_kind,plan_key,paypal_plan_id,subscription_id,order_id,request_id,approval_url,status,next_billing_time,last_payment_at,last_payment_ref,access_until,grace_until,created_at,updated_at,billing_start_choice)
+    VALUES (?,?,?,?,NULL,NULL,?,NULL,'CREATING',NULL,NULL,NULL,NULL,NULL,?,?,?)
     ON CONFLICT(user_id) DO UPDATE SET
       checkout_kind=excluded.checkout_kind,plan_key=excluded.plan_key,paypal_plan_id=excluded.paypal_plan_id,
       subscription_id=NULL,order_id=NULL,request_id=excluded.request_id,approval_url=NULL,status='CREATING',
       next_billing_time=NULL,last_payment_at=NULL,last_payment_ref=NULL,access_until=NULL,grace_until=NULL,
-      created_at=excluded.created_at,updated_at=excluded.updated_at
+      created_at=excluded.created_at,updated_at=excluded.updated_at,billing_start_choice=excluded.billing_start_choice
     WHERE billing_subscriptions.status IN ('CANCELLED','EXPIRED','REFUNDED','REVERSED','ERROR')
        OR (billing_subscriptions.status='CREATING' AND billing_subscriptions.updated_at<=?)`).bind(
         userId, checkoutKind, plan.key, checkoutKind === 'subscription' ? planId(env, plan) : null,
-        requestId, now, now, now - CHECKOUT_STALE_SECONDS
+        requestId, now, now, startChoice, now - CHECKOUT_STALE_SECONDS
       ).run();
   const row = await env.DB.prepare('SELECT * FROM billing_subscriptions WHERE user_id=?').bind(userId).first();
   if (!result.meta?.changes || !row || row.request_id !== requestId || row.status !== 'CREATING') {
-    if (row?.approval_url && Number(row.updated_at) > now - 86400 && row.plan_key === plan.key && row.checkout_kind === checkoutKind) return { existing: row, reused: true };
+    if (row?.approval_url && Number(row.updated_at) > now - 86400 && sameCheckout(row, plan.key, checkoutKind, startChoice)) return { existing: row, reused: true };
     throw new BillingError('checkout_in_progress', 409, 'A checkout is already in progress. Complete it or try again in a few minutes.');
   }
   return { existing: row, reused: false };
@@ -342,12 +348,15 @@ async function markCheckoutError(env, userId, requestId) {
 async function createSubscription(request, env, user) {
   if (!configured(env)) throw new BillingError('billing_not_ready', 503, DISABLED_MESSAGE);
   if (env.PAYPAL_SUBSCRIPTIONS_ACCESS !== 'true') throw new BillingError('subscription_access_required', 503, 'PayPal has not confirmed Subscriptions API access for this app.');
-  const { planKey, acceptTerms, termsVersion } = await readJSON(request);
+  const { planKey, acceptTerms, termsVersion, startChoice = 'scheduled' } = await readJSON(request);
   const plan = plans.get(planKey);
   if(env.PAYPAL_ENV==='live'&&(acceptTerms!==true||termsVersion!==membershipTerms(env).version))throw new BillingError('terms_consent_required',400,'Read and accept the current membership terms before approving a recurring plan.');
+  if (!['scheduled','immediate'].includes(startChoice) || (startChoice === 'immediate' && (env.PAYPAL_ENV !== 'live' || env.PAYPAL_IMMEDIATE_CHECKOUT_ENABLED !== 'true'))) {
+    throw new BillingError('invalid_start_choice', 400, 'This billing start option is unavailable. Refresh membership to see current options.');
+  }
   if (!plan || plan.checkout !== 'subscription' || !planAvailable(env, plan)) throw new BillingError('plan_unavailable', 503, 'This subscription plan is not available in the current PayPal configuration.');
   const cap = plan.seatCapVariable ? capValue(env, plan) : null;
-  const reservation = await reserveCheckout(env, user.id, plan, 'subscription');
+  const reservation = await reserveCheckout(env, user.id, plan, 'subscription', startChoice);
   if (reservation.reused) return json({ approvalUrl: reservation.existing.approval_url, subscriptionId: reservation.existing.subscription_id, reused: true });
   const requestId = reservation.existing.request_id;
   try {
@@ -356,9 +365,9 @@ async function createSubscription(request, env, user) {
     const remotePlanId = await validatePayPalPlan(env, plan, token);
     const origin = appOrigin(env);
     const startsAt = Date.parse(planConfig.billing.billingStartsAt);
-    const scheduledStart = !sandboxImmediateBilling(env) && Date.now() < startsAt ? new Date(startsAt).toISOString() : null;
-    if(env.PAYPAL_ENV==='live')await env.DB.prepare('INSERT INTO membership_consents (id,user_id,terms_version,plan_key,amount,currency,first_charge_at,accepted_at) VALUES (?,?,?,?,?,?,?,?)')
-      .bind(crypto.randomUUID(),user.id,termsVersion,plan.key,plan.price,plan.currency,scheduledStart,epochNow()).run();
+    const scheduledStart = startChoice === 'scheduled' && !sandboxImmediateBilling(env) && Date.now() < startsAt ? new Date(startsAt).toISOString() : null;
+    if(env.PAYPAL_ENV==='live')await env.DB.prepare('INSERT INTO membership_consents (id,user_id,terms_version,plan_key,amount,currency,first_charge_at,accepted_at,billing_start_choice) VALUES (?,?,?,?,?,?,?,?,?)')
+      .bind(crypto.randomUUID(),user.id,termsVersion,plan.key,plan.price,plan.currency,scheduledStart,epochNow(),startChoice).run();
     const subscriptionBody = {
       plan_id: remotePlanId,
       custom_id: user.id,

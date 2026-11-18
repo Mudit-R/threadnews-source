@@ -143,7 +143,7 @@ test('live subscription checkout schedules the first charge for the published bi
   const sessionToken = 'paypal-checkout-session-token-1234567890';
   await f.DB.prepare('INSERT INTO sessions (token_hash,user_id,expires_at) VALUES (?,?,?)')
     .bind(await sha256(sessionToken), 'reader-subscription', launchStart + 3600).run();
-  const env = postLaunchEnv(f.DB, { PAYPAL_ENV: 'live', PAYPAL_PLAN_MONTHLY_ID: 'P-LIVE-MONTHLY' });
+  const env = postLaunchEnv(f.DB, { PAYPAL_ENV: 'live', PAYPAL_PLAN_MONTHLY_ID: 'P-LIVE-MONTHLY', PAYPAL_IMMEDIATE_CHECKOUT_ENABLED:'true' });
   const originalFetch = globalThis.fetch;
   let subscriptionBody = null;
   globalThis.fetch = async (input, init = {}) => {
@@ -160,7 +160,7 @@ test('live subscription checkout schedules the first charge for the published bi
     });
     if (url.endsWith('/v1/billing/subscriptions') && init.method === 'POST') {
       subscriptionBody = JSON.parse(init.body);
-      return Response.json({ id: 'I-LIVE-1234567890', status: 'APPROVAL_PENDING', start_time: planConfig.billing.billingStartsAt, links: [{ rel: 'approve', href: 'https://www.paypal.com/webapps/billing/subscriptions?ba_token=live-test' }] });
+      return Response.json({ id: subscriptionBody.custom_id === 'reader-pass' ? 'I-LIVE-9876543210' : 'I-LIVE-1234567890', status: 'APPROVAL_PENDING', start_time: subscriptionBody.start_time, links: [{ rel: 'approve', href: 'https://www.paypal.com/webapps/billing/subscriptions?ba_token=live-test' }] });
     }
     throw new Error(`Unexpected network request in live subscription test: ${url}`);
   };
@@ -178,6 +178,18 @@ test('live subscription checkout schedules the first charge for the published bi
     assert.equal(stored.next_billing_time, planConfig.billing.billingStartsAt);
     const consent=await f.DB.prepare('SELECT terms_version,amount,currency,first_charge_at FROM membership_consents WHERE user_id=?').bind('reader-subscription').first();
     assert.equal(consent.terms_version,'fixture-2026-11-04');assert.equal(consent.amount,'2.00');assert.equal(consent.currency,'USD');assert.equal(consent.first_charge_at,planConfig.billing.billingStartsAt);
+    const newToken='paypal-immediate-session-token-1234567890';
+    await f.DB.prepare('INSERT INTO sessions (token_hash,user_id,expires_at) VALUES (?,?,?)')
+      .bind(await sha256(newToken),'reader-pass',launchStart+3600).run();
+    const immediate=token=>new Request('https://threadnews.online/api/billing/subscriptions', {
+      method:'POST', headers:{origin:'https://threadnews.online',cookie:`__Host-threadline-session=${token}`,'content-type':'application/json'},
+      body:JSON.stringify({planKey:'monthly',acceptTerms:true,termsVersion:'fixture-2026-11-04',startChoice:'immediate'})
+    });
+    assert.equal((await handlePaypal(immediate(sessionToken),env)).status,409,'an existing scheduled approval is preserved');
+    assert.equal((await handlePaypal(immediate(newToken),{...env,PAYPAL_IMMEDIATE_CHECKOUT_ENABLED:'false'})).status,400);
+    assert.equal((await handlePaypal(immediate(newToken),env)).status,200);
+    assert.equal('start_time' in subscriptionBody,false);
+    assert.equal((await f.DB.prepare("SELECT billing_start_choice FROM membership_consents WHERE user_id='reader-pass'").first()).billing_start_choice,'immediate');
   } finally { globalThis.fetch = originalFetch; }
 });
 

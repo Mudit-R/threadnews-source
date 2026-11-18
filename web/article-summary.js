@@ -50,7 +50,7 @@
         status.textContent = 'Summary and article link copied.';
       } catch { status.textContent = 'Could not copy the summary.'; }
     });
-    if (typeof apiBase !== 'string' || !digest || article.digestBasis === 'source-summary' || article.digestBasis === 'article-reviewed') return;
+    if (typeof apiBase !== 'string' || !digest || ['source-summary','article-reviewed','official-primary-source'].includes(article.digestBasis)) return;
     void fetchSummary(article, apiBase).then(result => {
       if (!result || !panel.isConnected) return;
       render(result);

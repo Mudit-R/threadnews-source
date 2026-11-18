@@ -85,11 +85,11 @@ test('server limits cannot be bypassed by imports or repeated saves',async()=>{
 
 test('export contains only the current reader data and never credentials or session hashes',async()=>{
   const f=await fixture();await f.request('/api/account/collection',{method:'PATCH',body:{type:'event',id:'event-one',saved:true}});
-  for(const id of ['one','two'])f.sql.prepare('INSERT INTO membership_consents VALUES (?,?,?,?,?,?,?,?)').run('consent-'+id,id,'2026-11-v1','monthly','2.00','USD','2026-11-30T18:30:00.000Z',1793700000);
+  for(const id of ['one','two'])f.sql.prepare('INSERT INTO membership_consents (id,user_id,terms_version,plan_key,amount,currency,first_charge_at,accepted_at) VALUES (?,?,?,?,?,?,?,?)').run('consent-'+id,id,'2026-11-v1','monthly','2.00','USD','2026-11-30T18:30:00.000Z',1793700000);
   const {response,data}=await f.request('/api/account/export');
   assert.equal(response.headers.get('cache-control'),'no-store');assert.match(response.headers.get('content-disposition'),/attachment/);
   assert.equal(data.user.id,'one');assert.equal(data.user.providerSubject,'sub-one');assert.deepEqual(data.preferences.topics,['Economy']);assert.deepEqual(data.collection.events,['event-one']);
-  assert.deepEqual(data.membershipConsents,{available:true,records:[{termsVersion:'2026-11-v1',planKey:'monthly',amount:'2.00',currency:'USD',firstChargeAt:'2026-11-30T18:30:00.000Z',acceptedAt:new Date(1793700000*1000).toISOString()}]});
+  assert.deepEqual(data.membershipConsents,{available:true,records:[{termsVersion:'2026-11-v1',planKey:'monthly',amount:'2.00',currency:'USD',firstChargeAt:'2026-11-30T18:30:00.000Z',billingStartChoice:'scheduled',acceptedAt:new Date(1793700000*1000).toISOString()}]});
   assert(!JSON.stringify(data).includes('sub-two'));assert(!JSON.stringify(data).includes('token_hash'));assert(!JSON.stringify(data).includes('x'.repeat(43)));
   f.sql.close();
 });

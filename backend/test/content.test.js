@@ -288,6 +288,18 @@ test('event archive paginates a growing set without skipping equal-timestamp rec
   assert.deepEqual(seen,events.map(e=>e.id));assert.equal((await get(env,'/api/events?limit=99999')).response.status,400);
 });
 
+test('timeline filters search beyond the first page and scope their cursor', async () => {
+  const db=database(), env={DB:db.DB};
+  await importEvents(env,[ {...event(),id:'history-public'}, ...Array.from({length:3},(_,i)=>({
+    ...event(),id:`agency-${i}`,title:`Agency action ${i}`,keywords:['ABCD-1000'],recordType:'rulemaking'
+  })) ]);
+  const found=await get(env,'/api/events?kind=record&q=abcd-1000&limit=1');
+  assert.equal(found.data.meta.total,3);
+  assert.equal(found.data.events[0].recordType,'rulemaking');
+  assert.equal((await get(env,`/api/events?kind=editorial&cursor=${encodeURIComponent(found.data.meta.nextCursor)}`)).response.status,400);
+  assert.deepEqual((await get(env,'/api/events?kind=editorial')).data.events.map(item=>item.id),['history-public']);
+});
+
 test('cleanup archives by query window, deletes only expired news and cascades revision/lineage rows', async () => {
   const db = database(), env = { DB: db.DB };
   await storeArticles(env, [fixture('fresh'), fixture('archive', { publishedAt: ago(6) }), fixture('expired', { publishedAt: ago(181) })], 'manual');
@@ -348,6 +360,9 @@ test('single-article API respects the current window and checks archive entitlem
   assert.equal((await get(env, '/api/news/archive-detail?archive=1')).response.status, 403);
   assert.equal((await get(env, '/api/news/archive-detail?archive=1', true)).data.article.id, 'archive-detail');
   assert.equal((await get(env, '/api/news/unknown')).response.status, 404);
+  const publicLinks={...env,PUBLIC_ARTICLE_LINKS:'true'};
+  assert.equal((await get(publicLinks, '/api/news/archive-detail')).data.article.id, 'archive-detail');
+  assert.equal((await get(publicLinks, '/api/news?archive=1')).response.status, 403);
 });
 
 test('authenticated feed health persists successes, preserves them on failure and rejects future health metadata', async () => {

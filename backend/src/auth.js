@@ -233,8 +233,8 @@ async function accountRoutes(request,env,path){
   if(path==='/api/account/export'){
     let consentRecords=[],consentHistoryAvailable=true;
     try{
-      const rows=(await env.DB.prepare('SELECT terms_version,plan_key,amount,currency,first_charge_at,accepted_at FROM membership_consents WHERE user_id=? ORDER BY accepted_at DESC LIMIT 1000').bind(session.id).all()).results||[];
-      consentRecords=rows.map(row=>({termsVersion:row.terms_version,planKey:row.plan_key,amount:row.amount,currency:row.currency,firstChargeAt:row.first_charge_at||null,acceptedAt:new Date(row.accepted_at*1000).toISOString()}));
+      const rows=(await env.DB.prepare('SELECT * FROM membership_consents WHERE user_id=? ORDER BY accepted_at DESC LIMIT 1000').bind(session.id).all()).results||[];
+      consentRecords=rows.map(row=>({termsVersion:row.terms_version,planKey:row.plan_key,amount:row.amount,currency:row.currency,firstChargeAt:row.first_charge_at||null,billingStartChoice:row.billing_start_choice||'scheduled',acceptedAt:new Date(row.accepted_at*1000).toISOString()}));
     }catch(error){
       if(!/no such table[^\n]*membership_consents/i.test(error?.message||''))throw error;
       consentHistoryAvailable=false;

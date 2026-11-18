@@ -274,10 +274,12 @@ async function renderPage(request, env, ctx, path, origin) {
     const state = catalog.enabled
       ? catalog.environment === 'sandbox'
         ? '<p>Sandbox mode is active. Transactions are confined to PayPal sandbox accounts.</p>'
-        : `<p>Live checkout is available. Reading is free through ${freeThrough}; any subscription approved before then is scheduled to begin recurring charges on ${startLabel}.</p>`
+        : catalog.billing?.allowImmediateCheckout
+          ? `<p>Live checkout is available. You can pay when you approve in PayPal or schedule your first payment for ${startLabel} during the free launch.</p>`
+          : `<p>Live checkout is available. Reading is free through ${freeThrough}; any subscription approved before then is scheduled to begin recurring charges on ${startLabel}.</p>`
       : `<p>ThreadNews is free through ${freeThrough}. If live PayPal checkout is not ready by then, reading stays open until it is.</p>`;
-    const content = `<h1>Membership</h1><p>Read the current edition for free. Supporter membership currently offers $2 USD monthly or $20 USD yearly for full timelines and the long-term source-coverage archive.</p>${state}${cards ? `<section aria-label="Membership plans">${cards}</section>` : '<p>Plan details are temporarily unavailable.</p>'}<p><a href="/terms">Read draft terms and cancellation information</a> · <a href="/privacy">Privacy</a></p>`;
-    return pageDocument({ title:'ThreadNews membership', description:'Membership plans and their current availability. Live billing remains disabled until setup and review are complete.', canonical, content, template, includeApp:true });
+    const content = `<h1>Membership</h1><p>Read the current edition for free. Supporter membership includes followed story updates and archive search.</p>${state}${cards ? `<section aria-label="Membership plans">${cards}</section>` : '<p>Plan details are temporarily unavailable.</p>'}<p><a href="/terms">Read membership terms and cancellation information</a> · <a href="/privacy">Privacy</a></p>`;
+    return pageDocument({ title:'ThreadNews membership', description:'Membership plans, prices, and current availability.', canonical, content, template, includeApp:true });
   }
   if (path === '/threads') {
     const data = await eventList(request, env, ctx);

@@ -11,7 +11,7 @@ const COLS = 'id,canonical_url,title,original_headline,summary,category,region,k
 // Feed refreshes may update their own headline metadata, but must not replace a
 // stronger source-backed or reviewed record. Explicit editorial imports can
 // still correct/retract a prior record. All expressions here are fixed SQL.
-const evidenceRankSql = column => `(CASE COALESCE(json_extract(${column},'$.digestBasis'),'') WHEN 'article-reviewed' THEN 5 WHEN 'source-summary' THEN 4 WHEN 'source-extract' THEN 3 WHEN 'publisher-preview' THEN 2 WHEN 'feed-description' THEN 1 ELSE 0 END)`;
+const evidenceRankSql = column => `(CASE COALESCE(json_extract(${column},'$.digestBasis'),'') WHEN 'article-reviewed' THEN 5 WHEN 'source-summary' THEN 4 WHEN 'official-primary-source' THEN 4 WHEN 'source-extract' THEN 3 WHEN 'publisher-preview' THEN 2 WHEN 'feed-description' THEN 1 ELSE 0 END)`;
 const json = (body, status = 200, headers = {}) => Response.json(body, { status, headers: { 'cache-control': 'no-store', 'x-content-type-options': 'nosniff', ...headers } });
 class ContentError extends Error {
   constructor(message, status = 400) { super(message); this.status = status; }
@@ -323,7 +323,7 @@ export function buildContentQuery(params, env = {}, { canAccessArchive = false, 
     if (normalizedTopic.rejectReason) fail('Invalid topic category');
     topic = normalizedTopic.category;
   }
-  if (!['all', 'official', 'with-official', 'reporting', 'headline', 'article'].includes(evidence)) fail('Invalid evidence filter');
+  if (!['all', 'official', 'with-official', 'reporting', 'headline', 'article', 'brief'].includes(evidence)) fail('Invalid evidence filter');
   const scope = JSON.stringify({ archive, topic, region, publisher, q, evidence, ...(personalized ? { priorities } : {}) });
   const hardCutoff = new Date(now.getTime() - config.retentionDays * DAY).toISOString();
   let cutoff = new Date(now.getTime() - (archive ? config.retentionDays : config.feedDays) * DAY).toISOString();
@@ -352,6 +352,7 @@ export function buildContentQuery(params, env = {}, { canAccessArchive = false, 
   if (evidence === 'official') where.push("source_type='Official source'");
   if (evidence === 'with-official') where.push("(official_count>0 OR source_type='Official source')");
   if (evidence === 'reporting') where.push("source_type='News report'");
+  if (evidence === 'brief') where.push(`summary<>'' AND ${evidenceRankSql('metadata_json')}>0`);
   if (['headline', 'article'].includes(evidence)) { where.push("json_extract(source_json,'$.basis')=?"); args.push(evidence); }
   const baseWhere = ' WHERE ' + where.join(' AND '), baseArgs = [...args];
   if (after) {
@@ -406,9 +407,10 @@ async function impactCandidates(env) {
 
 async function singleArticle(request, env, options, id) {
   identity(id, 'article id');
+  const publicLink = env.PUBLIC_ARTICLE_LINKS === 'true';
   const params = new URLSearchParams();
-  if (new URL(request.url).searchParams.get('archive') === '1') params.set('archive', '1');
-  const query = buildContentQuery(params, env, options);
+  if (publicLink || new URL(request.url).searchParams.get('archive') === '1') params.set('archive', '1');
+  const query = buildContentQuery(params, env, { ...options, canAccessArchive:publicLink || options.canAccessArchive });
   const row = await env.DB.prepare(`SELECT ${COLS} FROM news${query.baseWhere} AND id=?`).bind(...query.baseArgs, id).first();
   // Outside-window records use the same result as an unknown identity. Archive
   // authorization is checked before this query, not inferred from a cursor/id.
@@ -450,7 +452,8 @@ export async function importEvents(env, events, { now = new Date() } = {}) {
   for (const e of values) {
     const payload = JSON.stringify(e), hash = await sha256(payload);
     statements.push(env.DB.prepare(`INSERT INTO event_payloads (id,title,category,region,coverage_end,updated_at,payload_json,content_hash) VALUES (?,?,?,?,?,?,?,?)
-      ON CONFLICT(id) DO UPDATE SET title=excluded.title,category=excluded.category,region=excluded.region,coverage_end=excluded.coverage_end,updated_at=excluded.updated_at,payload_json=excluded.payload_json,content_hash=excluded.content_hash`).bind(e.id, e.title, text(e.category || '', 'event category', 80), text(e.region || '', 'event region', 80), e.coverageEnd || null, now.toISOString(), payload, hash));
+      ON CONFLICT(id) DO UPDATE SET title=excluded.title,category=excluded.category,region=excluded.region,coverage_end=excluded.coverage_end,updated_at=excluded.updated_at,payload_json=excluded.payload_json,content_hash=excluded.content_hash
+      WHERE event_payloads.content_hash<>excluded.content_hash`).bind(e.id, e.title, text(e.category || '', 'event category', 80), text(e.region || '', 'event region', 80), e.coverageEnd || null, now.toISOString(), payload, hash));
   }
   if (statements.length) await env.DB.batch(statements);
   if (values.length) { await syncEventTracking(env, values, { now }); await linkRecentArticles(env, { now, limit: 100 }); }
@@ -497,6 +500,7 @@ async function pipeline(env) {
     env.DB.prepare("SELECT updated_at,json_extract(payload_json,'$.meta.monthlyRefresh') AS monthly,json_extract(payload_json,'$.meta.annualRefresh') AS annual FROM content_documents WHERE id='economy'").first()
   ]);
   const enabled = new Set(enabledFeedIds(env));
+  if (env.PUBLIC_RECORDS_SYNC === 'true') enabled.add('federal-register');
   const feeds = (result.results || []).map(row => ({ id: row.id, enabled: enabled.has(row.id), lastAttemptAt: row.last_attempt_at, lastSuccessAt: row.last_success_at, error: row.error ? 'The last feed refresh failed.' : null, itemCount: row.item_count }));
   for (const id of enabled) if (!feeds.some(f => f.id === id)) feeds.push({ id, enabled: true, lastAttemptAt: null, lastSuccessAt: null, error: null, itemCount: 0 });
   return json({ feeds, economy: economy?{storedAt:economy.updated_at,monthly:parse(economy.monthly,null),annual:parse(economy.annual,null)}:null, tracking: Object.fromEntries((states.results||[]).map(row=>[row.key,parse(row.value,null)])), meta: { ...contentConfig(env), total: summary?.total || 0, newestPublishedAt: summary?.newestPublishedAt || null, lastStoredAt: summary?.lastStoredAt || null, cleanup: parse(cleanup?.value || 'null', null), note: 'Feed status reflects persisted attempts and successes; a configured feed is not evidence of a successful fetch.' } });
@@ -627,18 +631,30 @@ export async function handleContent(request, env, ctx, { canAccessArchive = fals
     if (path === '/api/events') {
       const params=new URL(request.url).searchParams,limit=params.has('limit')?Number(params.get('limit')):20;
       if(!Number.isInteger(limit)||limit<1||limit>100)fail('Limit must be between 1 and 100');
-      let where='',args=[];
-      if(params.has('cursor')){const cursor=decodeCursor(params.get('cursor'));if(cursor.scope!=='events'||date(cursor.at,'cursor date',new Date())!==cursor.at)fail('Invalid event cursor');identity(cursor.id);where=' WHERE (updated_at<? OR (updated_at=? AND id>?))';args=[cursor.at,cursor.at,cursor.id];}
+      const q=text(params.get('q')||'','timeline search',160), kind=params.get('kind')||'';
+      if (!['','editorial','record'].includes(kind)) fail('Invalid timeline kind');
+      const scope=q||kind ? JSON.stringify(['events',q,kind]) : 'events';
+      const filters=[],filterArgs=[];
+      if (kind === 'record') filters.push("json_extract(payload_json,'$.recordType') IS NOT NULL");
+      if (kind === 'editorial') filters.push("json_extract(payload_json,'$.recordType') IS NULL");
+      if (q) {
+        filters.push("(instr(lower(title),?)>0 OR instr(lower(json_extract(payload_json,'$.keywords')),?)>0)");
+        filterArgs.push(q.toLowerCase(),q.toLowerCase());
+      }
+      const toWhere=clauses=>clauses.length?' WHERE '+clauses.join(' AND '):'';
+      const countWhere=toWhere(filters),args=[...filterArgs];
+      if(params.has('cursor')){const cursor=decodeCursor(params.get('cursor'));if(cursor.scope!==scope||date(cursor.at,'cursor date',new Date())!==cursor.at)fail('Invalid event cursor');identity(cursor.id);filters.push('(updated_at<? OR (updated_at=? AND id>?))');args.push(cursor.at,cursor.at,cursor.id);}
       const [result,count]=await Promise.all([env.DB.prepare(`SELECT id,title,category,region,coverage_end,updated_at,
         json_extract(payload_json,'$.shortTitle') AS short_title,
         json_extract(payload_json,'$.description') AS description,
         json_extract(payload_json,'$.keywords') AS keywords,
+        json_extract(payload_json,'$.recordType') AS record_type,
         json_array_length(payload_json,'$.milestones') AS milestone_count
-        FROM event_payloads${where} ORDER BY updated_at DESC,id LIMIT ?`).bind(...args,limit+1).all(),env.DB.prepare('SELECT COUNT(*) AS total FROM event_payloads').first()]);
+        FROM event_payloads${toWhere(filters)} ORDER BY updated_at DESC,id LIMIT ?`).bind(...args,limit+1).all(),env.DB.prepare('SELECT COUNT(*) AS total FROM event_payloads'+countWhere).bind(...filterArgs).first()]);
       const records=result.results||[],hasMore=records.length>limit,page=records.slice(0,limit),last=page.at(-1);
       return json({ events: page.map(r => ({ id: r.id, title: r.title, shortTitle: r.short_title || r.title,
         description: plainText(r.description, 500), keywords: parse(r.keywords, []), category: r.category, region: r.region,
-        coverageEnd: r.coverage_end, updatedAt: r.updated_at, milestoneCount: r.milestone_count })), meta: { total: count?.total||0, mode: 'database',hasMore,nextCursor:hasMore&&last?encodeCursor({v:1,scope:'events',at:last.updated_at,id:last.id}):null } });
+        coverageEnd: r.coverage_end, updatedAt: r.updated_at, milestoneCount: r.milestone_count, ...(r.record_type?{recordType:r.record_type}:{}) })), meta: { total: count?.total||0, mode: 'database',hasMore,nextCursor:hasMore&&last?encodeCursor({v:1,scope,at:last.updated_at,id:last.id}):null } });
     }
     const id = identity(decodeURIComponent(path.slice('/api/events/'.length)), 'event id');
     const row = await env.DB.prepare('SELECT payload_json FROM event_payloads WHERE id=?').bind(id).first();

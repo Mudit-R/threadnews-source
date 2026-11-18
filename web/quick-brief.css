@@ -1,0 +1,15 @@
+.quick-brief { box-sizing: border-box; position: fixed; z-index: 70; width: min(370px, calc(100vw - 20px)); max-height: min(440px, calc(100dvh - 20px)); overflow-y: auto; overscroll-behavior: contain; padding: 17px 19px; border: 1px solid #c8d6ca; background: #f8fbf5; color: #203c32; border-radius: 12px; box-shadow: 0 12px 40px #213b3440; }
+.quick-brief[hidden] { display: none; }
+.quick-brief-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.quick-brief-kind { font-size: .81rem; font-weight: 680; color: #4d6558; }
+.quick-brief-top button { border: 0; border-radius: 6px; background: transparent; color: inherit; font-size: 1.4rem; line-height: 1; padding: 4px 8px; cursor: pointer; }
+.quick-brief-top button:hover, .quick-brief-top button:focus-visible { background: #e1eadf; }
+.quick-brief h2 { font-size: 1.2rem; line-height: 1.25; margin: 8px 0; }
+.quick-brief p { margin: 7px 0 11px; overflow-wrap: anywhere; }
+.quick-brief-meta { color: #4d6558; font-size: .82rem; }
+.quick-brief-copy { line-height: 1.5; font-size: .95rem; }
+.quick-brief-source { color: inherit; font-weight: 650; text-decoration: underline; text-underline-offset: 3px; }
+.quick-brief-trigger { border: 0; background: transparent; color: inherit; padding: 3px 1px; text-decoration: underline; text-underline-offset: 3px; font: inherit; font-size: .81rem; cursor: pointer; }
+.quick-brief-trigger:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+.news-scope-switch { display: flex; flex-wrap: wrap; gap: 7px; align-items: center; }
+.news-scope-switch [aria-pressed="true"], .news-scope-switch [aria-current="page"] { background: #dfe9de; }

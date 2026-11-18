@@ -120,6 +120,7 @@ function articleEvidence(row, groups = []) {
 }
 
 export async function retrieveArticleSummaryEvidence(env, id, { now = new Date(), archive = false } = {}) {
+  archive ||= env.PUBLIC_ARTICLE_LINKS === 'true';
   const params = new URLSearchParams(archive ? { archive: '1' } : {});
   const query = buildContentQuery(params, env, { cursor: false, now, canAccessArchive: archive });
   const row = await env.DB.prepare(`SELECT id,title,original_headline,summary,published_at,source_json,metadata_json,event_id
@@ -136,7 +137,7 @@ export async function retrieveArticleSummaryEvidence(env, id, { now = new Date()
   });
   return {
     basis: summarized ? 'source_brief' : 'headline',
-    publishedSummary: summarized && ['source-summary','article-reviewed'].includes(basis),
+    publishedSummary: summarized && ['source-summary','article-reviewed','official-primary-source'].includes(basis),
     publisher: source.publisher || 'The publisher', eventId: row.event_id || null,
     text: summarized ? row.summary : headline,
     evidence: record ? [{ ...record, id: 1 }] : []
