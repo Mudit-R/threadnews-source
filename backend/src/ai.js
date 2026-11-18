@@ -138,18 +138,24 @@ export async function handleAsk(request, env, ctx) {
     }
   }
   if (input.articleId && !article) return fallback('article_unavailable', []);
+  const epoch = Math.floor(now.getTime() / 1000);
+  const publicArchive = await hasPaidAccess(env, null, epoch);
+  const canSearchArchive = archive || publicArchive || await (async () => {
+    const { user } = await currentSession(request, env);
+    return user ? hasPaidAccess(env, user.id, epoch) : false;
+  })();
   const [record] = article?.evidence ?? [];
   if (article && !record) return fallback('article_no_source', []);
   const focus = record ? { item: { ...record, role: 'focus' } } : null;
   const candidates = await retrieveEvidenceCandidates(env, {
-    ...input, eventId: article?.eventId || input.eventId, article: record
+    ...input, eventId: article?.eventId || input.eventId, article: record, archive:canSearchArchive
   }, now);
   const withFocus = ranked => selectEvidence(focus ? [focus, ...ranked] : ranked);
   const sources = withFocus(candidates);
   if (!sources.length) return fallback('no_evidence', []);
   if (input.sourcesOnly) return fallback('sources_only', sources);
   if (!env.GEMINI_API_KEY && !env.AI) return fallback('no_provider', sources);
-  const cache = archive ? null : globalThis.caches?.default;
+  const cache = canSearchArchive && !publicArchive ? null : globalThis.caches?.default;
   const cacheKey = cache ? new Request(new URL('/api/ai/cache/' + await digest(JSON.stringify([
     CACHE_VERSION, Boolean(env.GEMINI_API_KEY), Boolean(env.AI), input, focus, candidates
   ])), request.url)) : null;

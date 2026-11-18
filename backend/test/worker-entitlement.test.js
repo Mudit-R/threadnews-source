@@ -59,13 +59,17 @@ test('original releases are read and stored before the reader requests a summary
   },generate:async (_env, _prompt, evidence) => {
     assert.equal(evidence.length,2);
     assert.ok(evidence[0].excerpt.includes('rural communities'));
-    return {claims:[{text:'The energy department is seeking feedback on proposed grid investment to improve reliability in rural areas. Officials have yet to approve the plan.'}]};
+    assert.equal(Object.hasOwn(_env,'GEMINI_API_KEY'),false);
+    return {claims:[
+      {text:'The energy department is asking for feedback on investing in the electricity grid to improve reliability in rural communities, as part of a consultation on a proposal that it has yet to approve.',citations:[1,2]},
+      {text:'Network operators can submit written responses, and councils have been asked to report local outages, including how often the interruptions affected public services.',citations:[2]}
+    ]};
   }});
   assert.equal(result.published,1,JSON.stringify(result.statuses));
   assert.deepEqual(seen,['/robots.txt','/government/news/clean-power']);
   await storeArticles(env,[article],'uk-energy','automatic',{now});
   const stored = sqlite.prepare('SELECT summary,metadata_json,source_json FROM news WHERE id=?').get(article.id);
-  assert.match(stored.summary,/rural areas/);
+  assert.match(stored.summary,/rural communities/);
   assert.equal(JSON.parse(stored.metadata_json).digestBasis,'source-summary');
   assert.equal(JSON.parse(stored.source_json).summaryMethod,'original-source-paraphrase');
   assert.equal((await refreshSourceSummaries(env,{now})).attempted,0);

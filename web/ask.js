@@ -82,15 +82,15 @@
       ${navigator.clipboard ? '<button type="button" class="button ask-copy" data-ask-copy>Copy answer with sources</button><span class="ask-copy-status" role="status"></span>' : ''}`
       : `<p class="ask-note">${escape(data.message || 'An AI answer is unavailable for this request.')}${data.reason === 'no_evidence'
         ? ' Try adding a country, event name or year.'
-        : ''}</p>`;
+        : ''}</p>${data.reason === 'no_evidence' ? '<a class="button" href="/news?archive=1">Search the news archive</a>' : ''}`;
     const cited = evidence.filter(item => citedIds.has(item.id));
     const focus = evidence.find(item => item.role === 'focus' && !citedIds.has(item.id));
     const related = evidence.filter(item => !citedIds.has(item.id) && item !== focus);
     const sources = answered
-      ? `${cited.map(evidenceCard).join('')}${focus ? evidenceCard(focus) : ''}${related.length ? `<details class="ask-related"><summary>${related.length} other retrieved ${related.length === 1 ? 'record' : 'records'}</summary>${related.map(evidenceCard).join('')}</details>` : ''}`
+      ? `${cited.map(evidenceCard).join('')}${focus ? evidenceCard(focus) : ''}${related.map(evidenceCard).join('')}`
       : evidence.map(evidenceCard).join('');
     panel.innerHTML = `<div class="ask-answer">${titleMarkup}${body}</div>
-      ${evidence.length ? `<aside class="ask-evidence" aria-label="Evidence"><header><h2>${answered ? 'Evidence' : 'Matching sources'}</h2><span>${answered ? `${cited.length} cited` : `${evidence.length} ${evidence.length === 1 ? 'record' : 'records'}`}</span></header>${sources}</aside>` : ''}`;
+      ${evidence.length ? `<aside class="ask-evidence" aria-label="Evidence"><header><h2>Matching sources</h2><span>${evidence.length} ${evidence.length === 1 ? 'record' : 'records'}${answered ? ` · ${cited.length} cited` : ''}</span></header>${sources}</aside>` : ''}`;
     panel.querySelector('[data-ask-copy]')?.addEventListener('click', async () => {
       const citations = cited.map(item => {
         const direct = Array.isArray(item.links) ? item.links.find(link => sourceURL(link?.url)) : null;

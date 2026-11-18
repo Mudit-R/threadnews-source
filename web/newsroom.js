@@ -18,6 +18,7 @@ globalThis.createNewsroom = function createNewsroom(ui) {
   let timelineKind='',eventFilterKey='',eventController,eventTimer;
   if(production){stories.splice(0,stories.length);globalThis.ECONOMY_SNAPSHOT={countries:[],meta:{mode:'connecting'}};}
   let economy,coveragePage,askPage,impactPanel,recommendationPanel,watchlistPanel,watchlistSignature;
+  let fxWidget,topStoriesWidget,featuredTimelines=[];
   let providers=[{id:'google',label:'Continue with Google',enabled:false,reason:'Google sign-in needs a registered OAuth client on the public deployment.'},{id:'apple',label:'Continue with Apple',enabled:false,reason:'Apple sign-in needs an Apple Developer configuration. It is not available on the zero-budget preview.'}];
   const read=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key))??fallback;}catch{return fallback;}};
   const initialInterests=read('threadline-interests',[]),initialBookmarks=read('threadline-news-saved',[]);
@@ -25,7 +26,7 @@ globalThis.createNewsroom = function createNewsroom(ui) {
   let bookmarks=new Set(Array.isArray(initialBookmarks)?initialBookmarks.filter(id=>typeof id==='string'):[]);
   const savedLabelsValue=read('threadline-saved-labels',{}),savedLabels=savedLabelsValue&&typeof savedLabelsValue==='object'&&!Array.isArray(savedLabelsValue)?savedLabelsValue:{};
   const state={category:'All news',region:'Everywhere',query:'',publisher:'All sources',evidence:'all',mode:interests.size?'for-you':'all',sort:'editorial',view:'grid',limit:12};
-  const account=globalThis.createAccountView?.({esc,toast,connected,apiBase,getSession:()=>session,readLocal:()=>({articles:[...bookmarks],events:getTimelineSaved()}),applyLocal:lists=>{bookmarks=new Set(lists.articles);storage('threadline-news-saved',lists.articles);ui.setTimelineSaved?.(lists.events);},onSignedOut:()=>{session={user:null};const guest=read('threadline-interests',[]);interests=new Set(Array.isArray(guest)?guest.filter(t=>topics.includes(t)):[]);refresh();},renderNav,onChange:()=>{if(route().page==='following'){collection.signature='';refreshVisible();}}});
+  const account=globalThis.createAccountView?.({esc,toast,connected,apiBase,getSession:()=>session,readLocal:()=>({articles:[...bookmarks],events:getTimelineSaved()}),applyLocal:lists=>{bookmarks=new Set(lists.articles);storage('threadline-news-saved',lists.articles);ui.setTimelineSaved?.(lists.events);},onPreferences:preferences=>{session={...session,preferences};},onSignedOut:()=>{session={user:null};const guest=read('threadline-interests',[]);interests=new Set(Array.isArray(guest)?guest.filter(t=>topics.includes(t)):[]);refresh();},renderNav,onChange:()=>{if(route().page==='following'){collection.signature='';refreshVisible();}}});
   const billing=globalThis.createBillingView?.({esc,toast,connected,apiBase,getSession:()=>session,navigate});
   const validArticle=n=>n&&typeof n.id==='string'&&typeof n.title==='string'&&n.source?.publisher&&n.source?.url&&n.publishedAt;
   const titleKey=value=>String(value||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
@@ -190,7 +191,8 @@ globalThis.createNewsroom = function createNewsroom(ui) {
     const account=$('.account-button');if(account)account.innerHTML=session.user?`${esc((session.user.name||session.user.displayName||'Your account').split(' ')[0])} ${icon('compass')}`:'Sign in <span aria-hidden="true">↗</span>';
   }
   function renderNav(){const r=route(),timelineCount=getTimelineSaved().length;
-    $('#sidebar').innerHTML=`<a class="brand" href="#/" aria-label="ThreadNews home">${logo}<span>ThreadNews</span></a><div class="sidebar-label">YOUR WORLD, IN CONTEXT</div><nav><a class="nav-item ${['explore','news'].includes(r.page)?'active':''}" href="#/">${icon('globe')}<span>The daily thread</span>${icon('arrow','nav-arrow')}</a><a class="nav-item ${r.page==='economy'?'active':''}" href="#/economy">${icon('layers')}<span>The economy</span></a><a class="nav-item ${r.page==='ask'?'active':''}" href="/ask" ${r.page==='ask'?'aria-current="page"':''}>${globalThis.ThreadNewsAsk?.glyph||icon('search')}<span>Ask ThreadNews</span></a><a class="nav-item ${r.page==='timelines'||r.page==='event'?'active':''}" href="#/timelines">${icon('layers')}<span>The long view</span><span class="nav-count">${eventCount()}</span></a><a class="nav-item ${r.page==='following'?'active':''}" href="#/following">${icon('bookmark')}<span>Your collection</span><span class="nav-count">${bookmarks.size+timelineCount}</span></a><a class="nav-item ${r.page==='sources'?'active':''}" href="#/sources">${icon('link')}<span>The sources</span></a></nav><div class="sidebar-divider"></div><div class="sidebar-label topic-label">LOOK A LITTLE CLOSER</div><nav class="topic-nav news-topic-nav">${topics.map(t=>`<button class="nav-item ${state.category===t&&r.page==='explore'?'topic-active':''}" data-action="news-topic" data-value="${t}">${icon(topicIcon(t))}<span>${t}</span>${interests.has(t)?'<span class="interest-dot" aria-label="One of your interests"></span>':''}</button>`).join('')}</nav><button class="sidebar-interests" data-action="interests">${icon('compass')} Shape your daily thread ${icon('up')}</button><div class="sidebar-bottom news-sidebar-bottom"><div class="context-drawing" aria-hidden="true"><span></span><span></span><span></span><span></span></div><h3>Today’s news.<br>The whole story.</h3><p>Read what’s happening.<br>Understand what led to it.</p></div><button class="sidebar-method" data-action="about">${icon('info')} Sources, evidence & fairness</button>`;
+    $('#sidebar').innerHTML=`<a class="brand" href="#/" aria-label="ThreadNews home">${logo}<span>ThreadNews</span></a><div class="sidebar-label">YOUR WORLD, IN CONTEXT</div><nav><a class="nav-item ${(['explore','news'].includes(r.page)&&!archiveMode())?'active':''}" href="#/">${icon('globe')}<span>The daily thread</span>${icon('arrow','nav-arrow')}</a><a class="nav-item ${r.page==='economy'?'active':''}" href="#/economy">${icon('layers')}<span>The economy</span></a><a class="nav-item ${r.page==='ask'?'active':''}" href="/ask" ${r.page==='ask'?'aria-current="page"':''}>${globalThis.ThreadNewsAsk?.glyph||icon('search')}<span>Ask ThreadNews</span></a><a class="nav-item ${r.page==='timelines'||r.page==='event'?'active':''}" href="#/timelines">${icon('layers')}<span>The long view</span><span class="nav-count">${eventCount()}</span></a><a class="nav-item ${r.page==='following'?'active':''}" href="#/following">${icon('bookmark')}<span>Your collection</span><span class="nav-count">${bookmarks.size+timelineCount}</span></a><a class="nav-item ${r.page==='sources'?'active':''}" href="#/sources">${icon('link')}<span>The sources</span></a></nav><div class="sidebar-divider"></div><div class="sidebar-label topic-label">LOOK A LITTLE CLOSER</div><nav class="topic-nav news-topic-nav">${topics.map(t=>`<button class="nav-item ${state.category===t&&r.page==='explore'?'topic-active':''}" data-action="news-topic" data-value="${t}">${icon(topicIcon(t))}<span>${t}</span>${interests.has(t)?'<span class="interest-dot" aria-label="One of your interests"></span>':''}</button>`).join('')}</nav><button class="sidebar-interests" data-action="interests">${icon('compass')} Shape your daily thread ${icon('up')}</button><div class="sidebar-bottom news-sidebar-bottom"><div class="context-drawing" aria-hidden="true"><span></span><span></span><span></span><span></span></div><h3>Today’s news.<br>The whole story.</h3><p>Read what’s happening.<br>Understand what led to it.</p></div><button class="sidebar-method" data-action="about">${icon('info')} Sources, evidence & fairness</button>`;
+    if(connected)$('#sidebar nav .nav-item')?.insertAdjacentHTML('afterend',`<a class="nav-item${r.page==='explore'&&archiveMode()?' active':''}" href="/news?archive=1"${r.page==='explore'&&archiveMode()?' aria-current="page"':''}>${icon('bookmark')}<span>News archive</span></a>`);
     $('#sidebar nav')?.insertAdjacentHTML('beforeend',`<a class="nav-item ${r.page==='billing'?'active':''}" href="#/pricing">${icon('link')}<span>Membership</span></a>`);
     status();syncMobileNav();
   }
@@ -204,13 +206,26 @@ globalThis.createNewsroom = function createNewsroom(ui) {
       if(state.sort==='latest')return Date.parse(b.publishedAt)-Date.parse(a.publishedAt);const scored=(Number(b.impactScore)||0)-(Number(a.impactScore)||0);if(scored)return scored;const impact={Economy:0,Infrastructure:1,Health:2,Politics:3,Climate:4,Technology:5,'World affairs':6,Science:7,Sport:8};return (impact[a.category]??6)-(impact[b.category]??6)||(a.rank||999)-(b.rank||999);
     });
   }
-  function evidence(n){const digest=briefSummary(n),label=digest&&n.digestBasis==='article-reviewed'?'Source-reviewed digest':digest&&n.digestBasis==='source-summary'?'Original source summary':digest&&n.digestBasis==='source-extract'?'Source excerpt':digest&&n.digestBasis==='publisher-preview'?'Publisher preview + records':digest&&n.digestBasis==='feed-description'?'Publisher feed brief':digest?'Brief available':officialType(n.source)?(n.source.basis==='headline'?'Official feed item':'Official release'):(n.officialSources||[]).length?'Primary record attached':n.source.basis==='headline'?'Headline and source details':'Source details';return `<span class="news-evidence ${isOfficial(n)?'has-record':''}">${isOfficial(n)?icon('layers'):icon('link')}${label}</span>`;}
+  function evidence(n,digest=quickSummary(n)){const label=digest&&n.digestBasis==='article-reviewed'?'Source-reviewed digest':digest&&n.digestBasis==='source-summary'?'Source summary':digest&&n.digestBasis==='source-extract'?'Source excerpt':officialType(n.source)?(n.source.basis==='headline'?'Official feed item':'Official release'):(n.officialSources||[]).length?'Primary record attached':digest?'Source brief available':n.source.basis==='headline'?'Headline and source details':'Source details';return `<span class="news-evidence ${isOfficial(n)?'has-record':''}">${isOfficial(n)?icon('layers'):icon('link')}${label}</span>`;}
   function save(n){return `<button class="save-button ${bookmarks.has(n.id)?'is-saved':''}" data-action="save-news" data-id="${esc(n.id)}" aria-pressed="${bookmarks.has(n.id)}" aria-label="${bookmarks.has(n.id)?'Unsave':'Save'} article: ${esc(n.title)}">${icon(bookmarks.has(n.id)?'check':'bookmark')}</button>`;}
-  function briefSummary(n){return globalThis.ThreadNewsContent?.displaySummary(n)??'';}
-  function headline(n){return `<a href="/news/${encodeURIComponent(n.id)}" data-brief-id="${esc(n.id)}">${esc(n.title)}</a>`;}
-  function briefButton(n){return `<button class="quick-brief-trigger" type="button" data-brief-id="${esc(n.id)}" aria-expanded="false" aria-controls="quick-brief" aria-haspopup="dialog">Quick brief</button>`;}
-  function newsCard(n,compact=false){return `<article class="news-card ${compact?'news-card-compact':''}">${publisherThumbnail(n,'card')}<div class="news-card-top"><span class="news-topic">${icon(topicIcon(n.category))}${esc(n.category)}</span>${save(n)}</div><h3>${headline(n)}</h3>${briefButton(n)}${briefSummary(n)?`<p class="news-summary">${esc(briefSummary(n))}</p>`:''}<div class="news-card-evidence">${evidence(n)}${interests.has(n.category)&&state.mode==='for-you'?'<span class="interest-match">Your interest</span>':''}</div><div class="news-card-bottom"><span><b>${esc(n.source.publisher)}</b><time datetime="${esc(n.publishedAt)}">${n.source?.dateBasis==='indexed'?'Indexed ':n.source?.dateBasis==='updated'?'Updated ':''}${fmt(n.publishedAt)}</time></span>${n.eventId?`<a class="timeline-link" href="/threads/${encodeURIComponent(n.eventId)}" aria-label="Explore the history behind ${esc(n.title)}">${icon('clock')} Timeline ${icon('arrow')}</a>`:`<a href="#/news/${encodeURIComponent(n.id)}" class="news-open" aria-label="${briefSummary(n)?'Read digest':'Open headline details'}: ${esc(n.title)}">${icon('up')}</a>`}</div></article>`;}
-  function leading(found){const lead=found[0];if(!lead)return '';const briefLabel=briefSummary(lead)&&lead.digestBasis==='article-reviewed'?'Source-reviewed digest':briefSummary(lead)&&lead.digestBasis==='source-summary'?'Original source summary':briefSummary(lead)&&lead.digestBasis==='source-extract'?'Source excerpt':briefSummary(lead)&&lead.digestBasis==='publisher-preview'?'Publisher preview + records':briefSummary(lead)&&lead.digestBasis==='feed-description'?'Publisher feed brief':briefSummary(lead)?'Brief available':'Headline and source details';return `<section class="news-leading" aria-label="In focus"><article class="lead-story">${publisherThumbnail(lead,'hero')}<div class="lead-kicker"><span><i></i> IN FOCUS</span><span>${esc(lead.region)}</span>${thumbnailURL(lead)!=='#'?'<span class="lead-art-note">PUBLISHER THUMBNAIL</span>':''}</div><div class="lead-orbit" aria-hidden="true">${icon('globe')}</div><div class="lead-copy"><div class="eyebrow">${esc(lead.category)} / ${lead.source?.dateBasis==='indexed'?'Indexed ':lead.source?.dateBasis==='updated'?'Updated ':''}${fmt(lead.publishedAt)}</div><h2>${headline(lead)}</h2>${briefButton(lead)}${briefSummary(lead)?`<p>${esc(briefSummary(lead))}</p>`:''}</div><div class="lead-foot"><span>${esc(lead.source.publisher)}<small>${briefLabel}</small></span><a href="#/news/${encodeURIComponent(lead.id)}">${briefSummary(lead)?'Read the brief':'Open coverage'} ${icon('up')}</a></div></article><aside class="briefing-rail"><div class="radar-heading"><h2>A wider lens</h2>${icon('globe')}</div><p class="radar-sub">A few more threads to pick up.</p>${found.slice(1,5).map((n,i)=>`<a class="briefing-item" href="/news/${encodeURIComponent(n.id)}" data-brief-id="${esc(n.id)}"><span class="radar-number">0${i+1}</span><div><span class="radar-category">${esc(n.category)}</span><h3>${esc(n.title)}</h3><span>${esc(n.source.publisher)}</span></div>${icon('up')}</a>`).join('')}</aside></section>`;}
+  function quickSummary(n){return globalThis.ThreadNewsContent?.displayQuickBrief(n)??'';}
+  function headline(n,summary=quickSummary(n)){
+    return `<a href="/news/${encodeURIComponent(n.id)}"${summary?` data-brief-id="${esc(n.id)}"`:''}>${esc(n.title)}</a>`;
+  }
+  function briefButton(n,summary){
+    return summary?`<button class="quick-brief-trigger" type="button" data-brief-id="${esc(n.id)}" aria-expanded="false" aria-controls="quick-brief" aria-haspopup="dialog">Quick brief</button>`:'';
+  }
+  function newsCard(n,compact=false){
+    const brief=quickSummary(n), inline=brief&&brief.split(/\s+/).length<=40?brief:'';
+    const preview=inline?`<p class="news-summary">${esc(inline)}</p>`:briefButton(n,brief);
+    return `<article class="news-card ${compact?'news-card-compact':''}">${publisherThumbnail(n,'card')}<div class="news-card-top"><span class="news-topic">${icon(topicIcon(n.category))}${esc(n.category)}</span>${save(n)}</div><h3>${headline(n,brief)}</h3>${preview}<div class="news-card-evidence">${evidence(n,brief)}${interests.has(n.category)&&state.mode==='for-you'?'<span class="interest-match">Your interest</span>':''}</div><div class="news-card-bottom"><span><b>${esc(n.source.publisher)}</b><time datetime="${esc(n.publishedAt)}">${n.source?.dateBasis==='indexed'?'Indexed ':n.source?.dateBasis==='updated'?'Updated ':''}${fmt(n.publishedAt)}</time></span>${n.eventId?`<a class="timeline-link" href="/threads/${encodeURIComponent(n.eventId)}" aria-label="Explore the history behind ${esc(n.title)}">${icon('clock')} Timeline ${icon('arrow')}</a>`:`<a href="/news/${encodeURIComponent(n.id)}" class="news-open" aria-label="${brief?'Read summary':'Open story'}: ${esc(n.title)}">${icon('up')}</a>`}</div></article>`;
+  }
+  function leading(found){
+    const lead=found[0];if(!lead)return '';
+    const brief=quickSummary(lead), inline=brief&&brief.split(/\s+/).length<=40?brief:'';
+    const preview=inline?`<p>${esc(inline)}</p>`:briefButton(lead,brief);
+    return `<section class="news-leading" aria-label="In focus"><article class="lead-story">${publisherThumbnail(lead,'hero')}<div class="lead-kicker"><span><i></i> IN FOCUS</span><span>${esc(lead.region)}</span>${thumbnailURL(lead)!=='#'?'<span class="lead-art-note">PUBLISHER THUMBNAIL</span>':''}</div><div class="lead-orbit" aria-hidden="true">${icon('globe')}</div><div class="lead-copy"><div class="eyebrow">${esc(lead.category)} / ${lead.source?.dateBasis==='indexed'?'Indexed ':lead.source?.dateBasis==='updated'?'Updated ':''}${fmt(lead.publishedAt)}</div><h2>${headline(lead,brief)}</h2>${preview}</div><div class="lead-foot"><span>${esc(lead.source.publisher)}</span><a href="/news/${encodeURIComponent(lead.id)}">${brief?'Read the summary':'Open coverage'} ${icon('up')}</a></div></article></section>`;
+  }
   function editionNotice(){
     if(refreshError)return esc(refreshError);
     if(feed.loading&&connected)return news.length?'Loading more records from the archive…':'Loading news from the archive…';
@@ -222,7 +237,7 @@ globalThis.createNewsroom = function createNewsroom(ui) {
   function feedFooter(count,following){
     if(following)return count>state.limit?`<div class="load-more"><p>Showing ${Math.min(state.limit,count)} of ${count} available saved articles</p><button class="button" data-action="news-more">Read a little further ${icon('arrow')}</button></div>`:'';
     const moreLoaded=count>state.limit,moreRemote=connected&&feed.hasMore;
-    if(moreLoaded||moreRemote)return `<div class="load-more"><p>${connected?`${Math.min(state.limit,count)} visible · ${news.length} loaded${!following&&Number.isFinite(feed.total)?` of ${feed.total} matching records`:''}`:`Showing ${Math.min(state.limit,count)} of ${count} stories`}</p><button class="button" data-action="news-more" ${feed.loading?'disabled':''}>${feed.loading?'Loading records…':'Read a little further'} ${icon('arrow')}</button>${!connected?`<button class="show-all" data-action="news-all">Show all ${count}</button>`:''}</div>`;
+    if(moreLoaded||moreRemote)return `<div class="load-more"><p>${connected?`${Math.min(state.limit,count)} visible · ${news.length} loaded${!following&&Number.isFinite(feed.total)?` of ${feed.total} matching records`:''}`:`Showing ${Math.min(state.limit,count)} of ${count} stories`}</p><button class="button" data-action="news-more" ${feed.loading?'disabled':''}>${feed.loading?'Loading records…':'Load more stories'} ${icon('arrow')}</button>${!connected?`<button class="show-all" data-action="news-all">Show all ${count}</button>`:''}</div>`;
     return count?`<div class="edition-end">${icon('check')} ${connected?'You have reached the end of these matching records.':`You’ve reached the end of this ${count}-story selection.`}</div>`:'';
   }
   function filterBar(following){
@@ -230,18 +245,49 @@ globalThis.createNewsroom = function createNewsroom(ui) {
     const options=(first,values,current)=>[...new Set([first,...values,...(current!==first?[current]:[])])].map(value=>`<option value="${esc(value)}" ${value===current?'selected':''}>${esc(value)}</option>`).join('');
     return `<div class="news-filterbar"><div class="news-topic-pills" aria-label="Filter news topics">${['All news',...availableTopics()].map(t=>`<button data-action="news-topic" data-value="${esc(t)}" aria-pressed="${state.category===t}" class="${state.category===t?'selected':''}">${esc(t)}</button>`).join('')}</div><div class="news-filter-selects"><label>${icon('globe')}<select id="news-region" aria-label="Filter news by region">${options('Everywhere',regions,state.region)}</select></label><label>${icon('link')}<select id="news-publisher" aria-label="Filter by publisher">${options('All sources',publishers,state.publisher)}</select></label><label>${icon('layers')}<select id="news-evidence" aria-label="Filter by evidence"><option value="all" ${state.evidence==='all'?'selected':''}>All evidence types</option><option value="official" ${state.evidence==='official'?'selected':''}>With official records</option><option value="brief" ${state.evidence==='brief'?'selected':''}>With a source brief</option></select></label><button class="clear-filters" data-action="news-reset">Reset filters</button></div>${facetsError?`<p class="edition-note" role="status">${esc(facetsError)} <button data-action="news-facets-retry">Retry source filters</button></p>`:''}</div>`;
   }
-  function updatedTimelineRail() {
-    const cutoff = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
-    const latest = archiveRows().filter(story => !story.recordType && story.coverageEnd >= cutoff)
-      .sort((a, b) => b.coverageEnd.localeCompare(a.coverageEnd)).slice(0, 4);
-    if (!latest.length) return '';
-    return `<section class="updated-timelines" aria-labelledby="updated-timelines-title">
-      <header><h2 id="updated-timelines-title">Recently updated timelines</h2><a href="/threads">All timelines ${icon('arrow')}</a></header>
-      <div class="updated-timeline-grid">${latest.map(story => `<a href="/threads/${encodeURIComponent(story.id)}">
-        <time datetime="${esc(story.coverageEnd)}">${fmt(story.coverageEnd)}</time>
-        <strong>${esc(story.shortTitle || story.title)}</strong>${icon('arrow')}
+  function mountCurrency(placeholder,compact=false){
+    if(!connected||!placeholder||!globalThis.ThreadNewsFxRates)return;
+    fxWidget ||= globalThis.ThreadNewsFxRates.create(apiBase);
+    fxWidget.host.classList.toggle('fx-compact',compact);
+    placeholder.replaceWith(fxWidget.host);
+    fxWidget.refreshIfVisible();
+  }
+  function mountDailyOverview(){
+    mountCurrency($('#daily-fx-mount'),true);
+    const host=$('#daily-stories-mount');
+    if(!host||!globalThis.ThreadNewsDailyStories)return;
+    topStoriesWidget ||= globalThis.ThreadNewsDailyStories.create({getJSON:apiJSON,esc});
+    host.replaceWith(topStoriesWidget.host);
+    topStoriesWidget.sync(session.preferences?.newsCountry || '');
+  }
+  async function loadFeaturedTimelines(){
+    try {
+      const result=await apiJSON('/api/events?kind=editorial&limit=40');
+      if(Array.isArray(result.events))featuredTimelines=result.events;
+      if(['explore','timelines'].includes(route().page))refreshVisible();
+    } catch {}
+  }
+  function timelineHighlights(){
+    const order=['hormuz','ukraine','cop31-antalya-climate-negotiations','bullet-train'];
+    const catalog=connected?featuredTimelines:stories;
+    const entries=order.map(id=>catalog.find(item=>item.id===id)).filter(Boolean);
+    if(!entries.length)return '';
+    return `<section class="updated-timelines major-timelines" aria-labelledby="major-timelines-title">
+      <header><h2 id="major-timelines-title">Major timelines</h2><a href="/threads">All timelines ${icon('arrow')}</a></header>
+      <div class="updated-timeline-grid">${entries.map(item=>`<a href="/threads/${encodeURIComponent(item.id)}">
+        <strong>${esc(item.id==='hormuz'?'Iran–U.S. and the Strait of Hormuz':item.shortTitle||item.title)}</strong>
+        ${item.coverageEnd?`<time datetime="${esc(item.coverageEnd)}">${fmt(item.coverageEnd)}</time>`:''}${icon('arrow')}
       </a>`).join('')}</div>
     </section>`;
+  }
+  function newsScopePicker(error){
+    const archive=archiveMode();
+    const count=facetsReady&&Number.isFinite(facets.total)?`${facets.total.toLocaleString('en-US')} stories`:'';
+    const links=[
+      {href:'/news',label:'Recent news',days:meta.feedDays??facets.meta?.feedDays,fallback:'Latest coverage',selected:!archive},
+      {href:'/news?archive=1',label:'Full news archive',days:meta.retentionDays,fallback:'Search older stories',selected:archive}
+    ];
+    return `<nav class="news-edition-picker" aria-label="News date range">${links.map(({href,label,days,fallback,selected})=>`<a href="${href}"${selected?' aria-current="page"':''}><span><b>${label}</b><small>${Number.isInteger(days)?`Last ${days} days`:fallback}${selected&&count?` · ${count}`:''}</small></span>${icon(selected?'check':'arrow')}</a>`).join('')}</nav>${archive&&error.includes('Supporter')?'<p class="archive-access"><a href="/pricing">See Supporter plans</a></p>':''}`;
   }
   function renderHome(following=false){
     if(following)hydrateCollection();
@@ -249,17 +295,21 @@ globalThis.createNewsroom = function createNewsroom(ui) {
     const loading=following?collection.loading:feed.loading,homeError=following?'':refreshError;
     const found=selected(following),personal=state.mode==='for-you',neutral=!following&&!state.query&&state.category==='All news'&&state.region==='Everywhere'&&state.publisher==='All sources'&&state.evidence==='all'&&!archiveMode();
     const count=found.length,resultTotal=connected&&!following&&Number.isFinite(feed.total)?feed.total:count,visible=found.slice(0,state.limit),timelineSaved=stories.filter(s=>getTimelineSaved().includes(s.id)),unavailableArticles=[...bookmarks].filter(id=>!articleCache.has(id)),unavailableTimelines=getTimelineSaved().filter(id=>!stories.some(s=>s.id===id));
-    $('#main').innerHTML=`<div class="news-page-heading"><div><div class="eyebrow"><span class="small-line"></span>${following?'YOUR READING SPACE':connected?'THE DAILY THREAD':`THE DAILY THREAD · ${fmt(meta.generatedAt)}`}</div><h1>${following?'Worth keeping.<br><em>Worth understanding.</em>':state.query?'Find your next <em>thread.</em>':'A world of news.<br><em>A little more perspective.</em>'}</h1><p>${following?'Saved articles and the ongoing stories you follow.':state.query?`Searching ${connected?'the news archive':'the collection'} for “${esc(state.query)}”.`:'Prices, jobs, policy and the developments that shape everyday life.'}</p></div><div class="edition-card"><strong>${connected?(facetsReady?Number(facets.total)||0:feed.total??'…'):news.length}</strong><span>${archiveMode()?'archived stories':'recent stories'}<br><b>${publisherCount()} source publishers</b></span>${icon('globe')}</div></div>
+    const archive=archiveMode();
+    $('#main').innerHTML=`<div class="news-page-heading"><div><div class="eyebrow"><span class="small-line"></span>${following?'YOUR READING SPACE':archive?'PAST COVERAGE':'THE DAILY THREAD'}</div><h1>${following?'Your collection':archive?'News archive':'A world of news.<br><em>A little more perspective.</em>'}</h1><p>${following?'Saved articles and the ongoing stories you follow.':state.query?`Searching ${archive?'the full archive':connected?'recent news':'the collection'} for “${esc(state.query)}”.`:archive?'Search older coverage by topic, region, publisher or source evidence.':'Prices, jobs, policy and the developments that shape everyday life.'}</p></div>${!connected&&!following?`<div class="edition-card"><strong>${news.length}</strong><span>preview stories<br><b>${publisherCount()} source publishers</b></span>${icon('globe')}</div>`:''}</div>
+    ${connected&&!following?newsScopePicker(homeError):''}
     ${!following?`<div class="personalization-bar"><div class="news-mode-switch" aria-label="News edition"><button data-action="news-mode" data-value="all" class="${!personal?'selected':''}" aria-pressed="${!personal}">${icon('globe')} The big picture</button><button data-action="news-mode" data-value="for-you" class="${personal?'selected':''}" aria-pressed="${personal}">${icon('compass')} For you ${interests.size?`<span>${interests.size}</span>`:''}</button></div><button class="interest-edit" data-action="interests">${icon('compass')}${interests.size?'Edit your interests':'Make it yours'} ${icon('up')}</button></div>`:''}
     ${personal&&!following?`<div class="personal-note">${icon('compass')}<p>${interests.size?`Your interests move to the front: <strong>${esc([...interests].join(', '))}</strong>. Other topics stay in the edition.`:'Pick the topics you care about. No account needed to personalise this browser.'}</p><button data-action="interests">${interests.size?'Adjust':'Choose topics'} ${icon('arrow')}</button></div>`:''}
     <div class="edition-note ${homeError?'refresh-error':''}" ${homeError?'role="alert"':'role="status"'}>${icon('clock')}<span>${following?collectionNotice():editionNotice()}</span>${homeError?'<button data-action="news-retry">Try again</button>':'<a href="#/coverage">How this collection works '+icon('up')+'</a>'}</div>
-    ${connected&&!following?`<div class="news-scope-switch" aria-label="News date range"><a class="button" href="/news" aria-current="${!archiveMode()?'page':'false'}">Recent news</a><a class="button" href="/news?archive=1" aria-current="${archiveMode()?'page':'false'}">Search the archive</a>${archiveMode()&&homeError.includes('Supporter')?'<a href="/pricing">See Supporter plans</a>':''}</div>`:''}
-    ${filterBar(following)}${neutral?leading(found)+(connected&&globalThis.ThreadNewsPersonalImpact?'<div id="personal-impact-mount"></div>':'')+updatedTimelineRail():''}
+
+    ${neutral?timelineHighlights()+`<div class="daily-overview"><div class="daily-overview-main">${leading(found)}${connected?'<div id="daily-fx-mount"></div>':''}</div>${connected?'<div id="daily-stories-mount"></div>':''}</div>`:''}
+    ${filterBar(following)}${neutral&&connected&&globalThis.ThreadNewsPersonalImpact?'<div id="personal-impact-mount"></div>':''}
     ${connected&&globalThis.ThreadNewsReaderLab?(following?'<div id="watchlist-mount"></div>':neutral?'<div id="recommendation-mount"></div>':''):''}
     <section class="news-collection" aria-label="${following?'Saved articles':'News collection'}"><div class="section-heading"><div><span class="eyebrow">${following?'YOUR COLLECTION':state.query?'SEARCH RESULTS':personal?'YOUR INTERESTS, WITH A WIDER LENS':'ACROSS THE HEADLINES'}</span><h2>${following?'Saved articles':state.query?'The stories we found':state.category!=='All news'?esc(state.category):'The latest threads'}<span class="result-count">${following?bookmarks.size:loading&&!news.length?'…':resultTotal}</span></h2></div><div class="collection-controls"><select id="news-sort" aria-label="Sort news"><option value="editorial" ${state.sort==='editorial'?'selected':''}>Everyday impact</option><option value="latest" ${state.sort==='latest'?'selected':''}>Newest first</option></select><div class="view-controls"><button class="icon-button ${state.view==='grid'?'selected':''}" data-action="news-view" data-value="grid" aria-label="News grid view" aria-pressed="${state.view==='grid'}">${icon('grid')}</button><button class="icon-button ${state.view==='list'?'selected':''}" data-action="news-view" data-value="list" aria-label="News list view" aria-pressed="${state.view==='list'}">${icon('list')}</button></div></div></div><div class="news-grid ${state.view==='list'?'news-list-view':''}">${visible.map(n=>newsCard(n)).join('')}</div>${following&&unavailableArticles.length?`<div class="news-grid">${unavailableArticles.map(id=>savedUnavailable('article',id)).join('')}</div>`:''}${!count&&(!following||!bookmarks.size||!unavailableArticles.length&&!collection.loading)?`<div class="empty-state" role="status">${icon(following?'bookmark':'search')}<h3>${following?(bookmarks.size?'No saved articles match these filters.':'Keep a story for later.'):loading&&connected?'Loading the news archive…':homeError?'News is temporarily unavailable.':'No threads match these filters.'}</h3><p>${homeError?'The archive response could not be loaded. Try again to reconnect.':loading&&connected?'Matching records are on their way.':following?connected?'Saved articles are retrieved directly from the archive.':'Use the bookmark on any article to save it here.':'Try another topic, source or search term.'}</p>${!loading?`<button class="button primary" data-action="${homeError?'news-retry':'news-reset'}">${homeError?'Try again':following?'Browse news':'Reset filters'} ${icon('arrow')}</button>`:''}</div>`:''}${feedFooter(count,following)}</section>
     ${connected&&!following?`<p class="news-method-note">${icon('info')} For you prioritises your chosen topics across the matching archive. Everyday impact sorts loaded stories using a transparent score for public-impact topics. Load further pages to keep exploring.</p>`:''}
     ${following?`<section class="saved-timelines"><div class="section-heading"><div><span class="eyebrow">THE LONG VIEW</span><h2>Timelines you follow <span class="result-count">${getTimelineSaved().length}</span></h2></div><a href="#/timelines">Explore timelines ${icon('arrow')}</a></div>${timelineSaved.length?`<div class="story-grid">${timelineSaved.map(timelineCard).join('')}</div>`:''}${unavailableTimelines.length?`<div class="news-grid">${unavailableTimelines.map(id=>savedUnavailable('timeline',id)).join('')}</div>`:''}${!getTimelineSaved().length?'<p class="saved-empty">Follow an ongoing story from its timeline to keep it here.</p>':''}</section>`:''}
     <aside class="news-method-note">${icon('layers')}<div><strong>Reporting you can trace.</strong><p>Each item shows whether its brief comes from the source report or headline metadata. Institutional records are labelled separately.</p></div><a href="#/sources">Meet the sources ${icon('up')}</a></aside>`;
+    mountDailyOverview();
     mountImpactPanel();
     mountReaderLab();
     if(impactFocus?.isConnected)impactFocus.focus({preventScroll:true});
@@ -276,8 +326,8 @@ globalThis.createNewsroom = function createNewsroom(ui) {
     return `<div class="history-bridge"><span class="eyebrow">THERE’S A LONGER STORY HERE</span><h2>${esc(timeline.shortTitle||timeline.title)}</h2><p>${esc(timeline.description||'')}</p>${range}<a class="button primary" href="/threads/${encodeURIComponent(timeline.id)}">Explore the timeline ${icon('arrow')}</a>${coverage}</div>`;
   }
   function renderArticle(id){const n=articleCache.get(id)||news.find(n=>n.id===id);if(!n){notFound();return;}
-    const timeline=archiveRows().find(s=>s.id===n.eventId),others=news.filter(x=>x.id!==id&&x.category===n.category).slice(0,3),digest=briefSummary(n),direct=Boolean(directPublisherURL(n.source)),viaGoogle=sourceIsGoogle(n);
-    const digestText = globalThis.ThreadNewsArticleSummary ? `<section class="article-summary" aria-labelledby="article-summary-title"><h2 id="article-summary-title">Summary</h2><span class="article-summary-label" hidden></span><div class="article-summary-body"></div><div class="article-summary-actions"><button class="button" type="button" data-summary-copy hidden>Copy summary</button><span role="status"></span></div></section>` : digest ? `<p class="article-deck">${esc(digest)}</p>` : '';
+    const timeline=archiveRows().find(s=>s.id===n.eventId),others=news.filter(x=>x.id!==id&&x.category===n.category).slice(0,3),digest=quickSummary(n),direct=Boolean(directPublisherURL(n.source)),viaGoogle=sourceIsGoogle(n);
+    const digestText = digest ? `<section class="article-summary" aria-labelledby="article-summary-title"><h2 id="article-summary-title">Summary</h2><div class="article-summary-body"><p>${esc(digest)}</p></div><div class="article-summary-actions"><button class="button" type="button" data-summary-copy hidden>Copy summary</button><span role="status"></span></div></section>` : '';
     const sourceLabel=direct?`Read at ${n.source.publisher}`:viaGoogle?`Open ${n.source.publisher} via Google News`:`Read at ${n.source.publisher}`;
     const sourceNote=direct?'Opens the publisher article.':viaGoogle?'Google News is the only article link stored for this story.':'Opens the linked source.';
     const officialSources=n.officialSources||[];
@@ -288,10 +338,7 @@ globalThis.createNewsroom = function createNewsroom(ui) {
     ${(n.secondarySources||[]).length?`<section class="other-coverage"><div class="eyebrow">OTHER OUTLETS</div><h2>More reporting on this story</h2>${n.secondarySources.map(src=>`<article class="coverage-source"><strong>${esc(src.publisher||'News outlet')}</strong>${sourceLink(src,src.title||`Read at ${src.publisher||'the publisher'}`)}${src.publishedAt?`<small>${fmt(src.publishedAt)}</small>`:''}</article>`).join('')}<p>Coverage is grouped by similar headlines, topic and date. Some outlets may rely on the same original announcement; multiple links are not proof of independent confirmation.</p></section>`:''}</article>
     <aside class="article-aside">${articleHistory(timeline,n)}<div class="source-principle">${icon('compass')}<h3>Fairness is a practice.</h3><p>Trace the claim, check the date, compare independent evidence, and keep uncertainty visible. Official does not automatically mean impartial.</p><a href="#/about">Our approach ${icon('up')}</a></div></aside></div>${others.length?`<section class="more-news"><div class="section-heading"><div><span class="eyebrow">A WIDER VIEW OF ${esc(n.category).toUpperCase()}</span><h2>Keep exploring.</h2></div></div><div class="news-grid">${others.map(x=>newsCard(x,true)).join('')}</div></section>`:''}`;document.title=`${n.title} — ThreadNews`;renderNav();
     const summaryPanel = $('#main .article-summary');
-    if (summaryPanel) {
-      const canSummarize = n.source?.basis === 'article' && Boolean(n.summary?.trim()) && ['article-reviewed','source-summary','source-extract','publisher-preview','official-primary-source'].includes(n.digestBasis);
-      globalThis.ThreadNewsArticleSummary.mount(summaryPanel, n, { apiBase: connected ? apiBase : null, digest: canSummarize ? n.summary : digest });
-    }
+    if (summaryPanel) globalThis.ThreadNewsArticleSummary?.mount(summaryPanel, n, digest);
   }
   function timelineCard(s){
     if(!s.recordType&&Array.isArray(s.milestones)&&s.milestones.length)return card(s);
@@ -305,9 +352,10 @@ globalThis.createNewsroom = function createNewsroom(ui) {
     const emptyMessage = eventsLoading ? 'Loading timelines…' : eventsError ? 'Timelines are unavailable.'
       : query ? 'No timeline matches your search.' : 'No timelines have been published.';
     $('#main').innerHTML = `<header class="news-page-heading">
-      <div><h1>News timelines</h1><p>Follow major developments and read the records behind each story.</p></div>
+      <div><h1>News timelines</h1><p>Follow major developments and read the records behind each story.</p>${connected?'<a class="timeline-news-link" href="/news?archive=1">Browse the news archive</a>':''}</div>
       <div class="edition-card"><strong>${eventCount()}</strong><span>published timelines</span>${icon('clock')}</div>
     </header>
+    ${!query&&!timelineKind?timelineHighlights():''}
     ${connected?`<div class="news-scope-switch" aria-label="Timeline sources">${[['','All timelines'],['editorial','Editorial histories'],['record','Public records']].map(([value,label])=>`<button class="button" type="button" data-action="timeline-kind" data-value="${value}" aria-pressed="${value===timelineKind}">${label}</button>`).join('')}</div>`:''}
     ${eventsError ? `<div class="edition-note refresh-error" role="alert">${esc(eventsError)} <button data-action="events-retry">Try again</button></div>` : ''}
     <div class="story-grid timeline-archive-grid">${entries.map(timelineCard).join('')}</div>
@@ -353,7 +401,7 @@ globalThis.createNewsroom = function createNewsroom(ui) {
         else {if ($('#main [data-news-story]')?.dataset.newsStory !== id) remoteState('Loading the source brief…','Retrieving this article from the archive.');loadArticle(id).catch(()=>{}).then(()=>{const current=route();if(current.page==='news'&&routeId(current)===id)refreshVisible();});}
       }else renderArticle(id);
     }else if(r.page==='timelines')renderTimelines();else if(r.page==='sources')renderSources();else if(r.page==='about')renderAbout();else if(r.page==='corrections'){ $('#main').innerHTML=`<div class="about-page"><a class="back-link" href="/">${icon('arrow')} Back to recent news</a><div class="eyebrow">EDITORIAL ACCOUNTABILITY</div><h1>Corrections</h1><p class="about-lead">If a ThreadNews record has a factual error or missing context, contact <a href="mailto:contactus@threadnews.online">contactus@threadnews.online</a> with the page URL and the correction you propose.</p><p>A public correction log is not connected to the content database yet.</p></div>`;renderNav();document.title='Corrections — ThreadNews';}else if(r.page==='signin')renderSignIn();else if(['explore','following'].includes(r.page))renderHome(r.page==='following');else notFound();
-    if(r.page!=='news')document.title=`${r.page==='signin'?'Your reading space':r.page==='sources'?'The sources':r.page==='timelines'?'The long view':'News with the bigger picture'} — ThreadNews`;return true;
+    if(r.page!=='news')document.title=`${r.page==='signin'?'Your reading space':r.page==='sources'?'The sources':r.page==='timelines'?'The long view':r.page==='explore'&&archiveMode()?'News archive':'News with the bigger picture'} — ThreadNews`;return true;
   }
   function handleAction(e,b){if(account?.handleAction(e,b)||billing?.handleAction(e,b)||economy?.handleAction(e,b))return true;const a=b.dataset.action,v=b.dataset.value,known=['collection-retry','news-retry','news-facets-retry','news-detail-retry','events-retry','events-more','timeline-kind','economy-retry','news-topic','news-mode','news-view','news-reset','news-more','news-all','interests','interest-clear','interest-save','save-news','publisher-filter','signin','oauth','logout'];if(!known.includes(a))return false;e.preventDefault();
     if(a==='news-topic'){state.category=v;state.limit=12;if(connected&&route().page!=='following')scheduleFeed();if(route().page==='following')renderHome(true);else go(archiveMode()?'/news?archive=1':'#/');}
@@ -395,6 +443,7 @@ globalThis.createNewsroom = function createNewsroom(ui) {
       originalLink:article=>{const source=article.source,direct=directPublisherURL(source),url=direct||safeURL(source.url);return url==='#'?null:{url,label:direct?'Read the original source':'Open the linked report'};}
     });
     if(new URLSearchParams(location.search).has('auth_error')){go('#/signin');toast('Sign-in could not be completed. Guest reading is available.');}if(!connected)return;
+    void loadFeaturedTimelines();
     const results=await Promise.allSettled([loadFeed(),loadFacets(),loadEvents(),loadEconomy(),apiJSON('/api/auth/providers'),apiJSON('/api/auth/session')]);
     const auth=results[4],user=results[5];
     if(auth.status==='fulfilled'&&Array.isArray(auth.value?.providers))providers=auth.value.providers.filter(p=>['chatgpt','google','apple'].includes(p.id));
@@ -403,6 +452,6 @@ globalThis.createNewsroom = function createNewsroom(ui) {
     await account?.load();
     refreshVisible();
   }
-  economy=globalThis.createEconomyView({icon,esc,toast,renderNav});
+  economy=globalThis.createEconomyView({icon,esc,toast,renderNav,mountCurrency});
   return {renderRoute,renderNav,handleAction,handleInput,handleChange,submit,related,renderHome,boot,loadEvent,loadArticle,syncTimelineSave:(id,on)=>account?.syncSave('event',id,on)};
 };

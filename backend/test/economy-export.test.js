@@ -37,7 +37,7 @@ test('CSV protects labels from spreadsheet formula execution while preserving nu
   assert.ok(csv.includes('"-1.2"'));
   assert.ok(csv.includes('"Example, ""quoted""",""'));
 });
-test('economy UI uses live coverage and exports all available series and metadata', async () => {
+test('economy UI switches published CPI frequencies and exports series as CSV', async () => {
   const main = { innerHTML: '' }, downloads = [];
   const context = vm.createContext({ ECONOMY_SNAPSHOT: { countries: [country], meta: { sourceUpdated: '2026-10-08' } },
     ThreadNewsEconomyMetrics: metrics, Intl, Date, Blob, URL: { createObjectURL(blob) { downloads.push(blob); return 'blob:fixture'; }, revokeObjectURL() {} },
@@ -52,8 +52,9 @@ test('economy UI uses live coverage and exports all available series and metadat
   view.handleAction(null, { dataset: { action: 'econ-export-history' } });
   const csv = await downloads[0].text();
   assert.match(csv, /2026-09/); assert.match(csv, /2026-Q3/); assert.match(csv, /Statistics Office B/);
-  view.handleAction(null, { dataset: { action: 'econ-export-json' } });
-  const json = JSON.parse(await downloads[1].text());
-  assert.equal(json.schemaVersion, 1);
-  assert.equal(json.countries[0].monthlyCpiHistorySources[0].publisher, firstSource.publisher);
+  assert.match(main.innerHTML, /MONTHLY CPI/);
+  assert.doesNotMatch(main.innerHTML, /econ-export-json/);
+  view.handleAction(null, { dataset: { action: 'econ-cpi-frequency', frequency: 'quarterlyCpiHistory' } });
+  assert.match(main.innerHTML, /QUARTERLY CPI/);
+  assert.match(main.innerHTML, /Q3 2026/);
 });

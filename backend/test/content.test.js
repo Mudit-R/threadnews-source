@@ -179,6 +179,20 @@ test('related coverage keeps editorial links and ranks nearby matching reports f
   assert.deepEqual(feed.articles.find(item => item.id === worldArticle.id).secondarySources, worldSources.slice(0, 8));
 });
 
+test('top stories use the recent edition and match an explicit country or clear country mention', async () => {
+  const db = database(), env = { DB: db.DB };
+  await storeArticles(env, [
+    fixture('india-title',{title:'India releases new electricity generation data'}),
+    fixture('india-tag',{title:'Official labour market figures released',country:'India',countries:['IN']}),
+    fixture('elsewhere',{title:'Germany releases tax revenue data',countries:['DE']}),
+    fixture('older',{title:'India updates food prices',publishedAt:ago(6)})
+  ], 'country-fixture');
+  const edition = (await get(env,'/api/news/top?country=IN')).data;
+  assert.equal(edition.country,'IN');
+  assert.deepEqual(new Set(edition.stories.map(row=>row.id)),new Set(['india-title','india-tag']));
+  assert.equal((await get(env,'/api/news/top?country=IND')).response.status,400);
+});
+
 test('feed and archive windows enforce access even with a crafted cursor and facets count the whole matching database set', async () => {
   const db = database(), env = { DB: db.DB };
   await storeArticles(env, [fixture('recent'), fixture('archived', { publishedAt: ago(4.5) })], 'manual');

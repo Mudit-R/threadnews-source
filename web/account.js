@@ -1,7 +1,7 @@
 /* Account controls share the site's same-origin API; no provider tokens enter JS. */
 globalThis.createAccountView=function createAccountView(options){
   'use strict';
-  const {esc,toast,getSession,readLocal,applyLocal,onSignedOut,renderNav}=options;
+  const {esc,toast,getSession,readLocal,applyLocal,onPreferences,onSignedOut,renderNav}=options;
   const connected=options.connected===true,apiBase=String(options.apiBase||'').replace(/\/$/,'');
   const GUEST_KEY='threadnews-guest-collection',OWNER_KEY='threadnews-reading-owner',QUEUE_KEY='threadnews-save-queue:';
   const ID=/^[A-Za-z0-9][A-Za-z0-9_.:-]{0,119}$/;
@@ -131,12 +131,40 @@ globalThis.createAccountView=function createAccountView(options){
     catch(failure){error=explain(failure);redraw();}
   }
   function errorBox(){return error?`<div class="account-alert" role="alert"><p>${esc(error)}</p><button class="button" data-action="account-retry">Retry sync</button>${error.includes('expired')?'<a class="button" href="#/signin">Sign in</a>':''}</div>`:'';}
+  function editionPreferences(session) {
+    const current=session.preferences?.newsCountry || '';
+    const options=new Map([['','Global']]);
+    for(const country of globalThis.ECONOMY_SNAPSHOT?.countries || []) {
+      if(/^[A-Z]{2}$/.test(country.code || '')) options.set(country.code,country.name);
+    }
+    if(current&&!options.has(current))options.set(current,new Intl.DisplayNames('en',{type:'region'}).of(current));
+    return `<article class="account-card account-edition"><h2>Top stories edition</h2><label for="account-news-country">Default country</label>
+      <div><select id="account-news-country">${[...options].map(([code,name])=>`<option value="${esc(code)}"${code===current?' selected':''}>${esc(name)}</option>`).join('')}</select>
+      <button class="button" type="button" data-action="account-news-country">Save</button></div>
+      <p>Used when you open the Top 5 stories on any device where you are signed in.</p></article>`;
+  }
+  async function saveEdition(button) {
+    const field=document.getElementById('account-news-country');
+    if(!field)return;
+    const id=userId();
+    button.disabled=true;field.disabled=true;
+    try {
+      const result=await request('/api/preferences',{method:'PUT',body:{newsCountry:field.value}});
+      if(id!==userId())return;
+      onPreferences?.(result.preferences);
+      toast?.('Default news edition saved.');
+    } catch(failure) {
+      toast?.(explain(failure));
+    } finally {
+      button.disabled=false;field.disabled=false;
+    }
+  }
   function renderAccount(){
     const main=document.getElementById('main');if(!main)return;
     const session=getSession(),user=session?.user;
     if(!user){main.innerHTML=`<section class="account-page"><div class="eyebrow">YOUR READING SPACE</div><h1>Keep your world<br><em>within reach.</em></h1><p class="account-intro">Reading is open. Sign in when a provider is available to carry your interests, saved articles and followed timelines across devices.</p><a class="button primary" href="#/signin">Sign in</a><a class="account-privacy-link" href="#/privacy">How ThreadNews uses your data ↗</a></section>`;renderNav?.();return;}
     const lists=clean(account?.collection||readLocal?.()),guest=clean(read(GUEST_KEY,{articles:[],events:[]})),pending=queue(user.id).length,guestCount=guest.articles.length+guest.events.length;
-    main.innerHTML=`<section class="account-page"><div class="account-heading"><div><div class="eyebrow">YOUR READING SPACE</div><h1>A little more<br><em>your world.</em></h1><p class="account-intro">${esc(user.name||user.email||'Your account')} · ${loading?'Loading account…':syncing?'Syncing saves…':pending?`${pending} pending ${pending===1?'change':'changes'}`:account?'Account connected':'Waiting for account data'}</p></div><button class="button" data-action="account-logout">Sign out</button></div>${errorBox()}<div class="account-grid"><article class="account-card"><h2>Your collection</h2><div class="account-counts"><a href="#/following"><strong>${lists.articles.length}</strong><span>saved articles</span></a><a href="#/following"><strong>${lists.events.length}</strong><span>followed timelines</span></a></div><p>Signed-in saves sync to this account. You can keep up to 500 articles and 200 timelines. An expired article stays listed as unavailable until you remove its save.</p><a class="text-button" href="#/following">Open your collection ↗</a></article><article class="account-card"><h2>Browser to account</h2><p>Guest saves stay separate from your account. Import them when you want to carry this browser’s reading list with you.</p><button class="button" data-action="account-import" ${!guestCount||loading||syncing?'disabled':''}>${guestCount?`Import ${guestCount} browser saves`:'No guest saves to import'}</button><small>Unavailable records and records above the account limit are reported after import.</small></article><article class="account-card"><h2>Your data, in your hands</h2><p>Download your profile, topic choices and saved identifiers as JSON. Your export contains no authentication credentials.</p><button class="button" data-action="account-export">Download account data</button><a class="account-privacy-link" href="#/privacy">Read the privacy notice ↗</a></article><article class="account-card account-danger"><h2>Delete your account</h2><p>This removes your active profile, interests, saved identifiers and every active sign-in session. You can keep reading as a guest.</p>${confirmDelete?`<div class="account-delete-form"><label for="account-delete-confirm">Type <strong>DELETE</strong> to confirm.</label><input id="account-delete-confirm" type="text" autocomplete="off" spellcheck="false" inputmode="text" maxlength="6" aria-describedby="account-delete-note"><small id="account-delete-note">This action cannot be undone. Your guest browser collection remains separate.</small><div class="account-delete-actions"><button class="button account-delete-button" data-action="account-delete" disabled>${deleting?'Deleting…':'Delete account permanently'}</button><button class="text-button" data-action="account-delete-cancel" ${deleting?'disabled':''}>Cancel</button></div></div>`:`<button class="text-button account-delete-button" data-action="account-delete-open">Delete account…</button>`}</article></div></section>`;document.title='Your account — ThreadNews';renderNav?.();
+    main.innerHTML=`<section class="account-page"><div class="account-heading"><div><div class="eyebrow">YOUR READING SPACE</div><h1>A little more<br><em>your world.</em></h1><p class="account-intro">${esc(user.name||user.email||'Your account')} · ${loading?'Loading account…':syncing?'Syncing saves…':pending?`${pending} pending ${pending===1?'change':'changes'}`:account?'Account connected':'Waiting for account data'}</p></div><button class="button" data-action="account-logout">Sign out</button></div>${errorBox()}<div class="account-grid">${editionPreferences(session)}<article class="account-card"><h2>Your collection</h2><div class="account-counts"><a href="#/following"><strong>${lists.articles.length}</strong><span>saved articles</span></a><a href="#/following"><strong>${lists.events.length}</strong><span>followed timelines</span></a></div><p>Signed-in saves sync to this account. You can keep up to 500 articles and 200 timelines. An expired article stays listed as unavailable until you remove its save.</p><a class="text-button" href="#/following">Open your collection ↗</a></article><article class="account-card"><h2>Browser to account</h2><p>Guest saves stay separate from your account. Import them when you want to carry this browser’s reading list with you.</p><button class="button" data-action="account-import" ${!guestCount||loading||syncing?'disabled':''}>${guestCount?`Import ${guestCount} browser saves`:'No guest saves to import'}</button><small>Unavailable records and records above the account limit are reported after import.</small></article><article class="account-card"><h2>Your data, in your hands</h2><p>Download your profile, topic choices and saved identifiers as JSON. Your export contains no authentication credentials.</p><button class="button" data-action="account-export">Download account data</button><a class="account-privacy-link" href="#/privacy">Read the privacy notice ↗</a></article><article class="account-card account-danger"><h2>Delete your account</h2><p>This removes your active profile, interests, saved identifiers and every active sign-in session. You can keep reading as a guest.</p>${confirmDelete?`<div class="account-delete-form"><label for="account-delete-confirm">Type <strong>DELETE</strong> to confirm.</label><input id="account-delete-confirm" type="text" autocomplete="off" spellcheck="false" inputmode="text" maxlength="6" aria-describedby="account-delete-note"><small id="account-delete-note">This action cannot be undone. Your guest browser collection remains separate.</small><div class="account-delete-actions"><button class="button account-delete-button" data-action="account-delete" disabled>${deleting?'Deleting…':'Delete account permanently'}</button><button class="text-button" data-action="account-delete-cancel" ${deleting?'disabled':''}>Cancel</button></div></div>`:`<button class="text-button account-delete-button" data-action="account-delete-open">Delete account…</button>`}</article></div></section>`;document.title='Your account — ThreadNews';renderNav?.();
   }
   function renderPrivacy(){
     const main=document.getElementById('main');if(!main)return;
@@ -151,6 +179,7 @@ globalThis.createAccountView=function createAccountView(options){
     if(action==='account-retry'){error='';if(location.hash.split('?')[0]==='#/privacy')void loadPrivacy();else void load().then(()=>flush());}
     if(action==='account-import')void importGuest();
     if(action==='account-export')void exportData();
+    if(action==='account-news-country')void saveEdition(button);
     if(action==='account-logout')void logout();
     if(action==='account-delete-open'){confirmDelete=true;renderAccount();document.getElementById('account-delete-confirm')?.focus();}
     if(action==='account-delete-cancel'){confirmDelete=false;renderAccount();}

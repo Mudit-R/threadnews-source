@@ -32,13 +32,17 @@ export function providerConfig(env){
 export function sameOriginMutation(request,env){return request.headers.get('origin')===(appOrigin(env)||new URL(request.url).origin);}
 async function sessionRecord(request,env){
   const token=readCookie(request,SESSION_COOKIE);if(!env.DB||!/^[A-Za-z0-9_-]{40,60}$/.test(token))return null;
-  return await env.DB.prepare('SELECT u.id,u.provider,u.name,u.email,u.picture,p.topics_json FROM sessions s JOIN users u ON u.id=s.user_id LEFT JOIN preferences p ON p.user_id=u.id WHERE s.token_hash=? AND s.expires_at>?').bind(await sha256(token),Math.floor(Date.now()/1000)).first();
+  return await env.DB.prepare('SELECT u.id,u.provider,u.name,u.email,u.picture,p.topics_json,p.news_country FROM sessions s JOIN users u ON u.id=s.user_id LEFT JOIN preferences p ON p.user_id=u.id WHERE s.token_hash=? AND s.expires_at>?').bind(await sha256(token),Math.floor(Date.now()/1000)).first();
+}
+function savedPreferences(row) {
+  let topics = [];
+  try { topics = JSON.parse(row.topics_json || '[]'); } catch {}
+  return { topics: Array.isArray(topics) ? topics : [], ...(row.news_country ? { newsCountry: row.news_country } : {}) };
 }
 export async function currentSession(request,env){
   const row=await sessionRecord(request,env);
   if(!row)return {user:null,preferences:{topics:[]}};
-  let topics=[];try{topics=JSON.parse(row.topics_json||'[]');}catch{}
-  return {user:{id:row.id,name:row.name,email:row.email,picture:row.picture},preferences:{topics:Array.isArray(topics)?topics:[]}};
+  return {user:{id:row.id,name:row.name,email:row.email,picture:row.picture},preferences:savedPreferences(row)};
 }
 function callbackUrl(provider,env){return `${appOrigin(env)}/api/auth/${provider}/callback`;}
 async function start(provider,env){
@@ -165,14 +169,14 @@ function collectionStamp(env,userId,now){return env.DB.prepare('INSERT INTO read
 export function privacyNotice(env={}){
   let contact=null;
   try{const candidate=new URL(env.PRIVACY_CONTACT_URL);if(['https:','mailto:'].includes(candidate.protocol)&&!candidate.username&&!candidate.password)contact=candidate.href;}catch{}
-  return {updatedAt:'2026-11-17',operator:plainText(env.SITE_OPERATOR_NAME||'',120)||null,contact,
+  return {updatedAt:'2026-11-19',operator:plainText(env.SITE_OPERATOR_NAME||'',120)||null,contact,
     title:'Your data at ThreadNews',
     sections:[
       {title:'Reading as a guest',text:'You can read without an account. This browser can store your topic choices, saved article identifiers and followed timeline identifiers. You can clear them in browser settings. Signing in does not silently copy guest saves into an account; you can choose to import them.'},
       {title:'What could affect you',text:'Your optional region, life stage and issue choices stay in this browser. We fetch the same public article list for everyone and rank it on your device. If you choose to remember your choices, they are stored on that browser until you clear them or clear site data. They are not sent to an AI provider or linked to your account.'},
       {title:'Headline recommendations and followed stories',text:'Recommendation feedback is trained on your device. If you opt to remember it, the browser stores your votes, article identifiers and the model features derived from those public headlines. You can reset them in the recommendations panel. For signed-in followed story updates, ThreadNews stores when you marked a story checked. Unfollowing a story or deleting your account removes its checkpoint.'},
       {title:'Ask ThreadNews',text:'When you request an answer, ThreadNews sends your question and relevant evidence to Google Gemini or Cloudflare Workers AI. Evidence can include the archive report you opened if you have access. Do not include personal information in a question. ThreadNews does not send your account details. It may cache answers that use public records for up to an hour. Browse sources runs without an AI provider.'},
-      {title:'When you sign in',text:'ThreadNews stores your provider identifier, display name, verified email address when provided, optional profile image URL, account creation time, chosen topics and saved article or timeline identifiers. Google or Apple handles provider authentication. ThreadNews does not store your provider password or access tokens. Google refresh tokens are not stored. For Apple accounts, a refresh token is encrypted with a separate server-only key so ThreadNews can revoke Apple authorization when you delete the account. The encrypted credential is excluded from account exports and removed with the account.'},
+      {title:'When you sign in',text:'ThreadNews stores your provider identifier, display name, verified email address when provided, optional profile image URL, account creation time, chosen topics, your selected news country and saved article or timeline identifiers. Google or Apple handles provider authentication. ThreadNews does not store your provider password or access tokens. Google refresh tokens are not stored. For Apple accounts, a refresh token is encrypted with a separate server-only key so ThreadNews can revoke Apple authorization when you delete the account. The encrypted credential is excluded from account exports and removed with the account.'},
       {title:'Sessions and storage',text:'A secure HTTP-only cookie identifies your session. Only a hash of its random token is stored in the database. Sessions expire after seven days; expired session rows are cleaned during later sign-ins. Temporary sign-in attempts expire after ten minutes. Cloudflare Workers and D1 host the service and its account database.'},
       {title:'Subscriptions and payment',text:'If you choose a paid plan, ThreadNews stores the selected plan, PayPal subscription or order identifier, billing status, payment timestamps and the period through which access is available. It also records the membership terms version, plan amount and currency, first charge time and when you accepted the recurring terms. These consent records are included in your account export and do not store an IP address. PayPal processes checkout and stores payment instruments. ThreadNews does not store your card number, bank details, PayPal password or payment credentials. PayPal handles recurring billing and cancellation requests; ThreadNews uses verified PayPal notifications to update access.'},
       {title:'Your controls',text:'Your account page lets you download your profile, preferences, saved identifiers and ThreadNews billing status, remove saves, sign out, or delete the account. Before deleting an account linked to a recurring plan, ThreadNews asks PayPal to cancel that subscription; paid access may continue through the paid period. Account deletion removes the active profile, topic choices, reading saves, billing record and sessions. Infrastructure logs and recovery copies may have separate retention controlled by the hosting provider.'},
@@ -226,10 +230,10 @@ async function accountRoutes(request,env,path){
   const profile=await env.DB.prepare('SELECT id,provider,provider_subject,name,email,picture,created_at FROM users WHERE id=?').bind(session.id).first();
   if(!profile)return json({error:'sign_in_required'},401);
   const user={id:profile.id,provider:profile.provider,providerSubject:profile.provider_subject,name:profile.name,email:profile.email,picture:profile.picture,createdAt:new Date(profile.created_at*1000).toISOString()};
-  let topics=[];try{topics=JSON.parse(session.topics_json||'[]');}catch{}
+
   const billingRow=await env.DB.prepare('SELECT checkout_kind,plan_key,subscription_id,order_id,status,last_payment_at,next_billing_time,access_until,created_at,updated_at FROM billing_subscriptions WHERE user_id=?').bind(session.id).first();
   const billing=billingRow?{checkoutKind:billingRow.checkout_kind,planKey:billingRow.plan_key,subscriptionId:billingRow.subscription_id,orderId:billingRow.order_id,status:billingRow.status,lastPaymentAt:billingRow.last_payment_at?new Date(billingRow.last_payment_at*1000).toISOString():null,nextBillingTime:billingRow.next_billing_time||null,accessUntil:billingRow.access_until?new Date(billingRow.access_until*1000).toISOString():null,createdAt:new Date(billingRow.created_at*1000).toISOString(),updatedAt:new Date(billingRow.updated_at*1000).toISOString()}:null;
-  const data={user,preferences:{topics:Array.isArray(topics)?topics:[]},collection,billing};
+  const data={user,preferences:savedPreferences(session),collection,billing};
   if(path==='/api/account/export'){
     let consentRecords=[],consentHistoryAvailable=true;
     try{
@@ -295,9 +299,16 @@ export async function handleAuth(request,env){
     if(!request.headers.get('content-type')?.startsWith('application/json'))return json({error:'json_required'},415);
     const body=await request.text();if(body.length>4096)return json({error:'request_too_large'},413);
     let data;try{data=JSON.parse(body);}catch{return json({error:'invalid_json'},400);}
-    if(!Array.isArray(data.topics)||data.topics.length>TOPICS.length||data.topics.some(t=>!TOPICS.includes(t)))return json({error:'invalid_topics',allowed:TOPICS},400);
-    const topics=[...new Set(data.topics)];await env.DB.prepare('INSERT INTO preferences (user_id,topics_json,updated_at) VALUES (?,?,?) ON CONFLICT(user_id) DO UPDATE SET topics_json=excluded.topics_json,updated_at=excluded.updated_at').bind(session.id,JSON.stringify(topics),Math.floor(Date.now()/1000)).run();
-    return json({preferences:{topics}});
+    if(!data||typeof data!=='object'||Array.isArray(data)||Object.keys(data).some(key=>!['topics','newsCountry'].includes(key)))return json({error:'invalid_preferences'},400);
+    const hasTopics=Object.hasOwn(data,'topics'), hasCountry=Object.hasOwn(data,'newsCountry');
+    if(!hasTopics&&!hasCountry)return json({error:'invalid_preferences'},400);
+    if(hasTopics&&(!Array.isArray(data.topics)||data.topics.length>TOPICS.length||data.topics.some(t=>!TOPICS.includes(t))))return json({error:'invalid_topics',allowed:TOPICS},400);
+    if(hasCountry&&(typeof data.newsCountry!=='string'||!/^(?:[A-Z]{2})?$/.test(data.newsCountry)))return json({error:'invalid_country'},400);
+    const topics=hasTopics?JSON.stringify([...new Set(data.topics)]):null;
+    const saved=await env.DB.prepare(`INSERT INTO preferences (user_id,topics_json,updated_at,news_country) VALUES (?,COALESCE(?,'[]'),?,?)
+      ON CONFLICT(user_id) DO UPDATE SET topics_json=COALESCE(?,preferences.topics_json),news_country=CASE WHEN ? THEN excluded.news_country ELSE preferences.news_country END,
+        updated_at=excluded.updated_at RETURNING topics_json,news_country`).bind(session.id,topics,Math.floor(Date.now()/1000),data.newsCountry||'',topics,hasCountry?1:0).first();
+    return json({preferences:savedPreferences(saved)});
   }
   return json({error:'not_found'},404);
 }

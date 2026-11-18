@@ -1,11 +1,11 @@
 /* Annual history and recent CPI prints are intentionally different views. */
-globalThis.createEconomyView = function createEconomyView({icon, esc, toast, renderNav} = {}) {
+globalThis.createEconomyView = function createEconomyView({icon, esc, toast, renderNav, mountCurrency} = {}) {
   const safe = esc || (v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])));
   const glyph = name => typeof icon === 'function' ? icon(name) : '';
   const announce = text => typeof toast === 'function' && toast(text);
   const $ = selector => document.querySelector(selector);
   const palette = ['#275744', '#8e9f52', '#688ba3'];
-  const state = {selected:['IND'], metric:'gdpGrowth', year:null, compareOpen:false, view:'chart'};
+  const state = {selected:['IND'], metric:'gdpGrowth', year:null, compareOpen:false, view:'chart', cpiFrequency:''};
   let routeCountryApplied=false;
   const number = new Intl.NumberFormat('en-GB', {minimumFractionDigits:1, maximumFractionDigits:2});
   const valid = v => typeof v === 'number' && Number.isFinite(v);
@@ -126,48 +126,52 @@ globalThis.createEconomyView = function createEconomyView({icon, esc, toast, ren
     const rows=selected(), years=allYears();
     return `<div class="econ-table-scroll" tabindex="0" role="region" aria-label="Annual comparison data"><table class="econ-raw-table"><caption>${safe(metricLabel())} · annual percent change</caption><thead><tr><th scope="col">Year</th>${rows.map(c=>`<th scope="col">${safe(c.name)}</th>`).join('')}</tr></thead><tbody>${years.map(y=>`<tr class="${y===state.year?'econ-inspected-row':''}"><th scope="row">${y}</th>${rows.map(c=>`<td>${valid(at(c,y))?fmt(at(c,y)):'<span class="econ-missing">Not reported</span>'}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
   }
-  function monthlyCpiChart(c) {
-    const rows = (c.monthlyCpiHistory || []).filter(row => /^\d{4}-(0[1-9]|1[0-2])$/.test(row.period || '') && valid(row.value)).sort((a,b) => a.period.localeCompare(b.period));
-    if (!rows.length) return quarterlyCpiChart(c) || `<section class="econ-monthly-panel"><div class="econ-panel-heading"><div><div class="econ-eyebrow">CPI HISTORY</div><h2>Recent price changes.</h2></div></div><p class="econ-monthly-empty">A verified monthly or quarterly history adapter is not available for ${safe(c.name)} yet. The sourced recent print above remains separate from annual inflation.</p></section>`;
-    const visible = rows.slice(-72), values = visible.map(row => row.value);
+  function cpiHistory(c) {
+    const periods = [
+      { key:'monthlyCpiHistory', label:'Monthly', noun:'month', units:12, pattern:/^\d{4}-(0[1-9]|1[0-2])$/, limit:72 },
+      { key:'quarterlyCpiHistory', label:'Quarterly', noun:'quarter', units:4, pattern:/^\d{4}-Q[1-4]$/, limit:40 }
+    ].map(option => ({ ...option, rows:(c[option.key] || []).filter(row =>
+      option.pattern.test(row.period || '') && valid(row.value)).sort((a,b) => a.period.localeCompare(b.period)) }))
+      .filter(option => option.rows.length);
+    const selection = periods.find(option => option.key === state.cpiFrequency) || periods[0];
+    if (!selection) return `<section class="econ-monthly-panel"><h2>CPI history</h2><p class="econ-monthly-empty">Monthly and quarterly observations are unavailable for ${safe(c.name)}. Annual inflation is available in the comparison below.</p></section>`;
+
+    const { key, label, noun, units, limit, rows } = selection;
+    const visible = rows.slice(-limit), values = visible.map(row => row.value);
     const narrow = typeof matchMedia === 'function' && matchMedia('(max-width:620px)').matches;
-    const W = narrow ? 420 : 900, H = narrow ? 255 : 295, left = narrow ? 48 : 62, right = narrow ? 15 : 28, top = 22, bottom = 38;
-    const low = Math.min(0, ...values), high = Math.max(0, ...values), pad = Math.max((high - low) * .12, .4), min = low - pad, max = high + pad;
-    const x = index => left + (visible.length > 1 ? index / (visible.length - 1) : .5) * (W - left - right);
+    const W = narrow ? 420 : 900, H = narrow ? 235 : 280, left = narrow ? 51 : 65, right = 30, top = 22, bottom = 38;
+    const low = Math.min(0, ...values), high = Math.max(0, ...values), pad = Math.max((high - low) * .12, .4);
+    const min = low - pad, max = high + pad;
+    const index = value => Number(value.slice(0,4)) * units + Number(value.slice(units === 12 ? 5 : 6)) - 1;
+    const first = index(visible[0].period), span = index(visible.at(-1).period) - first;
+    const x = value => left + (span ? (index(value) - first) / span : .5) * (W - left - right);
     const y = value => top + (max - value) / (max - min) * (H - top - bottom);
-    const grid = Array.from({length: 5}, (_, i) => {
+    const grid = Array.from({length:5}, (_, i) => {
       const value = min + (max - min) * i / 4, yy = y(value);
       return `<g><line x1="${left}" y1="${yy}" x2="${W-right}" y2="${yy}" class="econ-grid-line"/><text x="${left-10}" y="${yy+4}" text-anchor="end" class="econ-axis-label">${value.toFixed(1)}%</text></g>`;
     }).join('');
-    const monthIndex = period => { const [year, month] = period.split('-').map(Number); return year * 12 + month - 1; };
-    const path = visible.map((row, i) => `${!i || monthIndex(row.period) - monthIndex(visible[i-1].period) > 1 ? 'M' : 'L'}${x(i).toFixed(2)},${y(row.value).toFixed(2)}`).join(' ');
-    const dots = visible.map((row, i) => `<circle cx="${x(i)}" cy="${y(row.value)}" r="${i === visible.length - 1 ? 4 : 2.4}" fill="#688ba3"><title>${safe(period(row.period))}: ${fmt(row.value)}</title></circle>`).join('');
-    const labels = visible.map((row, i) => {
-      const month = Number(row.period.slice(5));
-      if (month !== 1 && i !== visible.length - 1) return '';
-      return `<text x="${x(i)}" y="${H-10}" text-anchor="middle" class="econ-axis-label">${safe(month === 1 ? row.period.slice(0,4) : period(row.period))}</text>`;
-    }).join('');
-    const sourceFor = row => row.source || (Number.isInteger(row.sourceId) ? c.monthlyCpiHistorySources?.[row.sourceId] : null) || c.monthlyCpiHistorySource || {};
-    const last = rows.at(-1), source = sourceFor(last), measure = last.measure || source.measure || 'Monthly CPI history';
-    return `<section class="econ-monthly-panel"><div class="econ-panel-heading"><div><div class="econ-eyebrow">MONTH BY MONTH</div><h2>${safe(measure)}.</h2><p class="econ-monthly-subtitle">${safe(c.name)} · ${rows[0].period} to ${last.period} · ${safe(source.publisher || 'Official source')}${source.updatedAt ? ` · dataset updated ${safe(day(source.updatedAt))}` : source.retrievedAt ? ` · retrieved ${safe(day(source.retrievedAt))}` : ''}</p></div></div><div class="econ-monthly-chart-wrap"><svg class="econ-monthly-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${safe(measure)} for ${safe(c.name)}, ${visible[0].period} to ${visible.at(-1).period}">${grid}<path d="${path}" fill="none" stroke="#688ba3" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/>${dots}${labels}</svg></div><p class="econ-monthly-note">The graph shows the source’s monthly year-on-year rate, rounded to three decimals. It is not a monthly price change. National CPI and harmonised HICP series are labelled separately and are not treated as identical measures.</p>${source.sourceNote ? `<p class="econ-monthly-note"><strong>Source methodology:</strong> ${safe(source.sourceNote)}${source.sourceOrganization ? ` ${safe(source.sourceOrganization)}.` : ''}</p>` : ''}${source.url ? `<a class="econ-monthly-source" href="${safe(source.url)}" target="_blank" rel="noopener noreferrer">Open the source series ${glyph('up')}</a>` : ''}<details class="econ-monthly-values"><summary>View ${rows.length} monthly observations</summary><div class="econ-table-scroll" tabindex="0" role="region" aria-label="Monthly inflation history for ${safe(c.name)}"><table class="econ-raw-table"><thead><tr><th scope="col">Reference month</th><th scope="col">Inflation</th><th scope="col">Measure</th><th scope="col">Publisher</th></tr></thead><tbody>${rows.map(row=>{const source=sourceFor(row);return `<tr><th scope="row">${safe(period(row.period))}</th><td>${fmt(row.value)}</td><td>${safe(row.measure || source.measure || 'CPI')}</td><td>${safe(source.publisher || 'Source not recorded')}</td></tr>`;}).join('')}</tbody></table></div></details></section>` + quarterlyCpiChart(c);
-  }
-  function quarterlyCpiChart(c) {
-    const rows = (c.quarterlyCpiHistory || []).filter(row => /^\d{4}-Q[1-4]$/.test(row.period || '') && valid(row.value)).sort((a,b) => a.period.localeCompare(b.period));
-    if (!rows.length) return '';
-    const visible = rows.slice(-60), values = visible.map(row => row.value);
-    const narrow = typeof matchMedia === 'function' && matchMedia('(max-width:620px)').matches;
-    const W = narrow ? 420 : 900, H = narrow ? 255 : 295, left = narrow ? 48 : 62, right = narrow ? 15 : 28, top = 22, bottom = 38;
-    const low = Math.min(0, ...values), high = Math.max(0, ...values), pad = Math.max((high - low) * .12, .4), min = low - pad, max = high + pad;
-    const x = index => left + (visible.length > 1 ? index / (visible.length - 1) : .5) * (W - left - right);
-    const y = value => top + (max - value) / (max - min) * (H - top - bottom);
-    const grid = Array.from({length: 5}, (_, i) => { const value = min + (max - min) * i / 4, yy = y(value); return `<g><line x1="${left}" y1="${yy}" x2="${W-right}" y2="${yy}" class="econ-grid-line"/><text x="${left-10}" y="${yy+4}" text-anchor="end" class="econ-axis-label">${value.toFixed(1)}%</text></g>`; }).join('');
-    const quarterIndex = period => { const match = /^(\d{4})-Q([1-4])$/.exec(period); return Number(match[1]) * 4 + Number(match[2]) - 1; };
-    const path = visible.map((row, i) => `${!i || quarterIndex(row.period) - quarterIndex(visible[i-1].period) > 1 ? 'M' : 'L'}${x(i).toFixed(2)},${y(row.value).toFixed(2)}`).join(' ');
-    const dots = visible.map((row, i) => `<circle cx="${x(i)}" cy="${y(row.value)}" r="${i === visible.length - 1 ? 4 : 2.4}" fill="#688ba3"><title>${safe(period(row.period))}: ${fmt(row.value)}</title></circle>`).join('');
-    const labels = visible.map((row, i) => { if (!row.period.endsWith('Q1') && i !== visible.length - 1) return ''; return `<text x="${x(i)}" y="${H-10}" text-anchor="middle" class="econ-axis-label">${safe(period(row.period))}</text>`; }).join('');
-    const sourceFor = row => row.source || (Number.isInteger(row.sourceId) ? c.quarterlyCpiHistorySources?.[row.sourceId] : null) || c.quarterlyCpiHistorySource || {};
-    const last = rows.at(-1), source = sourceFor(last), measure = last.measure || source.measure || 'Quarterly CPI history';
-    return `<section class="econ-monthly-panel"><div class="econ-panel-heading"><div><div class="econ-eyebrow">QUARTER BY QUARTER</div><h2>${safe(measure)}.</h2><p class="econ-monthly-subtitle">${safe(c.name)} · ${safe(period(rows[0].period))} to ${safe(period(last.period))} · ${safe(source.publisher || 'Official source')}${source.retrievedAt ? ` · retrieved ${safe(day(source.retrievedAt))}` : ''}</p></div></div><div class="econ-monthly-chart-wrap"><svg class="econ-monthly-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${safe(measure)} for ${safe(c.name)}, ${safe(period(visible[0].period))} to ${safe(period(visible.at(-1).period))}">${grid}<path d="${path}" fill="none" stroke="#688ba3" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/>${dots}${labels}</svg></div><p class="econ-monthly-note">This is a quarterly series. Its year-on-year rate is derived from the same quarter in the prior year using the ABS seasonally adjusted index. Quarter observations are kept separate from monthly CPI and are never placed at fabricated month dates.</p>${source.url ? `<a class="econ-monthly-source" href="${safe(source.url)}" target="_blank" rel="noopener noreferrer">Open the ABS source series ${glyph('up')}</a>` : ''}<details class="econ-monthly-values"><summary>View ${rows.length} quarterly observations</summary><div class="econ-table-scroll" tabindex="0" role="region" aria-label="Quarterly inflation history for ${safe(c.name)}"><table class="econ-raw-table"><thead><tr><th scope="col">Reference quarter</th><th scope="col">Inflation</th><th scope="col">Measure</th><th scope="col">Publisher</th></tr></thead><tbody>${rows.map(row=>{const source=sourceFor(row);return `<tr><th scope="row">${safe(period(row.period))}</th><td>${fmt(row.value)}</td><td>${safe(row.measure || source.measure || 'CPI')}</td><td>${safe(source.publisher || 'Source not recorded')}</td></tr>`;}).join('')}</tbody></table></div></details></section>`;
+    const sourceFor = row => row.source || (Number.isInteger(row.sourceId) ? c[key + 'Sources']?.[row.sourceId] : null) || c[key + 'Source'] || {};
+    const measureFor = row => row.measure || sourceFor(row).measure || 'CPI';
+    const path = visible.map((row, i) => {
+      const previous = visible[i-1];
+      const gap = !previous || index(row.period) - index(previous.period) !== 1 || measureFor(row) !== measureFor(previous);
+      return `${gap?'M':'L'}${x(row.period).toFixed(2)},${y(row.value).toFixed(2)}`;
+    }).join(' ');
+    const dots = visible.map((row, i) => `<circle cx="${x(row.period)}" cy="${y(row.value)}" r="${i === visible.length - 1 ? 4 : 2.4}" fill="#688ba3"><title>${safe(period(row.period))} · ${fmt(row.value)}</title></circle>`).join('');
+    const labels = [...new Set(Array.from({length:narrow?3:5}, (_, i) => Math.round(i * (visible.length - 1) / (narrow?2:4))))]
+      .map(i => `<text x="${x(visible[i].period)}" y="${H-10}" text-anchor="middle" class="econ-axis-label">${safe(period(visible[i].period))}</text>`).join('');
+    const last = rows.at(-1), source = sourceFor(last), measure = measureFor(last);
+    const frequencyButtons = periods.length > 1 ? `<div class="econ-cpi-frequency" aria-label="CPI frequency">${periods.map(option =>
+      `<button type="button" data-action="econ-cpi-frequency" data-frequency="${option.key}" aria-pressed="${option.key===key}">${option.label}</button>`).join('')}</div>` : '';
+    return `<section class="econ-monthly-panel" aria-label="CPI history"><div class="econ-panel-heading"><div>
+      <div class="econ-eyebrow">${label.toUpperCase()} CPI</div><h2>${safe(c.name)} inflation</h2>
+      <p class="econ-monthly-subtitle">${safe(measure)} · ${safe(period(visible[0].period))} to ${safe(period(last.period))}</p>
+    </div>${frequencyButtons}</div>
+    <div class="econ-monthly-chart-wrap"><svg class="econ-monthly-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${label} inflation for ${safe(c.name)}">${grid}<path d="${path}" fill="none" stroke="#688ba3" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/>${dots}${labels}</svg></div>
+    <p class="econ-monthly-note">Year-on-year change by reference ${noun}. Gaps mark missing observations or a change in the measure.</p>
+    ${source.sourceNote?`<p class="econ-monthly-note">${safe(source.sourceNote)}</p>`:''}
+    ${source.url?`<a class="econ-monthly-source" href="${safe(source.url)}" target="_blank" rel="noopener noreferrer">${safe(source.publisher || 'Open the source series')} ${glyph('up')}</a>`:''}
+    <details class="econ-monthly-values"><summary>View ${rows.length} ${label.toLowerCase()} observations</summary><div class="econ-table-scroll" tabindex="0" role="region" aria-label="${label} figures for ${safe(c.name)}"><table class="econ-raw-table"><thead><tr><th scope="col">Reference ${noun}</th><th scope="col">Inflation</th><th scope="col">Measure</th><th scope="col">Publisher</th></tr></thead><tbody>${rows.map(row=>`<tr><th scope="row">${safe(period(row.period))}</th><td>${fmt(row.value)}</td><td>${safe(measureFor(row))}</td><td>${safe(sourceFor(row).publisher || 'Source details unavailable')}</td></tr>`).join('')}</tbody></table></div></details></section>`;
   }
   function inspector() {
     return `<div class="econ-inspector"><div class="econ-inspector-title"><span>THE YEAR IN VIEW</span><strong>${state.year ?? '—'}</strong></div>${selected().map((c,i)=> {
@@ -211,8 +215,11 @@ globalThis.createEconomyView = function createEconomyView({icon, esc, toast, ren
       <section class="econ-selection" aria-label="Country and comparison selection"><label for="econ-primary-country">YOUR FOCUS<select id="econ-primary-country" aria-label="Select an economy">${countries().map(x=>`<option value="${safe(x.iso3)}" ${x.iso3===c.iso3?'selected':''}>${safe(x.name)}</option>`).join('')}</select></label><div class="econ-selected-countries">${selected().map((x,i)=>`<span><i style="background:${palette[i]}"></i>${safe(x.name)}</span>`).join('')}</div><button class="econ-button ${state.compareOpen?'econ-button-active':''}" data-action="econ-picker" aria-expanded="${state.compareOpen}" id="econ-compare-button">${glyph('layers')} Compare countries<span>${state.selected.length}/3</span></button></section>
       ${comparisonPicker()}<section class="econ-stat-grid" aria-label="Latest indicators for ${safe(c.name)}">${momentumTile(c)}${metricTile(c,'gdpGrowth')}${metricTile(c,'inflation')}${latestCpi(c)}</section>
       ${currentNote?`<p class="econ-current-note">${glyph('info')}${safe(currentNote)}</p>`:''}
-      <div class="econ-chart-layout"><section class="econ-chart-panel" aria-label="Historical economic indicators"><div class="econ-panel-heading"><div><div class="econ-eyebrow">THE LONG VIEW</div><h2>How the numbers evolved.</h2></div><div class="econ-export-actions" aria-label="Download economic observations"><button class="econ-export" data-action="econ-export">Annual CSV</button><button class="econ-export" data-action="econ-export-history">All series CSV</button><button class="econ-export" data-action="econ-export-json">JSON</button></div></div><div class="econ-chart-controls"><div class="econ-metric-tabs" aria-label="Economic indicator"><button data-action="econ-metric" data-metric="gdpGrowth" aria-pressed="${state.metric==='gdpGrowth'}" class="${state.metric==='gdpGrowth'?'econ-tab-active':''}">Real GDP growth</button><button data-action="econ-metric" data-metric="inflation" aria-pressed="${state.metric==='inflation'}" class="${state.metric==='inflation'?'econ-tab-active':''}">CPI inflation</button></div><div class="econ-view-toggle"><button data-action="econ-view" data-view="chart" aria-label="Chart view" aria-pressed="${state.view==='chart'}" class="${state.view==='chart'?'econ-view-active':''}">${glyph('layers')}</button><button data-action="econ-view" data-view="table" aria-label="Raw data table" aria-pressed="${state.view==='table'}" class="${state.view==='table'?'econ-view-active':''}">${glyph('list')}</button></div></div><div class="econ-chart-caption"><span>Annual percent change · ${years[0] || '—'}–${years[years.length-1] || '—'}</span><div>${selected().map((x,i)=>`<span><i style="background:${palette[i]}"></i>${safe(x.name)}</span>`).join('')}</div></div><div id="econ-plot-region">${plotRegion()}</div><div class="econ-year-control"><label for="econ-year-slider">Inspect a year<strong id="econ-year-value">${state.year || '—'}</strong></label><div><button data-action="econ-step" data-step="-1" aria-label="Inspect previous year" ${state.year===years[0]?'disabled':''}>←</button><input type="range" id="econ-year-slider" min="${years[0] || 2015}" max="${years[years.length-1] || 2025}" step="1" value="${state.year || 2025}" aria-label="Inspect annual observation" aria-valuetext="${state.year || 2025}"><button data-action="econ-step" data-step="1" aria-label="Inspect next year" ${state.year===years[years.length-1]?'disabled':''}>→</button></div></div><p class="econ-chart-footnote">Lines break where a value is missing. Current-year annual gaps remain unfilled; the recent CPI card uses a separate frequency.</p></section>${assessment(c)}</div>
-      ${monthlyCpiChart(c)}${countryTable()}${methodology()}</div>`;
+      ${cpiHistory(c)}
+      <div id="economy-fx-mount"></div>
+      <div class="econ-chart-layout"><section class="econ-chart-panel" aria-label="Historical economic indicators"><div class="econ-panel-heading"><div><div class="econ-eyebrow">ANNUAL DATA</div><h2>Annual comparison</h2></div><div class="econ-export-actions" aria-label="Download economic observations"><button class="econ-export" data-action="econ-export">Annual CSV</button><button class="econ-export" data-action="econ-export-history">All series CSV</button></div></div><div class="econ-chart-controls"><div class="econ-metric-tabs" aria-label="Economic indicator"><button data-action="econ-metric" data-metric="gdpGrowth" aria-pressed="${state.metric==='gdpGrowth'}" class="${state.metric==='gdpGrowth'?'econ-tab-active':''}">Real GDP growth</button><button data-action="econ-metric" data-metric="inflation" aria-pressed="${state.metric==='inflation'}" class="${state.metric==='inflation'?'econ-tab-active':''}">CPI inflation</button></div><div class="econ-view-toggle"><button data-action="econ-view" data-view="chart" aria-label="Chart view" aria-pressed="${state.view==='chart'}" class="${state.view==='chart'?'econ-view-active':''}">${glyph('layers')}</button><button data-action="econ-view" data-view="table" aria-label="Raw data table" aria-pressed="${state.view==='table'}" class="${state.view==='table'?'econ-view-active':''}">${glyph('list')}</button></div></div><div class="econ-chart-caption"><span>Annual percent change · ${years[0] || '—'}–${years[years.length-1] || '—'}</span><div>${selected().map((x,i)=>`<span><i style="background:${palette[i]}"></i>${safe(x.name)}</span>`).join('')}</div></div><div id="econ-plot-region">${plotRegion()}</div><div class="econ-year-control"><label for="econ-year-slider">Inspect a year<strong id="econ-year-value">${state.year || '—'}</strong></label><div><button data-action="econ-step" data-step="-1" aria-label="Inspect previous year" ${state.year===years[0]?'disabled':''}>←</button><input type="range" id="econ-year-slider" min="${years[0] || 2015}" max="${years[years.length-1] || 2025}" step="1" value="${state.year || 2025}" aria-label="Inspect annual observation" aria-valuetext="${state.year || 2025}"><button data-action="econ-step" data-step="1" aria-label="Inspect next year" ${state.year===years[years.length-1]?'disabled':''}>→</button></div></div><p class="econ-chart-footnote">Lines break where a value is missing. Current-year annual gaps remain unfilled; the recent CPI card uses a separate frequency.</p></section>${assessment(c)}</div>
+      ${countryTable()}${methodology()}</div>`;
+    mountCurrency?.($('#economy-fx-mount'));
     if (typeof renderNav === 'function') renderNav();
   }
   function redraw(focusId) {
@@ -242,13 +249,7 @@ globalThis.createEconomyView = function createEconomyView({icon, esc, toast, ren
     download(new Blob([metrics.csv(rows)],{type:'text/csv;charset=utf-8'}),`ThreadNews-${allSeries?'all-series':state.metric}-${state.selected.join('-').toLowerCase()}.csv`);
     announce('Observations downloaded with their frequency, reference period and source. Missing values stay blank.');
   }
-  function exportJson() {
-    const document={schemaVersion:1,exportedAt:new Date().toISOString(),meta:snapshot().meta || {},
-      countries:selected(),momentumBasisCountries:countries().map(country=>country.iso3),
-      momentum:selected().map(country=>({iso3:country.iso3,...momentum(country)}))};
-    download(new Blob([JSON.stringify(document,null,2)+'\n'],{type:'application/json;charset=utf-8'}),`ThreadNews-economy-${state.selected.join('-').toLowerCase()}.json`);
-    announce('Economic history and source metadata downloaded as JSON.');
-  }
+
   function handleAction(e,button) {
     const b=button || e?.target?.closest('[data-action]'), action=b?.dataset?.action;
     if (!action?.startsWith('econ-')) return false;
@@ -266,11 +267,17 @@ globalThis.createEconomyView = function createEconomyView({icon, esc, toast, ren
     } else if(action==='econ-metric') {
       if(!['gdpGrowth','inflation'].includes(b.dataset.metric))return true;
       state.metric=b.dataset.metric;ensureState();redraw();document.querySelector(`[data-action="econ-metric"][data-metric="${state.metric}"]`)?.focus({preventScroll:true});
+    } else if(action==='econ-cpi-frequency') {
+      const value=b.dataset.frequency;
+      if(!['monthlyCpiHistory','quarterlyCpiHistory'].includes(value))return true;
+      state.cpiFrequency=value;
+      redraw();
+      $(`[data-action="econ-cpi-frequency"][data-frequency="${value}"]`)?.focus({preventScroll:true});
     } else if(action==='econ-view') {state.view=b.dataset.view==='table'?'table':'chart';redraw();document.querySelector(`[data-action="econ-view"][data-view="${state.view}"]`)?.focus({preventScroll:true});}
     else if(action==='econ-step')updateYear(Number(state.year)+Number(b.dataset.step));
     else if(action==='econ-export')exportCsv();
     else if(action==='econ-export-history')exportCsv(true);
-    else if(action==='econ-export-json')exportJson();
+
     else return false;
     return true;
   }

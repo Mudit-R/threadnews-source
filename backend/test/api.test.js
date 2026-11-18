@@ -59,7 +59,7 @@ test('a callback without its browser-bound OAuth attempt never establishes a ses
 });
 test('authenticated preferences accept the frontend Sport topic',async()=>{
   let stored;
-  const env={DB:{prepare(sql){return{bind(...args){return{async first(){return{id:'test-user',name:'Reader',topics_json:'[]'};},async run(){stored={sql,args};return{success:true};}};}}}}};
+  const env={DB:{prepare(sql){return{bind(...args){return{async first(){if(sql.startsWith('INSERT INTO preferences')){stored={sql,args};return {topics_json:args[1],news_country:args[3]};}return{id:'test-user',name:'Reader',topics_json:'[]'};}};}}}}};
   const request=new Request('https://example.com/api/preferences',{method:'PUT',headers:{origin:'https://example.com','content-type':'application/json',cookie:'__Host-threadline-session='+'x'.repeat(43)},body:JSON.stringify({topics:['Sport']})});
   const response=await worker.fetch(request,env,{});assert.equal(response.status,200);assert.deepEqual(await response.json(),{preferences:{topics:['Sport']}});assert.equal(stored.args[1],'["Sport"]');
 });

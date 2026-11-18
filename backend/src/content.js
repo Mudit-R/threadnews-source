@@ -144,7 +144,7 @@ function rowArticle(row) {
 // Compare-and-swap: an editor, retraction or feed revision can win while the source is being read.
 export async function storeSourceSummary(env, { row, source: rawSource, summary, at }) {
   const src = source(rawSource, env, new Date(at));
-  const short = text(summary, 'summary', 600, true);
+  const short = text(summary, 'summary', 1000, true);
   const sourceJson = JSON.stringify(src);
   const hash = await sha256(JSON.stringify([row.content_hash, short, sourceJson]));
   const guard = `id=? AND content_hash=? AND COALESCE(json_extract(metadata_json,'$.editorialExcluded'),0)=0
@@ -389,7 +389,7 @@ export function buildContentQuery(params, env = {}, { canAccessArchive = false, 
   if (evidence === 'official') where.push("source_type='Official source'");
   if (evidence === 'with-official') where.push("(official_count>0 OR source_type='Official source')");
   if (evidence === 'reporting') where.push("source_type='News report'");
-  if (evidence === 'brief') where.push(`summary<>'' AND ${evidenceRankSql('metadata_json')}>0`);
+  if (evidence === 'brief') where.push(`summary<>'' AND (${evidenceRankSql('metadata_json')}>=3 OR json_extract(metadata_json,'$.digestBasis') IN ('full_text','abstract'))`);
   if (['headline', 'article'].includes(evidence)) { where.push("json_extract(source_json,'$.basis')=?"); args.push(evidence); }
   const baseWhere = ' WHERE ' + where.join(' AND '), baseArgs = [...args];
   if (after) {
@@ -440,6 +440,43 @@ async function impactCandidates(env) {
     source: { publisher: row.publisher, sourceType: row.source_type, basis: row.basis }
   }));
   return json({ articles, meta: { cutoff: query.cutoff, maxCandidates: 160 } });
+}
+
+const STORY_COUNTRY_ALIASES = {
+  US:['united states','u s','american'], CN:['china','chinese'], DE:['germany','german'],
+  JP:['japan','japanese'], GB:['united kingdom','u k','britain','british'], IN:['india','indian'],
+  FR:['france','french'], IT:['italy','italian'], CA:['canada','canadian'], RU:['russia','russian'],
+  BR:['brazil','brazilian'], AU:['australia','australian'], KR:['south korea','south korean'],
+  MX:['mexico','mexican'], ES:['spain','spanish'], ID:['indonesia','indonesian'], TR:['turkey','turkiye','turkish']
+};
+const regionName = new Intl.DisplayNames('en', { type:'region', fallback:'none' });
+
+async function topStories(request, env) {
+  const country = new URL(request.url).searchParams.get('country') || '';
+  if (country && !/^[A-Z]{2}$/.test(country)) fail('Invalid country filter');
+  const query = buildContentQuery(new URLSearchParams(), env, { cursor:false });
+  const name = country && regionName.of(country);
+  const aliases = [...new Set([...(STORY_COUNTRY_ALIASES[country] || []), name?.toLowerCase()].filter(Boolean))];
+  const scope = country
+    ? ` AND (EXISTS (SELECT 1 FROM json_each(json_extract(metadata_json,'$.countries')) AS countries WHERE upper(countries.value)=?)
+      OR instr(' ' || title || ' ', ' ' || ? || ' ')>0
+      OR EXISTS (SELECT 1 FROM json_each(?) AS places WHERE
+        lower(region)=places.value OR instr(' ' || lower(replace(replace(replace(replace(replace(title,'.',' '),',',' '),'–',' '),'(',' '),')',' ')) || ' ', ' ' || places.value || ' ')>0))`
+    : '';
+  const args = country ? [...query.baseArgs,country,country,JSON.stringify(aliases)] : query.baseArgs;
+  const { results } = await env.DB.prepare(`SELECT id,title,published_at AS publishedAt,publisher,event_id AS eventId
+    FROM news${query.baseWhere}${scope}
+    ORDER BY (published_at>=?) DESC,COALESCE(json_extract(metadata_json,'$.impactScore'),0) DESC,published_at DESC,id DESC
+    LIMIT 20`).bind(...args,new Date(Date.now() - DAY).toISOString()).all();
+  const seen = new Set(), stories = [];
+  for (const row of results || []) {
+    const title = row.title.toLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ').trim();
+    if (seen.has(title)) continue;
+    seen.add(title);
+    stories.push(row);
+    if (stories.length === 5) break;
+  }
+  return json({ country, stories },200,{'cache-control':'public, max-age=120'});
 }
 
 async function singleArticle(request, env, options, id) {
@@ -654,6 +691,7 @@ export async function handleContent(request, env, ctx, { canAccessArchive = fals
     const coverage = await handleEventCoverage(request, env);
     if (coverage) return coverage;
     if (path === '/api/news') return await news(request, env, { canAccessArchive });
+    if (path === '/api/news/top' && request.method === 'GET') return await topStories(request,env);
     if (path === '/api/news/impact') {
       if (new URL(request.url).search) fail('This endpoint does not accept parameters');
       return await impactCandidates(env);

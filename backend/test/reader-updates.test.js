@@ -8,7 +8,7 @@ import { handleReaderUpdates, dispatchReaderUpdates, coverageRss, timelineCalend
 const NOW=Math.floor(Date.parse('2026-11-04T12:00:00Z')/1000),ORIGIN='https://threadnews.online';
 async function fixture(extra={}) {
   const sql=new DatabaseSync(':memory:');sql.exec('PRAGMA foreign_keys=ON');
-  for(const file of readdirSync(new URL('../migrations/',import.meta.url)).filter(name=>/^000[1-8]_.*\.sql$/.test(name)).sort())sql.exec(readFileSync(new URL('../migrations/'+file,import.meta.url),'utf8'));
+  for(const file of readdirSync(new URL('../migrations/',import.meta.url)).filter(name=>name.endsWith('.sql')).sort())sql.exec(readFileSync(new URL('../migrations/'+file,import.meta.url),'utf8'));
   const DB={prepare(query){return {args:[],bind(...args){return {...this,args};},async first(){return sql.prepare(query).get(...this.args)||null;},async all(){return {results:sql.prepare(query).all(...this.args).map(row=>({...row}))};},async run(){return {success:true,meta:{changes:Number(sql.prepare(query).run(...this.args).changes)}};}};},async batch(items){sql.exec('BEGIN');try{const r=[];for(const item of items)r.push(await item.run());sql.exec('COMMIT');return r;}catch(error){sql.exec('ROLLBACK');throw error;}}};
   for(const [id,character] of [['reader-one','a'],['reader-two','b']]) {
     sql.prepare('INSERT INTO users (id,provider,provider_subject,name,email,created_at) VALUES (?,?,?,?,?,?)').run(id,'google',id,'Reader',id+'@example.test',NOW);

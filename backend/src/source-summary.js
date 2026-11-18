@@ -7,19 +7,29 @@ const HOUR = 3600000;
 const LIMIT = 3;
 const DAILY_LIMIT = 30;
 const PUBLISHERS = [...new Set(ENRICHMENT_POLICIES.flatMap(policy => policy.publishers))];
-const PROMPT = 'Write a short neutral news summary of this original publication in two sentences and at most 38 words total. State who reported or announced what. Include a concrete detail from the article body that is absent from the headline. Preserve qualifications and avoid predicting outcomes. Paraphrase the source without direct quotes. Do not infer unstated facts.';
+const PROMPT = 'Write a neutral 50–100 word news brief from the body of this original publication. Use two or three readable sentences. Start with a concrete finding, decision or detail from the body. Add at least two important details beyond the headline. Attribute claims, preserve uncertainty and supply the paragraph IDs supporting each sentence. Paraphrase the body. Use no outside facts or quotations.';
+const FILLER = new Set('about according after also before because being could from have into more other reports said says than that their them then there these they this those through when where which will with would'.split(' '));
 const tokens = value => String(value || '').toLowerCase().match(/[\p{L}\p{N}]+/gu) || [];
 const phrases = value => { const words = tokens(value); return words.slice(9).map((_, index) => words.slice(index, index + 10).join(' ')); };
 
 export function shortSourceSummary(generated, article, paragraphs) {
-  const pieces = generated?.claims?.map(claim => claim.text.trim()) || [];
-  if (pieces.length < 1 || pieces.length > 2 || new Set(pieces).size !== pieces.length) return null;
+  const claims = generated?.claims || [];
+  if (!Array.isArray(claims) || claims.length < 2 || claims.length > 3) return null;
+  const pieces = claims.map(claim => claim.text.trim());
+  if (new Set(pieces).size !== pieces.length) return null;
   const summary = pieces.join(' ');
-  if (tokens(summary).length < 14 || summary.split(/\s+/).length > 40 || /[<>\p{Cc}\p{Cf}]/u.test(summary)) return null;
-  const headline = tokens(article.originalHeadline || article.title);
-  const novel = new Set(tokens(paragraphs.join(' ')).filter(word => word.length >= 3 && !headline.includes(word)));
-  // Require substantive overlap with the body beyond the title, and reject long verbatim runs.
-  if (new Set(tokens(summary).filter(word => novel.has(word))).size < 3) return null;
+  const words = summary.split(/\s+/).length;
+  if (words < 50 || words > 100 || summary.length > 1000 || /[<>\p{Cc}\p{Cf}]/u.test(summary)) return null;
+  const headline = new Set(tokens([article.originalHeadline, article.title].filter(Boolean).join(' ')));
+  const novel = new Set();
+  for (const claim of claims) {
+    if (!claim.citations?.length || claim.citations.some(id => !Number.isInteger(id) || id < 1 || id > paragraphs.length)) return null;
+    const cited = new Set(tokens(claim.citations.map(id => paragraphs[id - 1]).join(' ')));
+    const details = new Set(tokens(claim.text).filter(word => word.length >= 4 && !FILLER.has(word) && !headline.has(word) && cited.has(word)));
+    if (details.size < 2) return null;
+    for (const word of details) novel.add(word);
+  }
+  if (novel.size < 5) return null;
   const originals = new Set(paragraphs.flatMap(phrases));
   if (phrases(summary).some(phrase => originals.has(phrase))) return null;
   return summary;
@@ -28,7 +38,7 @@ export function shortSourceSummary(generated, article, paragraphs) {
 export async function refreshSourceSummaries(env, { now = new Date(), fetchImpl = fetch, generate = generateClaims } = {}) {
   const db = env.DB;
   if (env.SOURCE_SUMMARY_AI_ENABLED === 'false') return { ok: true, skipped: 'scheduled_ai_disabled' };
-  if (!db || env.NEWS_STORAGE === 'static' || (!env.GEMINI_API_KEY && !env.AI)) return { ok: true, skipped: 'not_configured' };
+  if (!db || env.NEWS_STORAGE === 'static' || !env.AI) return { ok: true, skipped: 'not_configured' };
   const at = now.toISOString(), day = at.slice(0, 10);
   const cutoff = new Date(+now - contentConfig(env).retentionDays * 24 * HOUR).toISOString();
   const budget = await db.prepare('SELECT used FROM source_summary_budget WHERE id=1 AND day=?').bind(day).first();
@@ -61,7 +71,7 @@ export async function refreshSourceSummaries(env, { now = new Date(), fetchImpl 
       if (allowance) {
         const evidence = page.paragraphs.map((excerpt, index) => ({ id:index+1, title:article.title, excerpt,
           date:row.published_at.slice(0, 10), kind:'Original release paragraph', links:[{ publisher:article.source.publisher, url:page.url }] }));
-        const result = await generate(env, PROMPT, evidence);
+        const result = await generate({ AI: env.AI }, PROMPT, evidence);
         const summary = shortSourceSummary(result, article, page.paragraphs);
         status = 'summary_unavailable';
         if (summary) {

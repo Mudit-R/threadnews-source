@@ -3,6 +3,7 @@ import { privacyNotice } from './auth.js';
 import { runtimeNewsFeeds } from './refresh.js';
 import { publicPlans } from './paypal.js';
 import { termsMarkup } from './terms.js';
+import '../../web/news-content.js';
 
 const STATIC_ROUTES = new Set(['/','/news','/threads','/economy','/ask','/sources','/method','/about','/privacy','/corrections','/pricing','/billing','/terms','/404','/account','/following','/coverage','/signin','/robots.txt','/sitemap.xml']);
 const PAGE_CACHE_SECONDS = 60;
@@ -124,12 +125,7 @@ async function economyData(request, env, ctx) {
 }
 
 function digest(article) {
-  const basis = article?.digestBasis ?? article?.metadata?.digestBasis ?? article?.metadata?.digest_basis;
-  if (['headline-only','headline_only'].includes(basis)) return '';
-  const summary = typeof article?.summary === 'string' ? article.summary.trim() : '';
-  if (!summary || /^(?:Headline-based discovery item\.|Official-source headline\.|Headline discovered through GDELT\.)/i.test(summary)) return '';
-  if (!['article-reviewed','source-summary','source-extract','publisher-preview','official-primary-source','full_text','abstract','feed-description'].includes(basis) || summary.split(/\s+/).length > 40) return '';
-  return summary;
+  return globalThis.ThreadNewsContent.displayQuickBrief(article);
 }
 
 function articleHref(article) {
@@ -246,10 +242,14 @@ async function renderPage(request, env, ctx, path, origin) {
   if (env.ASSETS) {
     try { template = await (await env.ASSETS.fetch(new Request(new URL('/', request.url)))).text(); } catch {}
   }
+  if (path === '/news' && new URL(request.url).searchParams.get('archive') === '1') {
+    return pageDocument({ title:'News archive', description:'Search older news by topic, region, publisher or source evidence.',
+      canonical, template, includeApp:true, content:'<h1>News archive</h1><p>Search older news by topic, region, publisher or source evidence.</p><p><a href="/news">Browse recent news</a></p>' });
+  }
   if (path === '/' || path === '/news') {
     const data = await newsData(request, env, ctx, 12);
     const articles = Array.isArray(data?.articles) ? data.articles : [];
-    const content = `<p>Recent reporting, with publisher links. Open a story to see available source details and any related timeline.</p>${data?.error ? '<p class="seo-error">The live news archive is temporarily unavailable.</p>' : ''}<section aria-label="Recent news">${articles.map(articleMarkup).join('') || '<p>No news records are available in this edition.</p>'}</section>`;
+    const content = `<p>Recent reporting, with publisher links. Open a story to see available source details and any related timeline.</p><p><a href="/news?archive=1">Browse the full news archive</a></p>${data?.error ? '<p class="seo-error">The live news archive is temporarily unavailable.</p>' : ''}<section aria-label="Recent news">${articles.map(articleMarkup).join('') || '<p>No news records are available in this edition.</p>'}</section>`;
     const description = 'Recent economic, political, international, infrastructure, health and energy news with publisher links and longer timelines where available.';
     const jsonLd = articles.slice(0,5).map(article => ({ '@context':'https://schema.org', '@type':'NewsArticle', headline:String(article.title || article.originalHeadline || '').slice(0,110), datePublished:dateText(article.publishedAt || article.published_at) || undefined, mainEntityOfPage:`${origin}/news/${encodeURIComponent(String(article.id || ''))}`, publisher:{'@type':'Organization',name:String(article.source?.publisher || article.publisher || 'Publisher')} }));
     return pageDocument({ title:'Recent news', description, canonical, content:`<h1>Recent news, with the source close.</h1>${content}`, jsonLd:jsonLd.length ? jsonLd : null, template, includeApp:true, status:data?.error ? data.status || 503 : 200 });
@@ -284,7 +284,7 @@ async function renderPage(request, env, ctx, path, origin) {
   if (path === '/threads') {
     const data = await eventList(request, env, ctx);
     const events = Array.isArray(data?.events) ? data.events : [];
-    const content = `<h1>Timelines and ongoing stories</h1><p>Selected histories connect current coverage to dated developments. A milestone’s sources and coverage limits remain visible.</p>${data?.error ? '<p class="seo-error">The timeline archive is temporarily unavailable.</p>' : ''}<section>${events.map(event => `<article class="seo-news-item"><h2><a href="/threads/${encodeURIComponent(String(event.id || ''))}">${escapeHtml(event.title || event.shortTitle || 'Untitled timeline')}</a></h2><p>${escapeHtml(event.description || '')}</p><p class="seo-meta">${Number(event.milestoneCount ?? event.milestones?.length) || 0} selected developments${event.coverageEnd ? ` · through ${escapeHtml(event.coverageEnd)}` : ''}</p></article>`).join('') || (!data?.error ? '<p>No reviewed timelines are available in this edition.</p>' : '')}</section>`;
+    const content = `<h1>Timelines and ongoing stories</h1><p>Selected histories connect current coverage to dated developments. A milestone’s sources and coverage limits remain visible.</p><p><a href="/news?archive=1">Browse the news archive</a></p>${data?.error ? '<p class="seo-error">The timeline archive is temporarily unavailable.</p>' : ''}<section>${events.map(event => `<article class="seo-news-item"><h2><a href="/threads/${encodeURIComponent(String(event.id || ''))}">${escapeHtml(event.title || event.shortTitle || 'Untitled timeline')}</a></h2><p>${escapeHtml(event.description || '')}</p><p class="seo-meta">${Number(event.milestoneCount ?? event.milestones?.length) || 0} selected developments${event.coverageEnd ? ` · through ${escapeHtml(event.coverageEnd)}` : ''}</p></article>`).join('') || (!data?.error ? '<p>No reviewed timelines are available in this edition.</p>' : '')}</section>`;
     return pageDocument({ title:'Timelines', description:'Source-linked timelines for selected ongoing stories, with dates and coverage limits.', canonical, content, template, includeApp:true, status:data?.error ? data.status || 503 : 200 });
   }
   if (path.startsWith('/news/')) {
@@ -301,7 +301,7 @@ async function renderPage(request, env, ctx, path, origin) {
     const viaGoogle = (() => { try { return new URL(href).hostname === 'news.google.com'; } catch { return false; } })();
     const published = dateText(article.publishedAt || article.published_at);
     const official = Array.isArray(article.officialSources) ? article.officialSources : [];
-    const content = `<article data-news-story="${escapeHtml(id)}"><p class="seo-meta">${escapeHtml(article.category || 'News')} · ${escapeHtml(article.region || 'Region not recorded')} · ${escapeHtml(publisher)}${published ? ` · <time datetime="${escapeHtml(published)}">${escapeHtml(published.slice(0,10))}</time>` : ''}</p><section class="article-summary" aria-label="Summary"><h2>Summary</h2>${summary ? '' : '<span class="article-summary-label">Based on the publisher headline</span>'}<div class="article-summary-body"><p>${escapeHtml(summary || article.originalHeadline || title)}</p></div></section><p><a href="${escapeHtml(href)}" rel="noopener noreferrer">${viaGoogle ? `Open ${escapeHtml(publisher)} via Google News` : `Read at ${escapeHtml(publisher)}`}</a></p>${official.length ? `<section><h2>Official records attached</h2>${official.map(record => {const url=validHttpUrl(record.url);return `<article><h3>${url?`<a href="${escapeHtml(url)}" rel="noopener noreferrer">${escapeHtml(record.title || record.publisher || 'Official record')}</a>`:escapeHtml(record.title || record.publisher || 'Official record')}</h3><p>${escapeHtml(record.publisher || '')}${record.publishedAt ? ` · ${escapeHtml(record.publishedAt)}` : ''}</p><p>${escapeHtml(record.note || 'This is an institutional source and does not independently verify every related claim.')}</p></article>`;}).join('')}</section>` : ''}${article.eventId ? `<p><a href="/threads/${encodeURIComponent(article.eventId)}">Open the related timeline</a></p>` : ''}<p><a href="/news">Back to recent news</a></p></article>`;
+    const content = `<article data-news-story="${escapeHtml(id)}"><p class="seo-meta">${escapeHtml(article.category || 'News')} · ${escapeHtml(article.region || 'Region not recorded')} · ${escapeHtml(publisher)}${published ? ` · <time datetime="${escapeHtml(published)}">${escapeHtml(published.slice(0,10))}</time>` : ''}</p>${summary ? `<section class="article-summary" aria-label="Summary"><h2>Summary</h2><div class="article-summary-body"><p>${escapeHtml(summary)}</p></div></section>` : ''}<p><a href="${escapeHtml(href)}" rel="noopener noreferrer">${viaGoogle ? `Open ${escapeHtml(publisher)} via Google News` : `Read at ${escapeHtml(publisher)}`}</a></p>${official.length ? `<section><h2>Official records attached</h2>${official.map(record => {const url=validHttpUrl(record.url);return `<article><h3>${url?`<a href="${escapeHtml(url)}" rel="noopener noreferrer">${escapeHtml(record.title || record.publisher || 'Official record')}</a>`:escapeHtml(record.title || record.publisher || 'Official record')}</h3><p>${escapeHtml(record.publisher || '')}${record.publishedAt ? ` · ${escapeHtml(record.publishedAt)}` : ''}</p><p>${escapeHtml(record.note || 'This is an institutional source and does not independently verify every related claim.')}</p></article>`;}).join('')}</section>` : ''}${article.eventId ? `<p><a href="/threads/${encodeURIComponent(article.eventId)}">Open the related timeline</a></p>` : ''}<p><a href="/news">Back to recent news</a></p></article>`;
     const description = summary || `Source-linked news from ${publisher}. Read the original reporting and check the source details.`;
     const disclosure=source.freeAccessDisclosure?`<p class="source-disclosure">${escapeHtml(source.freeAccessDisclosure)}</p>`:'';
     const jsonLd = { '@context':'https://schema.org', '@type':'NewsArticle', headline:String(title).slice(0,110), datePublished:published || undefined, mainEntityOfPage:canonical, publisher:{ '@type':'Organization', name:String(publisher) } };
@@ -393,7 +393,8 @@ export async function handleSeo(request, env, ctx) {
   if (isSitemap) return maybeHead(request, await sitemapResponse(request, env, ctx, origin));
 
   const cache = globalThis.caches?.default;
-  const key = new Request(`${url.origin}${path}`);
+  const scope = path === '/news' && url.searchParams.get('archive') === '1' ? '?archive=1' : '';
+  const key = new Request(`${url.origin}${path}${scope}`);
   if (cache) { const cached = await cache.match(key); if (cached) return maybeHead(request, cached); }
   let response;
   try { response = await renderPage(request, env, ctx, path, origin); }

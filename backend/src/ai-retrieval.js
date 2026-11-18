@@ -7,7 +7,10 @@ const TOPICS = [
   ['ceasefire', 'truce', 'cease-fire', 'cessation of hostilities'],
   ['interest rates', 'policy rate', 'benchmark rate', 'borrowing costs'],
   ['tariff', 'tariffs', 'import duties', 'customs duties'],
-  ['bullet train', 'high-speed rail', 'high speed rail', 'shinkansen']
+  ['bullet train', 'high-speed rail', 'high speed rail', 'shinkansen'],
+  ['hormuz', 'strait of hormuz', 'iran us', 'us iran', 'iran u s', 'iran united states'],
+  ['russia ukraine', 'ukraine war', 'war in ukraine', 'russian invasion of ukraine'],
+  ['ai171', 'air india 171', 'air india crash', 'air india flight 171']
 ];
 const DAY = 86400000;
 const SHORTLIST_LIMIT = 16;

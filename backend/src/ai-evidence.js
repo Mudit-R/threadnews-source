@@ -144,10 +144,10 @@ export async function retrieveArticleSummaryEvidence(env, id, { now = new Date()
   };
 }
 
-async function newsEvidence(db, env, features, eventId, now) {
+async function newsEvidence(db, env, features, eventId, now, archive = false) {
   const { groups } = features;
   if (!groups.length && !eventId) return [];
-  const query = buildContentQuery(new URLSearchParams(), env, { cursor: false, now });
+  const query = buildContentQuery(new URLSearchParams(archive ? { archive:'1' } : {}), env, { cursor:false, now, canAccessArchive:archive });
   const fields = 'id,title,summary,published_at,source_json,official_sources_json,keywords';
   const { results } = eventId
     ? await db.prepare(`SELECT ${fields} FROM news${query.where} AND event_id=?
@@ -269,21 +269,36 @@ export async function isDailyEvidencePublic(env, evidence, now) {
   return row?.total === ids.length;
 }
 
-export async function retrieveEvidenceCandidates(env, { question, eventId, countryCode, article }, now = new Date()) {
+function matchingTimelines(db, groups) {
+  const terms = [...new Set(groups.flat())];
+  if (!terms.length) return null;
+  return db.prepare(`WITH terms AS (SELECT value FROM json_each(?))
+    SELECT payload_json FROM (
+      SELECT payload_json,updated_at, (SELECT COALESCE(SUM(CASE
+        WHEN instr(lower(replace(replace(title,'–',' '),'-',' ')),terms.value)>0 THEN 4
+        WHEN instr(lower(replace(id,'-',' ')),terms.value)>0 THEN 2 ELSE 0 END),0) FROM terms) AS score
+      FROM event_payloads
+    ) WHERE score>0 ORDER BY score DESC,updated_at DESC LIMIT 14`).bind(JSON.stringify(terms)).all();
+}
+
+export async function retrieveEvidenceCandidates(env, { question, eventId, countryCode, article, archive = false }, now = new Date()) {
   const db = env.DB, features = questionFeatures(article ? `${article.title} ${question}` : question);
   if (!eventId && !countryCode && !features.groups.length) {
     if (article || !features.recent) return [];
     return (await retrieveDailyEvidence(env, now)).map(({ id, recordId, ...item }, index) => ({ item, rank: 20 - index }));
   }
   const expectEconomy = countryCode || /\b(gdp|growth|economy|economic|cpi|inflation|prices|output|hicp|cost of living)\b/i.test(question);
-  const [events, economy, news, canReadFull] = await Promise.all([
+  const widerSearch = archive && (features.timeline || features.years.size > 0 || Boolean(eventId));
+  const [events, economy, recentNews, canReadFull] = await Promise.all([
     countryCode ? null : eventId
       ? db.prepare('SELECT payload_json FROM event_payloads WHERE id=?').bind(eventId).all()
-      : db.prepare('SELECT payload_json FROM event_payloads ORDER BY updated_at DESC LIMIT 24').all(),
+      : matchingTimelines(db, features.groups),
     expectEconomy && !eventId ? db.prepare("SELECT payload_json FROM content_documents WHERE id='economy'").first() : null,
-    countryCode ? [] : newsEvidence(db, env, features, eventId, now),
+    countryCode ? [] : newsEvidence(db, env, features, eventId, now, widerSearch),
     countryCode ? false : env.PUBLIC_TIMELINES === 'true' || hasPaidAccess(env, null, Math.floor(now.getTime() / 1000))
   ]);
+  const news = archive && !countryCode && !widerSearch && recentNews.length < 8
+    ? await newsEvidence(db, env, features, eventId, now, true) : recentNews;
   return shortlistEvidence([
     ...economyEvidence(parse(economy?.payload_json, {}), question, countryCode),
     ...timelineEvidence(asList(events?.results), features, eventId, canReadFull, now),

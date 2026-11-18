@@ -57,6 +57,18 @@ test('account collections are isolated, idempotent, reject unknown records, and 
   f.sql.close();
 });
 
+test('a default news country is private to the account and independent of topic preferences',async()=>{
+  const f=await fixture();
+  const set=(body,user='one')=>f.request('/api/preferences',{method:'PUT',user,body});
+  assert.equal((await set({newsCountry:'india'})).response.status,400);
+  assert.deepEqual((await set({newsCountry:'IN'})).data.preferences,{topics:['Economy'],newsCountry:'IN'});
+  assert.deepEqual((await set({topics:['Sport']})).data.preferences,{topics:['Sport'],newsCountry:'IN'});
+  assert.deepEqual((await f.request('/api/auth/session')).data.preferences,{topics:['Sport'],newsCountry:'IN'});
+  assert.deepEqual((await f.request('/api/auth/session',{user:'two'})).data.preferences,{topics:['Economy']});
+  assert.deepEqual((await set({newsCountry:''})).data.preferences,{topics:['Sport']});
+  f.sql.close();
+});
+
 test('guest import validates before writing, reports unavailable IDs and uses bounded SQL rather than per-ID statements',async()=>{
   const f=await fixture(),before=f.queries;
   const invalid=await f.request('/api/account/collection/import',{method:'POST',body:{articles:['known'],events:['../../invalid']}});
