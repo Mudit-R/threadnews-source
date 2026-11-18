@@ -33,7 +33,7 @@
           status.textContent = edition ? 'No recent matches for this country. Choose Global for more stories.' : 'There are no recent stories yet.';
           return;
         }
-        status.textContent = '';
+        status.textContent = Number.isInteger(data.days) ? `Coverage from the last ${data.days} days` : '';
         list.innerHTML = data.stories.slice(0,5).map(item=>`<li><a href="/news/${encodeURIComponent(item.id)}"><strong>${esc(item.title)}</strong><span>${esc(item.publisher)}</span></a></li>`).join('');
       } catch {
         if (request !== serial) return;

@@ -35,6 +35,27 @@ export function shortSourceSummary(generated, article, paragraphs) {
   return summary;
 }
 
+const sentenceParts = new Intl.Segmenter('en', { granularity:'sentence' });
+
+export function originalSourceExcerpt(article, paragraphs, policy) {
+  if (!['public-domain-text','open-government-licence'].includes(policy.reuse)) return null;
+  const headline = new Set(tokens([article.originalHeadline, article.title].filter(Boolean).join(' ')));
+  const sentences = paragraphs.flatMap(paragraph => [...sentenceParts.segment(paragraph)].map(part => part.segment.trim()))
+    .filter(sentence => /[.!?][”"')]*$/.test(sentence));
+  for (let start=0; start<Math.min(5,sentences.length); start++) {
+    if (/^(?:it|this|these|those|they|he|she|such)\b/i.test(sentences[start])) continue;
+    for (let length=2; length<=4&&start+length<=sentences.length; length++) {
+      const summary=sentences.slice(start,start+length).join(' ');
+      const count=summary.split(/\s+/).length;
+      if (count>100||summary.length>1000) break;
+      if (count<50) continue;
+      const details=new Set(tokens(summary).filter(word=>word.length>=4&&!headline.has(word)&&!FILLER.has(word)));
+      if(details.size>=5)return summary;
+    }
+  }
+  return null;
+}
+
 export async function refreshSourceSummaries(env, { now = new Date(), fetchImpl = fetch, generate = generateClaims } = {}) {
   const db = env.DB;
   if (env.SOURCE_SUMMARY_AI_ENABLED === 'false') return { ok: true, skipped: 'scheduled_ai_disabled' };
@@ -72,11 +93,13 @@ export async function refreshSourceSummaries(env, { now = new Date(), fetchImpl 
         const evidence = page.paragraphs.map((excerpt, index) => ({ id:index+1, title:article.title, excerpt,
           date:row.published_at.slice(0, 10), kind:'Original release paragraph', links:[{ publisher:article.source.publisher, url:page.url }] }));
         const result = await generate({ AI: env.AI }, PROMPT, evidence);
-        const summary = shortSourceSummary(result, article, page.paragraphs);
+        const paraphrase = shortSourceSummary(result, article, page.paragraphs);
+        const summary = paraphrase || originalSourceExcerpt(article, page.paragraphs, page.policy);
         status = 'summary_unavailable';
         if (summary) {
           const saved = await storeSourceSummary(env, { row, summary, at, source: {
-            ...article.source, basis:'article', publisherArticleUrl:page.url, summaryMethod:'original-source-paraphrase',
+            ...article.source, basis:'article', publisherArticleUrl:page.url,
+            summaryMethod:paraphrase?'original-source-paraphrase':'original-source-excerpt',
             contentHash:await sha256(page.paragraphs.join('\n')), contentRetrievedAt:at, reusePolicyUrl:page.policy.terms,
             ...(page.policy.freeAccessDisclosure ? { freeAccessDisclosure:page.policy.freeAccessDisclosure } : {})
           } });

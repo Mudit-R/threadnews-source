@@ -147,6 +147,7 @@ export async function storeSourceSummary(env, { row, source: rawSource, summary,
   const short = text(summary, 'summary', 1000, true);
   const sourceJson = JSON.stringify(src);
   const hash = await sha256(JSON.stringify([row.content_hash, short, sourceJson]));
+  const note = src.summaryMethod === 'original-source-excerpt' ? 'Excerpt from the linked original publication.' : 'Summary based on the linked original publication.';
   const guard = `id=? AND content_hash=? AND COALESCE(json_extract(metadata_json,'$.editorialExcluded'),0)=0
     AND ${evidenceRankSql('metadata_json')}<4`;
   const [, result] = await env.DB.batch([
@@ -156,8 +157,8 @@ export async function storeSourceSummary(env, { row, source: rawSource, summary,
       'keywords',keywords,'eventId',event_id,'metadata',json(metadata_json)),'original_source_summary' FROM news WHERE ${guard}`)
       .bind(at,row.id,row.content_hash),
     env.DB.prepare(`UPDATE news SET summary=?,source_json=?,content_hash=?,
-      metadata_json=json_set(metadata_json,'$.digestBasis','source-summary','$.evidenceNote','Summary based on the linked original publication.') WHERE ${guard}`)
-      .bind(short,sourceJson,hash,row.id,row.content_hash)
+      metadata_json=json_set(metadata_json,'$.digestBasis','source-summary','$.evidenceNote',?) WHERE ${guard}`)
+      .bind(short,sourceJson,hash,note,row.id,row.content_hash)
   ]);
   return result.meta.changes === 1;
 }
@@ -454,7 +455,9 @@ const regionName = new Intl.DisplayNames('en', { type:'region', fallback:'none' 
 async function topStories(request, env) {
   const country = new URL(request.url).searchParams.get('country') || '';
   if (country && !/^[A-Z]{2}$/.test(country)) fail('Invalid country filter');
-  const query = buildContentQuery(new URLSearchParams(), env, { cursor:false });
+  const { feedDays, retentionDays } = contentConfig(env);
+  const days = country ? Math.min(retentionDays, Math.max(feedDays,14)) : feedDays;
+  const query = buildContentQuery(new URLSearchParams(), { ...env, NEWS_FEED_DAYS:days }, { cursor:false });
   const name = country && regionName.of(country);
   const aliases = [...new Set([...(STORY_COUNTRY_ALIASES[country] || []), name?.toLowerCase()].filter(Boolean))];
   const scope = country
@@ -476,7 +479,7 @@ async function topStories(request, env) {
     stories.push(row);
     if (stories.length === 5) break;
   }
-  return json({ country, stories },200,{'cache-control':'public, max-age=120'});
+  return json({ country, stories, days },200,{'cache-control':'public, max-age=120'});
 }
 
 async function singleArticle(request, env, options, id) {

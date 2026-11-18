@@ -46,7 +46,8 @@
       pinned = interactive;
       const brief = globalThis.ThreadNewsContent?.displayQuickBrief(article) || '';
       const original = originalLink(article);
-      panel.querySelector('.quick-brief-kind').textContent = brief ? (brief.split(/\s+/).length < 50 ? 'Short source brief' : 'Quick brief') : 'Headline only';
+      const kind = article.source.summaryMethod === 'original-source-excerpt' ? 'Source excerpt' : 'Quick brief';
+      panel.querySelector('.quick-brief-kind').textContent = brief ? kind : 'Headline only';
       panel.querySelector('h2').textContent = article.title;
       const dateLabel = article.source?.dateBasis === 'updated' ? 'Updated' : article.source?.dateBasis === 'indexed' ? 'Indexed' : 'Published';
       panel.querySelector('.quick-brief-meta').textContent = `${article.source.publisher} · ${dateLabel} ${formatDate(article.publishedAt)}`;

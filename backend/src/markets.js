@@ -64,7 +64,14 @@ async function loadGdpRanking() {
   return rankEconomies(countries[1], values[1]);
 }
 
-export async function handleMarkets(request, ctx) {
+async function publishedGdpRanking(request, env) {
+  const file = await env.ASSETS?.fetch(new Request(new URL('/gdp-ranking.json', request.url)));
+  if (!file?.ok) return null;
+  const snapshot = await file.json();
+  return snapshot.countries?.length === 10 && Number.isInteger(snapshot.year) ? snapshot : null;
+}
+
+export async function handleMarkets(request, env, ctx) {
   if (request.method !== 'GET') return Response.json({ error:'method_not_allowed' }, { status:405, headers:{ allow:'GET' } });
   const url = new URL(request.url);
   const fx = url.pathname === '/api/economy/fx';
@@ -72,15 +79,18 @@ export async function handleMarkets(request, ctx) {
   const key = new Request(url.origin + url.pathname);
   const cached = await cache?.match(key);
   if (cached) return cached;
+  let data, freshness;
   try {
-    const data = await (fx ? loadExchangeRates() : loadGdpRanking());
-    const response = Response.json(data, { headers: {
-      'cache-control': fx ? 'public, max-age=300, s-maxage=900' : 'public, max-age=3600, s-maxage=86400',
-      'x-content-type-options': 'nosniff'
-    } });
-    if (cache) ctx?.waitUntil(cache.put(key, response.clone()).catch(() => {}));
-    return response;
+    data = await (fx ? loadExchangeRates() : loadGdpRanking());
+    freshness = fx ? 'max-age=300, s-maxage=900' : 'max-age=3600, s-maxage=86400';
   } catch {
-    return Response.json({ error:'market_source_unavailable' }, { status:502, headers:{'cache-control':'no-store'} });
+    data = fx ? null : await publishedGdpRanking(request, env).catch(() => null);
+    freshness = 'max-age=300, s-maxage=3600';
   }
+  if (!data) return Response.json({ error:'market_source_unavailable' }, { status:502, headers:{'cache-control':'no-store'} });
+  const response = Response.json(data, { headers: {
+    'cache-control': 'public, ' + freshness, 'x-content-type-options': 'nosniff'
+  } });
+  if (cache) ctx?.waitUntil(cache.put(key, response.clone()).catch(() => {}));
+  return response;
 }

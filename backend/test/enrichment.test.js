@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { enrichArticle, sourceParagraphs, briefFromParagraphs, robotsAllowed, decodePublicGoogleLink, policyForUrl, auditArticles, readOriginalArticle } from '../src/enrichment.js';
-import { shortSourceSummary } from '../src/source-summary.js';
+import { originalSourceExcerpt, shortSourceSummary } from '../src/source-summary.js';
 import { fetchArchive, enrichArchive } from '../scripts/enrich-content.mjs';
 
 const now = new Date('2026-11-04T12:00:00Z');
@@ -99,4 +99,14 @@ test('source summary fails closed for publisher mismatches, indexing exclusions 
   const excerpts=sourceParagraphs(html);
   assert.equal(shortSourceSummary({claims:[{text:article.title}]},article,excerpts),null);
   assert.equal(shortSourceSummary({claims:[{text:excerpts[0]}]},article,excerpts),null);
+});
+
+test('the summary fallback selects intact, material sentences from eligible original releases', () => {
+  const story = {title:'Government updates electricity plans'};
+  const paragraphs = [
+    'The energy department opened a consultation on proposed upgrades to improve electricity network reliability in rural communities and asked providers to share evidence of local infrastructure failures.',
+    'Grid operators and local authorities can comment during the public consultation. The department will consider feedback about where outages interrupt public services before making its investment decision.'
+  ];
+  assert.equal(originalSourceExcerpt(story,paragraphs,{reuse:'attributed-institutional-text'}),null);
+  assert.equal(originalSourceExcerpt(story,paragraphs,{reuse:'open-government-licence'}),paragraphs.join(' '));
 });

@@ -105,7 +105,7 @@ export default {
         }, env.NEWS_STORAGE === 'static' || env.DB ? 200 : 503, { 'cache-control': 'no-store' });
       }
       if (path === '/api/editorial-policy' && request.method === 'GET') return json(EDITORIAL_POLICY,200,{'cache-control':'public, max-age=3600'});
-      if (path === '/api/economy/fx' || path === '/api/economy/gdp-ranking') return await handleMarkets(request, ctx);
+      if (path === '/api/economy/fx' || path === '/api/economy/gdp-ranking') return await handleMarkets(request, env, ctx);
       if (path === '/api/admin/refresh-source-summaries') {
         if (request.method !== 'POST') return json({error:'method_not_allowed'},405,{allow:'POST'});
         try { await authorized(request,env); } catch(error) { return json({error:error.status===401?'Unauthorized':'Ingestion is not configured'},error.status||503,{'cache-control':'no-store'}); }

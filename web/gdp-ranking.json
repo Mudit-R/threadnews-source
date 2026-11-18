@@ -1,0 +1,61 @@
+{
+  "year": 2025,
+  "countries": [
+    {
+      "code": "US",
+      "name": "United States",
+      "gdpUsd": 30769700000000
+    },
+    {
+      "code": "CN",
+      "name": "China",
+      "gdpUsd": 19498039388042.6
+    },
+    {
+      "code": "DE",
+      "name": "Germany",
+      "gdpUsd": 5050922925047.05
+    },
+    {
+      "code": "JP",
+      "name": "Japan",
+      "gdpUsd": 4435162999976.94
+    },
+    {
+      "code": "GB",
+      "name": "United Kingdom",
+      "gdpUsd": 4002587541846.01
+    },
+    {
+      "code": "IN",
+      "name": "India",
+      "gdpUsd": 3956067115771.63
+    },
+    {
+      "code": "FR",
+      "name": "France",
+      "gdpUsd": 3366315927447.33
+    },
+    {
+      "code": "RU",
+      "name": "Russian Federation",
+      "gdpUsd": 2561310169358.74
+    },
+    {
+      "code": "IT",
+      "name": "Italy",
+      "gdpUsd": 2551556954100.35
+    },
+    {
+      "code": "CA",
+      "name": "Canada",
+      "gdpUsd": 2319899772425.92
+    }
+  ],
+  "source": {
+    "publisher": "World Bank",
+    "url": "https://data.worldbank.org/indicator/NY.GDP.MKTP.CD",
+    "measure": "Nominal GDP, current US dollars"
+  },
+  "retrievedAt": "2026-11-18T19:02:45.271Z"
+}
