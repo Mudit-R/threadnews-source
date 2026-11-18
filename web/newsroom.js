@@ -214,7 +214,8 @@ globalThis.createNewsroom = function createNewsroom(ui) {
   function editionNotice(){
     if(refreshError)return esc(refreshError);
     if(feed.loading&&connected)return news.length?'Loading more records from the archive…':'Loading news from the archive…';
-    if(database())return meta.lastIngestedAt?`Last successful ingestion ${fullTime(meta.lastIngestedAt)}.${meta.feedDays?` This collection covers the latest ${Number(meta.feedDays)} days.`:''}`:'The news database is connected. No successful ingestion timestamp has been recorded yet.';
+    const days=meta.archive?meta.retentionDays:meta.feedDays;
+    if(database())return meta.lastIngestedAt?`Last successful ingestion ${fullTime(meta.lastIngestedAt)}.${days?` This collection covers the latest ${Number(days)} days.`:''}`:'The news database is connected. No successful ingestion timestamp has been recorded yet.';
     if(meta.mode==='automatic')return `Last successful feed update ${fullTime(meta.lastIngestedAt||meta.generatedAt)}.`;
     return `Dated preview · assembled ${fullTime(meta.generatedAt)}. The preview does not receive unattended updates.`;
   }

@@ -298,6 +298,10 @@ test('timeline filters search beyond the first page and scope their cursor', asy
   assert.equal(found.data.events[0].recordType,'rulemaking');
   assert.equal((await get(env,`/api/events?kind=editorial&cursor=${encodeURIComponent(found.data.meta.nextCursor)}`)).response.status,400);
   assert.deepEqual((await get(env,'/api/events?kind=editorial')).data.events.map(item=>item.id),['history-public']);
+  const article=fixture('linked-record',{eventId:'agency-0'});
+  await storeArticles(env,[article],'public-records','automatic');
+  await storeArticles(env,[{...article,eventId:null,title:'New agency headline'}],'public-records','automatic');
+  assert.equal((await get(env,'/api/news/linked-record')).data.article.eventId,'agency-0');
 });
 
 test('cleanup archives by query window, deletes only expired news and cascades revision/lineage rows', async () => {
