@@ -464,7 +464,9 @@ async function topStories(request, env) {
     ? ` AND (EXISTS (SELECT 1 FROM json_each(json_extract(metadata_json,'$.countries')) AS countries WHERE upper(countries.value)=?)
       OR instr(' ' || title || ' ', ' ' || ? || ' ')>0
       OR EXISTS (SELECT 1 FROM json_each(?) AS places WHERE
-        lower(region)=places.value OR instr(' ' || lower(replace(replace(replace(replace(replace(title,'.',' '),',',' '),'–',' '),'(',' '),')',' ')) || ' ', ' ' || places.value || ' ')>0))`
+        lower(region)=places.value OR instr(
+          ' ' || lower(replace(replace(replace(replace(replace(replace(replace(title,'.',' '),',',' '),'–',' '),'(',' '),')',' '),char(8217),' '),char(39),' ')) || ' ',
+          ' ' || places.value || ' ')>0))`
     : '';
   const args = country ? [...query.baseArgs,country,country,JSON.stringify(aliases)] : query.baseArgs;
   const { results } = await env.DB.prepare(`SELECT id,title,published_at AS publishedAt,publisher,event_id AS eventId

@@ -183,6 +183,7 @@ test('top stories use a bounded country edition and match an explicit country or
   const db = database(), env = { DB: db.DB };
   await storeArticles(env, [
     fixture('india-title',{title:'India releases new electricity generation data'}),
+    fixture('india-possessive',{title:'India’s government publishes the annual inflation report'}),
     fixture('india-tag',{title:'Official labour market figures released',country:'India',countries:['IN']}),
     fixture('elsewhere',{title:'Germany releases tax revenue data',countries:['DE']}),
     fixture('older',{title:'India updates food prices',publishedAt:ago(16)})
@@ -190,7 +191,7 @@ test('top stories use a bounded country edition and match an explicit country or
   const edition = (await get(env,'/api/news/top?country=IN')).data;
   assert.equal(edition.country,'IN');
   assert.equal(edition.days,14);
-  assert.deepEqual(new Set(edition.stories.map(row=>row.id)),new Set(['india-title','india-tag']));
+  assert.deepEqual(new Set(edition.stories.map(row=>row.id)),new Set(['india-title','india-possessive','india-tag']));
   assert.equal((await get(env,'/api/news/top?country=IND')).response.status,400);
 });
 
