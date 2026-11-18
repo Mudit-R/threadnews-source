@@ -159,11 +159,13 @@ test('related coverage keeps editorial links and ranks nearby matching reports f
   const closest = report('closest', 'Regional Press', 0.5, { title: 'Coastal flooding maps guide housing insurance' });
   const farther = report('farther', 'Community News', 1.5);
   const reviewed = { publisher: 'Flooding Agency', articleUrl: 'https://agency.example.com/report' };
+  const worldSources = Array.from({ length: 9 }, (_, index) => ({ ...reviewed, articleUrl: reviewed.articleUrl + '-' + index }));
+  const worldArticle = report('other-category', 'World Journal', 0.3, { category: 'World', secondarySources: worldSources });
   await storeArticles(env, [
     report('lead', 'Example News', 0.25, { secondarySources: [reviewed] }),
     closest, farther,
     report('same-publisher', 'example news', 0.3),
-    report('other-category', 'World Journal', 0.3, { category: 'World' }),
+    worldArticle,
     report('earlier', 'Daily Journal', 3.5),
     report('unrelated', 'Public News', 0.3, { title: 'Coastal council approves airport infrastructure plan' })
   ], 'coverage-fixture');
@@ -174,6 +176,7 @@ test('related coverage keeps editorial links and ranks nearby matching reports f
     assert.deepEqual(article.secondarySources.map(item => item.articleUrl || item.url),
       [reviewed.articleUrl, closest.source.url, farther.source.url]);
   }
+  assert.deepEqual(feed.articles.find(item => item.id === worldArticle.id).secondarySources, worldSources.slice(0, 8));
 });
 
 test('feed and archive windows enforce access even with a crafted cursor and facets count the whole matching database set', async () => {

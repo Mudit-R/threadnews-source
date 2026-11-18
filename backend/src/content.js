@@ -170,11 +170,12 @@ function headlineTokens(value) {
 function relatedCoverage(article, postings) {
   const source = article.source || {}, publisher = String(source.publisher || article.publisher || '').toLowerCase();
   const at = Date.parse(article.publishedAt || '');
-  const tokens = headlineTokens(article.title);
   const category = postings.get(article.category);
-  if (!category || !publisher || !Number.isFinite(at) || tokens.size < 2) return article;
-
   const existing = Array.isArray(article.secondarySources) ? article.secondarySources : [];
+  const tokens = category && headlineTokens(article.title);
+  if (!tokens || !publisher || !Number.isFinite(at) || tokens.size < 2) {
+    return existing.length > 8 ? { ...article, secondarySources: existing.slice(0, 8) } : article;
+  }
   const known = new Set([source.url, ...existing.map(item => item.url || item.articleUrl)].filter(Boolean));
   const sharedTokens = new Map();
   for (const token of tokens) {
