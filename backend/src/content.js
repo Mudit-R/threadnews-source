@@ -163,34 +163,41 @@ export async function storeSourceSummary(env, { row, source: rawSource, summary,
 }
 
 const RELATED_STOPWORDS = new Set('a an and are as at be been being by can could for from had has have how in into is it its may of on or our says said that the their them this to was were what when where which who why will with would'.split(' '));
+const RELATED_WINDOW = 3 * DAY;
 function headlineTokens(value) {
   return new Set(String(value || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().match(/[a-z0-9]{3,}/g)?.map(token => token.length > 4 && token.endsWith('s') ? token.slice(0, -1) : token).filter(token => !RELATED_STOPWORDS.has(token)) || []);
 }
-function sameStoryHeadline(left, right) {
-  const a = headlineTokens(left), b = headlineTokens(right);
-  if (a.size < 2 || b.size < 2) return false;
-  let shared = 0;
-  for (const token of a) if (b.has(token)) shared++;
-  const smaller = Math.min(a.size, b.size), union = a.size + b.size - shared;
-  return shared >= 2 && shared / smaller >= 0.75 && shared / union >= 0.42;
-}
-function relatedCoverage(article, candidates) {
+function relatedCoverage(article, postings) {
   const source = article.source || {}, publisher = String(source.publisher || article.publisher || '').toLowerCase();
   const at = Date.parse(article.publishedAt || '');
+  const tokens = headlineTokens(article.title);
+  const category = postings.get(article.category);
+  if (!category || !publisher || !Number.isFinite(at) || tokens.size < 2) return article;
+
   const existing = Array.isArray(article.secondarySources) ? article.secondarySources : [];
   const known = new Set([source.url, ...existing.map(item => item.url || item.articleUrl)].filter(Boolean));
-  const additions = candidates.filter(candidate => {
-    const other = candidate.source || {}, otherPublisher = String(other.publisher || '').toLowerCase();
-    const otherAt = Date.parse(candidate.publishedAt || '');
-    return candidate.id !== article.id && candidate.category === article.category && publisher && otherPublisher && publisher !== otherPublisher &&
-      Number.isFinite(at) && Number.isFinite(otherAt) && Math.abs(at - otherAt) <= 72 * 3600000 &&
-      !known.has(other.url) && sameStoryHeadline(article.title, candidate.title);
-  }).sort((a,b) => Math.abs(Date.parse(a.publishedAt) - at) - Math.abs(Date.parse(b.publishedAt) - at)).slice(0, 6).map(candidate => ({
-    publisher: candidate.source.publisher,
-    url: candidate.source.url,
+  const sharedTokens = new Map();
+  for (const token of tokens) {
+    for (const candidate of category.get(token) || []) {
+      sharedTokens.set(candidate, (sharedTokens.get(candidate) || 0) + 1);
+    }
+  }
+  const matches = [];
+  for (const [candidate, shared] of sharedTokens) {
+    const distance = Math.abs(at - candidate.at);
+    if (shared < 2 || candidate.id === article.id || publisher === candidate.normalizedPublisher ||
+        distance > RELATED_WINDOW || known.has(candidate.url)) continue;
+    const smaller = Math.min(tokens.size, candidate.tokenCount);
+    const union = tokens.size + candidate.tokenCount - shared;
+    if (shared / smaller >= 0.75 && shared / union >= 0.42) matches.push({ candidate, distance });
+  }
+  matches.sort((a, b) => a.distance - b.distance || a.candidate.order - b.candidate.order);
+  const additions = matches.slice(0, 6).map(({ candidate }) => ({
+    publisher: candidate.publisher,
+    url: candidate.url,
     title: candidate.title,
     publishedAt: candidate.publishedAt,
-    sourceType: candidate.source.sourceType || 'News report'
+    sourceType: candidate.sourceType || 'News report'
   }));
   const secondarySources = [...existing, ...additions].slice(0, 8);
   return secondarySources.length ? { ...article, secondarySources } : article;
@@ -198,16 +205,45 @@ function relatedCoverage(article, candidates) {
 async function attachRelatedCoverage(env, articles) {
   if (!articles.length) return articles;
   const dates = articles.map(article => Date.parse(article.publishedAt || '')).filter(Number.isFinite);
-  const categories = [...new Set(articles.map(article => article.category).filter(Boolean))];
-  if (!dates.length || !categories.length) return articles;
-  const from = new Date(Math.min(...dates) - 72 * 3600000).toISOString();
-  const through = new Date(Math.max(...dates) + 72 * 3600000).toISOString();
-  const result = await env.DB.prepare(`SELECT ${COLS} FROM news
+  const publishers = new Map();
+  for (const article of articles) {
+    const publisher = String(article.source?.publisher || article.publisher || '').toLowerCase();
+    if (!article.category || !publisher) continue;
+    const existing = publishers.get(article.category);
+    if (!existing) publishers.set(article.category, new Set([publisher]));
+    else existing.add(publisher);
+  }
+  if (!dates.length || !publishers.size) return articles;
+  const from = new Date(Math.min(...dates) - RELATED_WINDOW).toISOString();
+  const through = new Date(Math.max(...dates) + RELATED_WINDOW).toISOString();
+  const result = await env.DB.prepare(`SELECT id,title,category,published_at AS publishedAt,
+      json_extract(source_json,'$.url') AS url,json_extract(source_json,'$.publisher') AS publisher,
+      json_extract(source_json,'$.sourceType') AS sourceType
+    FROM news
     WHERE COALESCE(json_extract(metadata_json,'$.editorialExcluded'),0)=0
       AND published_at>=? AND published_at<=? AND category IN (SELECT value FROM json_each(?))
-    ORDER BY published_at DESC LIMIT 800`).bind(from, through, JSON.stringify(categories)).all();
-  const candidates = (result.results || []).map(rowArticle);
-  return articles.map(article => relatedCoverage(article, candidates));
+    ORDER BY published_at DESC LIMIT 800`).bind(from, through, JSON.stringify([...publishers.keys()])).all();
+
+  // Tokenize each candidate once for the page. Only compare stories sharing
+  // headline terms within the same category.
+  const postings = new Map();
+  for (const [order, row] of (result.results || []).entries()) {
+    const at = Date.parse(row.publishedAt);
+    const normalizedPublisher = String(row.publisher || '').toLowerCase();
+    const pagePublishers = publishers.get(row.category);
+    if (!normalizedPublisher || !Number.isFinite(at) ||
+        (pagePublishers.size === 1 && pagePublishers.has(normalizedPublisher))) continue;
+    const tokens = headlineTokens(row.title);
+    if (tokens.size < 2) continue;
+    if (!postings.has(row.category)) postings.set(row.category, new Map());
+    const category = postings.get(row.category);
+    const candidate = { ...row, at, normalizedPublisher, tokenCount: tokens.size, order };
+    for (const token of tokens) {
+      if (!category.has(token)) category.set(token, []);
+      category.get(token).push(candidate);
+    }
+  }
+  return articles.map(article => relatedCoverage(article, postings));
 }
 
 /** Metadata-only upsert. Existing attribution is never reassigned to another publisher. */

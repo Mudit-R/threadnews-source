@@ -148,6 +148,34 @@ test('news cursor paginates equal timestamps deterministically and remains scope
   assert.equal((await get(env, '/api/news?limit=500')).response.status, 400);
 });
 
+test('related coverage keeps editorial links and ranks nearby matching reports from other publishers', async () => {
+  const db = database(), env = { DB: db.DB };
+  const title = 'New coastal flooding maps guide housing insurance';
+  function report(id, publisher, days, changes = {}) {
+    return fixture(id, { title, publishedAt: ago(days), source: {
+      publisher, url: 'https://news.example.com/' + id, sourceType: 'Reporting', basis: 'headline'
+    }, ...changes });
+  }
+  const closest = report('closest', 'Regional Press', 0.5, { title: 'Coastal flooding maps guide housing insurance' });
+  const farther = report('farther', 'Community News', 1.5);
+  const reviewed = { publisher: 'Flooding Agency', articleUrl: 'https://agency.example.com/report' };
+  await storeArticles(env, [
+    report('lead', 'Example News', 0.25, { secondarySources: [reviewed] }),
+    closest, farther,
+    report('same-publisher', 'example news', 0.3),
+    report('other-category', 'World Journal', 0.3, { category: 'World' }),
+    report('earlier', 'Daily Journal', 3.5),
+    report('unrelated', 'Public News', 0.3, { title: 'Coastal council approves airport infrastructure plan' })
+  ], 'coverage-fixture');
+
+  const feed = (await get(env, '/api/news?archive=1', true)).data;
+  const detail = (await get(env, '/api/news/lead')).data.article;
+  for (const article of [feed.articles.find(item => item.id === 'lead'), detail]) {
+    assert.deepEqual(article.secondarySources.map(item => item.articleUrl || item.url),
+      [reviewed.articleUrl, closest.source.url, farther.source.url]);
+  }
+});
+
 test('feed and archive windows enforce access even with a crafted cursor and facets count the whole matching database set', async () => {
   const db = database(), env = { DB: db.DB };
   await storeArticles(env, [fixture('recent'), fixture('archived', { publishedAt: ago(4.5) })], 'manual');
