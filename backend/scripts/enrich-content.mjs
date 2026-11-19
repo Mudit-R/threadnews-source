@@ -13,6 +13,7 @@ export async function fetchArchive(origin = 'https://threadnews.online', { fetch
   for (let page = 0; page < maxPages; page++) {
     const url = new URL('/api/news', target);
     url.searchParams.set('archive', '1'); url.searchParams.set('limit', '100');
+    url.searchParams.set('related', '0'); url.searchParams.set('count', '0');
     if (cursor) url.searchParams.set('cursor', cursor);
     const response = await fetchImpl(url, { redirect: 'error', signal: AbortSignal.timeout(20000), headers: { accept: 'application/json' } });
     if (!response.ok) throw new Error('archive_http_' + response.status);

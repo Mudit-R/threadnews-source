@@ -82,7 +82,7 @@ async function newsData(request, env, ctx, limit = 12) {
     return { articles: records.slice(0, limit), meta: snapshot?.meta || {} };
   }
   if (!env.DB) return { error:'unavailable', status:503 };
-  return apiJson(request, env, ctx, `/api/news?limit=${limit}`);
+  return apiJson(request, env, ctx, `/api/news?limit=${limit}&related=0&count=0`);
 }
 
 async function singleNews(request, env, ctx, id) {
@@ -92,7 +92,7 @@ async function singleNews(request, env, ctx, id) {
     const article = records.find(record => record?.id === id);
     return article ? { article } : { error:'not_found', status:404 };
   }
-  return env.DB ? apiJson(request, env, ctx, `/api/news/${encodeURIComponent(id)}`) : { error:'unavailable', status:503 };
+  return env.DB ? apiJson(request, env, ctx, `/api/news/${encodeURIComponent(id)}?related=0`) : { error:'unavailable', status:503 };
 }
 
 async function eventData(request, env, ctx, id) {
@@ -242,9 +242,12 @@ async function renderPage(request, env, ctx, path, origin) {
   if (env.ASSETS) {
     try { template = await (await env.ASSETS.fetch(new Request(new URL('/', request.url)))).text(); } catch {}
   }
-  if (path === '/news' && new URL(request.url).searchParams.get('archive') === '1') {
-    return pageDocument({ title:'News archive', description:'Search older news by topic, region, publisher or source evidence.',
-      canonical, template, includeApp:true, content:'<h1>News archive</h1><p>Search older news by topic, region, publisher or source evidence.</p><p><a href="/news">Browse recent news</a></p>' });
+  const search = new URL(request.url).searchParams;
+  if (path === '/news' && search.get('archive') === '1') {
+    const title = search.get('older') === '1' ? 'Older stories' : 'News archive';
+    const description = 'Search older news by topic, region, publisher or source evidence.';
+    return pageDocument({ title,description,canonical,template,includeApp:true,
+      content:`<h1>${title}</h1><p>${description}</p><p><a href="/news">Browse recent news</a></p>` });
   }
   if (path === '/' || path === '/news') {
     const data = await newsData(request, env, ctx, 12);
@@ -393,7 +396,10 @@ export async function handleSeo(request, env, ctx) {
   if (isSitemap) return maybeHead(request, await sitemapResponse(request, env, ctx, origin));
 
   const cache = globalThis.caches?.default;
-  const scope = path === '/news' && url.searchParams.get('archive') === '1' ? '?archive=1' : '';
+  let scope = '';
+  if (path === '/news' && url.searchParams.get('archive') === '1') {
+    scope = url.searchParams.get('older') === '1' ? '?archive=1&older=1' : '?archive=1';
+  }
   const key = new Request(`${url.origin}${path}${scope}`);
   if (cache) { const cached = await cache.match(key); if (cached) return maybeHead(request, cached); }
   let response;

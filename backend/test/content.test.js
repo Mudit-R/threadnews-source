@@ -171,6 +171,11 @@ test('related coverage keeps editorial links and ranks nearby matching reports f
   ], 'coverage-fixture');
 
   const feed = (await get(env, '/api/news?archive=1', true)).data;
+  const beforeList = db.queries;
+  const lean = (await get(env, '/api/news?archive=1&related=0&count=0', true)).data;
+  assert.equal(db.queries-beforeList,3);
+  assert.equal(lean.meta.total,null);
+  assert.deepEqual(lean.articles.find(item => item.id === 'lead').secondarySources,[reviewed]);
   const detail = (await get(env, '/api/news/lead')).data.article;
   for (const article of [feed.articles.find(item => item.id === 'lead'), detail]) {
     assert.deepEqual(article.secondarySources.map(item => item.articleUrl || item.url),
@@ -201,12 +206,32 @@ test('feed and archive windows enforce access even with a crafted cursor and fac
   assert.equal((await get(env, '/api/news')).data.articles.length, 1);
   assert.equal((await get(env, '/api/news?archive=1')).response.status, 403);
   const archive = await get(env, '/api/news?archive=1', true); assert.equal(archive.data.articles.length, 2);
+  const beforeFacets = db.queries;
   const facets = await get(env, '/api/facets?archive=1&limit=1', true);
+  assert.equal(db.queries-beforeFacets,1);
   assert.equal(facets.data.total, 2); assert.deepEqual(facets.data.publishers, [{ value: 'Example News', count: 2 }]);
   const scope = JSON.stringify({ archive: false, topic: '', region: '', publisher: '', q: '', evidence: 'all' });
   const cursor = Buffer.from(JSON.stringify({ v: 1, at: ago(4.1), id: 'recent', cutoff: ago(4.9), until: new Date().toISOString(), scope })).toString('base64url');
   const crafted = await get(env, '/api/news?cursor=' + cursor);
   assert.equal(crafted.response.status, 200); assert.equal(crafted.data.articles.length, 0);
+});
+
+test('older stories are an entitled date window with a cursor scoped to that edition', async () => {
+  const db=database(), env={ DB:db.DB };
+  await storeArticles(env,[fixture('recent'),fixture('prior',{publishedAt:ago(6)}),fixture('earliest',{publishedAt:ago(8)}),
+    fixture('expired',{publishedAt:ago(31)})]);
+  assert.equal((await get(env,'/api/news?archive=1&older=1')).response.status,403);
+  assert.equal((await get(env,'/api/news?older=1',true)).response.status,400);
+  const first=await get(env,'/api/news?archive=1&older=1&limit=1',true);
+  assert.equal(first.data.meta.total,2);
+  assert.equal(first.data.meta.older,true);
+  assert.deepEqual(first.data.articles.map(article=>article.id),['prior']);
+  const cursor=first.data.meta.nextCursor;
+  const next=await get(env,'/api/news?archive=1&older=1&limit=1&count=0&cursor='+cursor,true);
+  assert.deepEqual(next.data.articles.map(article=>article.id),['earliest']);
+  assert.equal((await get(env,'/api/news?archive=1&cursor='+cursor,true)).response.status,400);
+  const facets=await get(env,'/api/facets?archive=1&older=1',true);
+  assert.equal(facets.data.total,2);
 });
 
 test('public article feeds, single articles, facets and paid archives hide legacy disallowed categories', async () => {

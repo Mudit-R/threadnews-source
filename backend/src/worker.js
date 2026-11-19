@@ -179,7 +179,13 @@ export default {
       if (content) {
         if (env.NEWS_STORAGE !== 'static' && env.FEED_AUTO_REFRESH === 'true' && path === '/api/news' && ctx?.waitUntil) ctx.waitUntil(refreshNews(env));
         if (path === '/api/ingest' && content.ok && ctx?.waitUntil) ctx.waitUntil(dailyCleanup(env));
-        if(cache&&content.ok){const cached=new Response(content.body,content);cached.headers.set('cache-control','public, max-age=30, s-maxage=60');if(ctx?.waitUntil)ctx.waitUntil(cache.put(cacheKey,cached.clone()));return cached;}
+        if(cache&&content.ok){
+          const ttl=['/api/news','/api/news/top','/api/facets'].includes(path)?180:60;
+          const cached=new Response(content.body,content);
+          cached.headers.set('cache-control',`public, max-age=30, s-maxage=${ttl}`);
+          if(ctx?.waitUntil)ctx.waitUntil(cache.put(cacheKey,cached.clone()));
+          return cached;
+        }
         return content;
       }
       if (path.startsWith('/api/')) return json({ error: 'not_found' }, 404);

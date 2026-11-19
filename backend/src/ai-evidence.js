@@ -149,20 +149,20 @@ async function newsEvidence(db, env, features, eventId, now, archive = false) {
   if (!groups.length && !eventId) return [];
   const query = buildContentQuery(new URLSearchParams(archive ? { archive:'1' } : {}), env, { cursor:false, now, canAccessArchive:archive });
   const fields = 'id,title,summary,published_at,source_json,official_sources_json,keywords';
+  // Bind three uses of each term while leaving room for D1's date and category operands.
+  const terms = [...new Set(groups.flat())].slice(0,28);
+  const score = terms.map(() => `(CASE
+    WHEN instr(lower(replace(title,'-',' ')),?)>0 THEN 5
+    WHEN instr(lower(replace(keywords,'-',' ')),?)>0 THEN 3
+    WHEN json_extract(source_json,'$.basis')='article' AND instr(lower(replace(summary,'-',' ')),?)>0 THEN 2
+    ELSE 0 END)`).join(' + ');
   const { results } = eventId
     ? await db.prepare(`SELECT ${fields} FROM news${query.where} AND event_id=?
       ORDER BY published_at DESC,id DESC LIMIT 36`).bind(...query.args, eventId).all()
-    : await db.prepare(`WITH terms AS (SELECT value FROM json_each(?))
-      SELECT * FROM (
-        SELECT ${fields}, (SELECT COALESCE(SUM(CASE
-          WHEN instr(lower(replace(title,'-',' ')), terms.value) > 0 THEN 5
-          WHEN instr(lower(replace(keywords,'-',' ')), terms.value) > 0 THEN 3
-          WHEN json_extract(source_json,'$.basis')='article'
-            AND instr(lower(replace(summary,'-',' ')), terms.value) > 0 THEN 2
-          ELSE 0 END),0) FROM terms) AS lexical_score
-        FROM news${query.where}
-      ) WHERE lexical_score > 0 ORDER BY lexical_score DESC,published_at DESC,id DESC LIMIT 60`)
-      .bind(JSON.stringify([...new Set(groups.flat())]), ...query.args).all();
+    : await db.prepare(`WITH scored AS MATERIALIZED (
+        SELECT ${fields}, (${score}) AS lexical_score FROM news${query.where}
+      ) SELECT * FROM scored WHERE lexical_score>0 ORDER BY lexical_score DESC,published_at DESC,id DESC LIMIT 60`)
+      .bind(...terms.flatMap(term=>[term,term,term]), ...query.args).all();
   const items = [];
   for (const row of asList(results)) {
     const source = parse(row.source_json, {});

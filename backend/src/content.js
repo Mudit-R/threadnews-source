@@ -340,6 +340,8 @@ function decodeCursor(value) {
 export function buildContentQuery(params, env = {}, { canAccessArchive = false, now = new Date(), cursor = true } = {}) {
   const config = contentConfig(env), archive = params.get('archive') === '1';
   if (archive && !canAccessArchive) fail('Archive access is required', 403);
+  const older = params.get('older') === '1';
+  if (older && !archive) fail('Choose the archive to browse earlier stories');
   const allowedPriorities = CATEGORY_ALLOWLIST;
   const rawPriorities = params.get('priorities') || '';
   if (params.getAll('priorities').length > 1 || rawPriorities.length > 200) fail('Invalid topic priorities');
@@ -362,10 +364,10 @@ export function buildContentQuery(params, env = {}, { canAccessArchive = false, 
     topic = normalizedTopic.category;
   }
   if (!['all', 'official', 'with-official', 'reporting', 'headline', 'article', 'brief'].includes(evidence)) fail('Invalid evidence filter');
-  const scope = JSON.stringify({ archive, topic, region, publisher, q, evidence, ...(personalized ? { priorities } : {}) });
+  const scope = JSON.stringify({ archive, ...(older ? { older } : {}), topic, region, publisher, q, evidence, ...(personalized ? { priorities } : {}) });
   const hardCutoff = new Date(now.getTime() - config.retentionDays * DAY).toISOString();
   let cutoff = new Date(now.getTime() - (archive ? config.retentionDays : config.feedDays) * DAY).toISOString();
-  let until = now.toISOString(), after = null;
+  let until = new Date(now.getTime() - (older ? config.feedDays * DAY + 1 : 0)).toISOString(), after = null;
   if (cursor && params.get('cursor')) {
     after = decodeCursor(params.get('cursor'));
     if (after.scope !== scope || typeof after.cutoff !== 'string' || typeof after.until !== 'string' || typeof after.at !== 'string') fail('Cursor does not match this query');
@@ -376,7 +378,8 @@ export function buildContentQuery(params, env = {}, { canAccessArchive = false, 
     if (after.cutoff < earliest || after.at < after.cutoff || after.at > after.until || after.cutoff > after.until) fail('Expired or invalid cursor');
     // An opaque cursor is not an authorization token. Never let its timestamps
     // widen the current feed or retention window, even if someone crafts one.
-    cutoff = cutoff > after.cutoff ? cutoff : after.cutoff; until = after.until;
+    cutoff = cutoff > after.cutoff ? cutoff : after.cutoff;
+    until = until < after.until ? until : after.until;
   }
   const where = ['category IN (SELECT value FROM json_each(?))', "COALESCE(json_extract(metadata_json,'$.editorialExcluded'),0)=0", 'published_at>=?', 'published_at>=?', 'published_at<=?'], args = [JSON.stringify(CATEGORY_ALLOWLIST), cutoff, hardCutoff, until];
   if (topic) { where.push('category=?'); args.push(topic); }
@@ -401,27 +404,31 @@ export function buildContentQuery(params, env = {}, { canAccessArchive = false, 
   }
   const limit = params.has('limit') ? Number(params.get('limit')) : 50;
   if (!Number.isInteger(limit) || limit < 1 || limit > 100) fail('Limit must be between 1 and 100');
-  return { ...config, archive, scope, cutoff, until, limit, where: ' WHERE ' + where.join(' AND '), args, baseWhere, baseArgs, personalized, priorities, priorityJson, priorityExpression, after };
+  const useTimeIndex = !personalized && !topic && !region && !publisher;
+  return { ...config, archive, older, scope, cutoff, until, limit, where: ' WHERE ' + where.join(' AND '), args, baseWhere, baseArgs, personalized, priorities, priorityJson, priorityExpression, after, useTimeIndex };
 }
 async function news(request, env, options) {
-  const query = buildContentQuery(new URL(request.url).searchParams, env, options);
+  const params = new URL(request.url).searchParams;
+  const query = buildContentQuery(params, env, options);
   if (query.personalized && query.after) {
     // The rank in a cursor is not trusted input. Resolve its boundary against
     // the same current filters/window before using it in a ranked seek query.
     const boundary = await env.DB.prepare(`SELECT ${query.priorityExpression} AS priority_rank FROM news${query.baseWhere} AND id=? AND published_at=?`).bind(query.priorityJson, ...query.baseArgs, query.after.id, query.after.at).first();
     if (!boundary || boundary.priority_rank !== query.after.rank) fail('Pagination cursor no longer matches this feed. Start from the first page.');
   }
+  const index = query.useTimeIndex ? ' INDEXED BY news_page' : '';
   const [records, count, state, ingestion] = await Promise.all([
-    env.DB.prepare(`SELECT ${COLS}${query.personalized ? ',' + query.priorityExpression + ' AS priority_rank' : ''} FROM news${query.where} ORDER BY ${query.personalized ? 'priority_rank ASC,' : ''}published_at DESC,id DESC LIMIT ?`).bind(...(query.personalized ? [query.priorityJson] : []), ...query.args, query.limit + 1).all(),
-    env.DB.prepare(`SELECT COUNT(*) AS total FROM news${query.baseWhere}`).bind(...query.baseArgs).first(),
+    env.DB.prepare(`SELECT ${COLS}${query.personalized ? ',' + query.priorityExpression + ' AS priority_rank' : ''} FROM news${index}${query.where} ORDER BY ${query.personalized ? 'priority_rank ASC,' : ''}published_at DESC,id DESC LIMIT ?`).bind(...(query.personalized ? [query.priorityJson] : []), ...query.args, query.limit + 1).all(),
+    params.get('count') === '0' ? null : env.DB.prepare(`SELECT COUNT(*) AS total FROM news${query.baseWhere}`).bind(...query.baseArgs).first(),
     env.DB.prepare('SELECT MAX(last_success_at) AS at FROM feed_state').first(),
     env.DB.prepare('SELECT MAX(ingested_at) AS at FROM news').first()
   ]);
   const rows = records.results || [], hasMore = rows.length > query.limit;
   const page = rows.slice(0, query.limit), last = page.at(-1);
   const nextCursor = hasMore && last ? encodeCursor({ v: 1, at: last.published_at, id: last.id, cutoff: query.cutoff, until: query.until, scope: query.scope, ...(query.personalized ? { rank: last.priority_rank } : {}) }) : null;
-  const articles = await attachRelatedCoverage(env, page.map(rowArticle));
-  return json({ articles, meta: { mode: 'database', total: count?.total || 0, limit: query.limit, nextCursor, hasMore, archive: query.archive, personalized: query.personalized, priorities: query.priorities, feedDays: query.feedDays, retentionDays: query.retentionDays, cutoff: query.cutoff, lastIngestedAt: ingestion?.at || null, lastCheckedAt: state?.at || null, coverageNote: 'Related links are grouped by similar headlines, category and publication time. Similar headlines may still describe different developments; source counts do not establish independent corroboration.' } });
+  const listed = page.map(rowArticle);
+  const articles = params.get('related') === '0' ? listed : await attachRelatedCoverage(env, listed);
+  return json({ articles, meta: { mode: 'database', total: count?.total ?? null, limit: query.limit, nextCursor, hasMore, archive: query.archive, older: query.older, personalized: query.personalized, priorities: query.priorities, feedDays: query.feedDays, retentionDays: query.retentionDays, cutoff: query.cutoff, lastIngestedAt: ingestion?.at || null, lastCheckedAt: state?.at || null, coverageNote: 'Related links are grouped by similar headlines, category and publication time. Similar headlines may still describe different developments; source counts do not establish independent corroboration.' } });
 }
 async function impactCandidates(env) {
   const query = buildContentQuery(new URLSearchParams(), env, { cursor: false });
@@ -469,18 +476,23 @@ async function topStories(request, env) {
           ' ' || places.value || ' ')>0))`
     : '';
   const args = country ? [...query.baseArgs,country,country,JSON.stringify(aliases)] : query.baseArgs;
-  const { results } = await env.DB.prepare(`SELECT id,title,published_at AS publishedAt,publisher,event_id AS eventId
-    FROM news${query.baseWhere}${scope}
-    ORDER BY (published_at>=?) DESC,COALESCE(json_extract(metadata_json,'$.impactScore'),0) DESC,published_at DESC,id DESC
-    LIMIT 20`).bind(...args,new Date(Date.now() - DAY).toISOString()).all();
+  const boundary = new Date(Date.now() - DAY).toISOString();
+  const candidates = isRecent => env.DB.prepare(`SELECT id,title,published_at AS publishedAt,publisher,event_id AS eventId
+    FROM news${query.baseWhere}${scope} AND published_at ${isRecent ? '>=' : '<'} ?
+    ORDER BY COALESCE(json_extract(metadata_json,'$.impactScore'),0) DESC,published_at DESC,id DESC
+    LIMIT 20`).bind(...args,boundary).all();
   const seen = new Set(), stories = [];
-  for (const row of results || []) {
-    const title = row.title.toLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ').trim();
-    if (seen.has(title)) continue;
-    seen.add(title);
-    stories.push(row);
-    if (stories.length === 5) break;
+  function append(results) {
+    for (const row of results || []) {
+      const title = row.title.toLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ').trim();
+      if (seen.has(title)) continue;
+      seen.add(title);
+      stories.push(row);
+      if (stories.length === 5) break;
+    }
   }
+  append((await candidates(true)).results);
+  if (stories.length < 5) append((await candidates(false)).results);
   return json({ country, stories, days },200,{'cache-control':'public, max-age=120'});
 }
 
@@ -494,17 +506,29 @@ async function singleArticle(request, env, options, id) {
   // Outside-window records use the same result as an unknown identity. Archive
   // authorization is checked before this query, not inferred from a cursor/id.
   if (!row) return json({ error: 'article_not_found' }, 404);
-  const article = rowArticle(row), related = await attachRelatedCoverage(env, [article]);
+  const article = rowArticle(row);
+  if (new URL(request.url).searchParams.get('related') === '0') return json({ article });
+  const related = await attachRelatedCoverage(env, [article]);
   return json({ article: related[0] });
 }
 async function facets(request, env, options) {
   const query = buildContentQuery(new URL(request.url).searchParams, env, { ...options, cursor: false });
-  const grouped = async column => (await env.DB.prepare(`SELECT ${column} AS value,COUNT(*) AS count FROM news${query.baseWhere} GROUP BY ${column} ORDER BY count DESC,value`).bind(...query.baseArgs).all()).results || [];
-  const [topics, regions, publishers, evidence, count] = await Promise.all([
-    grouped('category'), grouped('region'), grouped('publisher'), grouped('source_type'),
-    env.DB.prepare(`SELECT COUNT(*) AS total FROM news${query.baseWhere}`).bind(...query.baseArgs).first()
-  ]);
-  return json({ topics, regions, publishers, evidence, total: count?.total || 0, meta: { archive: query.archive, cutoff: query.cutoff, feedDays: query.feedDays } });
+  const { results } = await env.DB.prepare(`SELECT category,region,publisher,source_type,COUNT(*) AS count FROM news${query.baseWhere}
+    GROUP BY category,region,publisher,source_type`).bind(...query.baseArgs).all();
+  const columns = Object.entries({ topics:'category', regions:'region', publishers:'publisher', evidence:'source_type' });
+  const counts = Object.fromEntries(columns.map(([key]) => [key,new Map()]));
+  let total = 0;
+  for (const row of results || []) {
+    total += row.count;
+    for (const [key,column] of columns) {
+      const table=counts[key], value=row[column];
+      table.set(value,(table.get(value) || 0)+row.count);
+    }
+  }
+  const order = (a,b) => b.count-a.count || (a.value < b.value ? -1 : a.value > b.value ? 1 : 0);
+  const buckets = Object.fromEntries(Object.entries(counts).map(([key,table]) =>
+    [key,[...table].map(([value,count])=>({value,count})).sort(order)]));
+  return json({ ...buckets, total, meta: { archive: query.archive, older: query.older, cutoff: query.cutoff, feedDays: query.feedDays, retentionDays: query.retentionDays } });
 }
 function eventPayload(value, env, now) {
   if (!object(value)) fail('Invalid event');
