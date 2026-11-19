@@ -1,0 +1,251 @@
+{
+  "articles": [
+    {
+      "id": "uk-ons-business-demography-2026-11-19",
+      "title": "UK business starts rose to 326,000 as closures fell in 2025",
+      "originalHeadline": "Business demography, UK: 2025",
+      "publishedAt": "2026-11-19T09:30:00Z",
+      "category": "Economy",
+      "region": "United Kingdom",
+      "countries": [
+        "GB"
+      ],
+      "keywords": [
+        "business registrations",
+        "employment",
+        "business closures"
+      ],
+      "summary": "The UK Office for National Statistics counted 326,000 business births in 2025, up from 317,000 in 2024. Business deaths fell from 283,000 to 271,000, taking the closure rate to its lowest level since 2006. Transport and storage had the highest rates of both new businesses and closures. The number of businesses growing rapidly by employment fell to 13,940.",
+      "digestBasis": "official-primary-source",
+      "source": {
+        "publisher": "Office for National Statistics",
+        "url": "https://www.ons.gov.uk/businessindustryandtrade/business/activitysizeandlocation/bulletins/businessdemography/2025",
+        "publisherArticleUrl": "https://www.ons.gov.uk/businessindustryandtrade/business/activitysizeandlocation/bulletins/businessdemography/2025",
+        "sourceType": "Official source",
+        "basis": "article",
+        "dateBasis": "published",
+        "summaryMethod": "source-reviewed"
+      }
+    },
+    {
+      "id": "uk-ons-rent-house-prices-2026-11-18",
+      "title": "Average UK private rent reaches £1,411 as annual rent growth holds at 3.8%",
+      "originalHeadline": "Private rent and house prices, UK: November 2026",
+      "publishedAt": "2026-11-18T09:30:00Z",
+      "category": "Economy",
+      "region": "United Kingdom",
+      "countries": [
+        "GB"
+      ],
+      "keywords": [
+        "rent",
+        "housing",
+        "house prices"
+      ],
+      "summary": "The Office for National Statistics provisionally estimated that UK private rents rose 3.8% in the year to October, the same pace as in September. In England, annual rent growth ranged from 3.3% in the South West to 5.6% in the North West. A separate measure put the average UK house price at £273,000 in September, 1.2% higher than a year earlier.",
+      "digestBasis": "official-primary-source",
+      "source": {
+        "publisher": "Office for National Statistics",
+        "url": "https://www.ons.gov.uk/economy/inflationandpriceindices/bulletins/privaterentandhousepricesuk/november2026",
+        "publisherArticleUrl": "https://www.ons.gov.uk/economy/inflationandpriceindices/bulletins/privaterentandhousepricesuk/november2026",
+        "sourceType": "Official source",
+        "basis": "article",
+        "dateBasis": "published",
+        "summaryMethod": "source-reviewed"
+      }
+    },
+    {
+      "id": "uk-ons-cpi-2026-10-final",
+      "title": "UK inflation edged up to 3.6% in October as motor fuels pushed prices higher",
+      "originalHeadline": "Consumer price inflation, UK: October 2026",
+      "publishedAt": "2026-11-18T07:00:00Z",
+      "category": "Economy",
+      "region": "United Kingdom",
+      "countries": [
+        "GB"
+      ],
+      "keywords": [
+        "inflation",
+        "CPI",
+        "fuel prices",
+        "cost of living"
+      ],
+      "summary": "The Office for National Statistics put annual CPI inflation at 3.6% in October, up from 3.5% in September. Motor fuels helped drive the increase in the annual rate, while restaurants and hotels partly offset it. Prices rose 0.5% from the previous month. Core CPI was 2.8%, and the broader CPIH measure, which includes owner-occupier housing costs, reached 3.7%.",
+      "digestBasis": "official-primary-source",
+      "source": {
+        "publisher": "Office for National Statistics",
+        "url": "https://www.ons.gov.uk/economy/inflationandpriceindices/bulletins/consumerpriceinflation/october2026",
+        "publisherArticleUrl": "https://www.ons.gov.uk/economy/inflationandpriceindices/bulletins/consumerpriceinflation/october2026",
+        "sourceType": "Official source",
+        "basis": "article",
+        "dateBasis": "published",
+        "summaryMethod": "source-reviewed"
+      }
+    },
+    {
+      "id": "eurostat-hicp-october-2026-final",
+      "title": "Eurostat confirms euro-area inflation at 4.0% in October",
+      "originalHeadline": "Annual inflation up to 4.0% in the euro area",
+      "publishedAt": "2026-11-18",
+      "category": "Economy",
+      "region": "Europe",
+      "countries": [],
+      "keywords": [
+        "euro area",
+        "inflation",
+        "HICP",
+        "energy prices"
+      ],
+      "eventId": "euro-area-inflation",
+      "summary": "Eurostat’s full October release confirmed the 4.0% flash estimate for the euro area, up from 3.8% in September. Energy contributed 1.89 percentage points to the annual rate, and services contributed 1.55 points. Across EU members, annual inflation rose in 16 countries and fell in nine. Sweden recorded the lowest rate at 0.6%, while Romania recorded the highest at 7.0%.",
+      "digestBasis": "official-primary-source",
+      "source": {
+        "publisher": "Eurostat",
+        "url": "https://ec.europa.eu/eurostat/web/products-euro-indicators/w/2-18112026-ap",
+        "publisherArticleUrl": "https://ec.europa.eu/eurostat/web/products-euro-indicators/w/2-18112026-ap",
+        "sourceType": "Official source",
+        "basis": "article",
+        "dateBasis": "day",
+        "summaryMethod": "source-reviewed"
+      }
+    },
+    {
+      "id": "australia-abs-wages-2026-q3",
+      "title": "Australia’s wage index rose 1.1% in the September quarter",
+      "originalHeadline": "Wage Price Index, Australia: September 2026",
+      "publishedAt": "2026-11-18T00:30:00Z",
+      "category": "Economy",
+      "region": "Oceania",
+      "countries": [
+        "AU"
+      ],
+      "keywords": [
+        "wages",
+        "wage price index",
+        "public sector",
+        "Australia"
+      ],
+      "summary": "The Australian Bureau of Statistics reported a 1.1% quarterly rise in its seasonally adjusted Wage Price Index, the strongest increase since the December 2023 quarter. The index was 3.5% higher than a year earlier. Public-sector wages rose 1.3% over the quarter, compared with 1.0% in the private sector. The index measures changes in rates of pay for jobs.",
+      "digestBasis": "official-primary-source",
+      "source": {
+        "publisher": "Australian Bureau of Statistics",
+        "url": "https://www.abs.gov.au/statistics/economy/price-indexes-and-inflation/wage-price-index-australia/sep-2026",
+        "publisherArticleUrl": "https://www.abs.gov.au/statistics/economy/price-indexes-and-inflation/wage-price-index-australia/sep-2026",
+        "sourceType": "Official source",
+        "basis": "article",
+        "dateBasis": "published",
+        "summaryMethod": "source-reviewed"
+      }
+    },
+    {
+      "id": "australia-abs-jobs-2026-10",
+      "title": "Australia’s unemployment rate rose to 4.9% in October",
+      "originalHeadline": "Labour Force, Australia: October 2026",
+      "publishedAt": "2026-11-19T00:30:00Z",
+      "category": "Economy",
+      "region": "Oceania",
+      "countries": [
+        "AU"
+      ],
+      "keywords": [
+        "unemployment",
+        "employment",
+        "labour force",
+        "Australia"
+      ],
+      "summary": "Australia’s statistics bureau reported that seasonally adjusted unemployment increased by 0.1 percentage points in October. The number of people unemployed rose by 17,800 to 753,700. The employment-to-population ratio fell to 63.3%, a decrease of 0.3 percentage points. In its separate trend series, the bureau reported unemployment at 4.8%, up 0.1 percentage points.",
+      "digestBasis": "official-primary-source",
+      "source": {
+        "publisher": "Australian Bureau of Statistics",
+        "url": "https://www.abs.gov.au/statistics/labour/employment-and-unemployment/labour-force-australia/oct-2026",
+        "publisherArticleUrl": "https://www.abs.gov.au/statistics/labour/employment-and-unemployment/labour-force-australia/oct-2026",
+        "sourceType": "Official source",
+        "basis": "article",
+        "dateBasis": "published",
+        "summaryMethod": "source-reviewed"
+      }
+    },
+    {
+      "id": "japan-customs-trade-2026-10-provisional",
+      "title": "Japan’s October exports rose 20.5% as imports grew faster",
+      "originalHeadline": "Value of Exports and Imports October 2026 (Provisional)",
+      "publishedAt": "2026-11-17T23:50:00Z",
+      "category": "Economy",
+      "region": "Asia",
+      "countries": [
+        "JP"
+      ],
+      "keywords": [
+        "Japan",
+        "trade",
+        "exports",
+        "imports"
+      ],
+      "summary": "Japan’s Ministry of Finance estimated October exports at about ¥11.77 trillion and imports at ¥12.25 trillion. Compared with October 2025, export values rose 20.5% and import values rose 21.6%. The published totals imply a goods trade deficit of about ¥477 billion. The release reports provisional customs values in yen without seasonal adjustment.",
+      "digestBasis": "official-primary-source",
+      "source": {
+        "publisher": "Japan Ministry of Finance",
+        "url": "https://www.customs.go.jp/toukei/shinbun/trade-st_e/2026/2026104e.pdf",
+        "publisherArticleUrl": "https://www.customs.go.jp/toukei/shinbun/trade-st_e/2026/2026104e.pdf",
+        "sourceType": "Official source",
+        "basis": "article",
+        "dateBasis": "published",
+        "summaryMethod": "source-reviewed"
+      }
+    },
+    {
+      "id": "india-bullet-train-first-electrification-date-2026-11-18",
+      "title": "India schedules first bullet train section electrification for 20 November",
+      "originalHeadline": "First Section of Mumbai–Ahmedabad Bullet Train Corridor to be Energised on 20 November 2026",
+      "publishedAt": "2026-11-18T06:59:00Z",
+      "category": "Infrastructure",
+      "region": "India",
+      "countries": [
+        "IN"
+      ],
+      "keywords": [
+        "India",
+        "bullet train",
+        "Surat",
+        "Bilimora",
+        "high-speed rail"
+      ],
+      "eventId": "bullet-train",
+      "summary": "India’s Ministry of Railways said it planned to energise overhead equipment on the first 50 kilometres of the Mumbai–Ahmedabad bullet train corridor on 20 November. The Surat–Bilimora section includes both tracks on an elevated alignment. The statement identifies 14 traction substations for the full 508-kilometre route. The date concerns a construction and commissioning milestone for the project.",
+      "digestBasis": "official-primary-source",
+      "source": {
+        "publisher": "India Ministry of Railways via Press Information Bureau",
+        "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2337776&lang=1&reg=22",
+        "publisherArticleUrl": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2337776&lang=1&reg=22",
+        "sourceType": "Official source",
+        "basis": "article",
+        "dateBasis": "published",
+        "summaryMethod": "source-reviewed"
+      }
+    }
+  ],
+  "timelineUpdates": [
+    {
+      "articleId": "eurostat-hicp-october-2026-final",
+      "point": {
+        "date": "2026-11-18",
+        "dateType": "publication",
+        "title": "Eurostat confirms October inflation at 4.0%",
+        "summary": "The full HICP release held the euro-area estimate at 4.0%, up from 3.8% in September. Eurostat measured energy and services contributions at 1.89 and 1.55 percentage points, respectively.",
+        "kind": "Official release",
+        "key": true
+      }
+    },
+    {
+      "articleId": "india-bullet-train-first-electrification-date-2026-11-18",
+      "point": {
+        "date": "2026-11-18",
+        "dateType": "publication",
+        "title": "Railways sets 20 November target for energising the first section",
+        "summary": "In a progress release, the Ministry of Railways scheduled overhead electrification from Surat to Bilimora for 20 November. The 50-kilometre construction section covers both tracks on the elevated route.",
+        "kind": "Official release",
+        "key": true
+      }
+    }
+  ]
+}
