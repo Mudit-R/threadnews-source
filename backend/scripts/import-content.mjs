@@ -2,50 +2,25 @@ import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
 import { isImpactNews } from '../src/policy.js';
-import { reviewedBriefs } from '../../research/reviewed-briefs-2026-11-14.mjs';
-import { newBriefs } from '../../research/reviewed-originals-2026-11-14.mjs';
-import { diplomacyBriefs, diplomacyTimelines } from '../../research/diplomacy-timelines-2026-11-17.mjs';
-import { crisisBriefs, extendCrisisTimelines, moreCrisisTimelines } from '../../research/crisis-timeline-updates-2026-11-17.mjs';
-import { economicBriefs, economicTimelines } from '../../research/economic-timelines-2026-11-17.mjs';
-import { publicInterestBriefs, publicInterestTimelines } from '../../research/public-interest-timelines-2026-11-17.mjs';
 
 // This explicit import backfills curated metadata; migrations never seed data.
-// The full reviewed timelines stay in research/, outside the public asset bundle.
+// The source release imports published snapshots.
 // Credentials stay in process memory and are never printed or written to disk.
 export async function loadContent(root = new URL('../../web/', import.meta.url)) {
   const read = async (name, base = root, location = `web/${name}`) => {
     try { return JSON.parse((await readFile(new URL(name, base), 'utf8')).replace(/^\uFEFF/, '')); }
     catch { throw new Error(`Cannot read ${location}; generate the source JSON before importing.`); }
   };
-  const [news, timelines, economy, reviewed, releases] = await Promise.all([
-    read('news-data.json'),
-    read('timeline-data.full.json', new URL('../../research/', import.meta.url), 'research/timeline-data.full.json'),
-    read('economy-data.json'),
-    read('reviewed-official-digests-2026-11-04.json',new URL('../../research/',import.meta.url),'research/reviewed-official-digests-2026-11-04.json'),
-    read('reviewed-official-releases-2026-11-19.json',new URL('../../research/',import.meta.url),'research/reviewed-official-releases-2026-11-19.json')
+  const [news, timelines, economy, releases] = await Promise.all([
+    read('news-data.json'), read('timeline-data.json'), read('economy-data.json'),
+    read('reviewed-official-releases-2026-11-19.json', new URL('../../research/', import.meta.url), 'research/reviewed-official-releases-2026-11-19.json')
   ]);
   const articles = Array.isArray(news) ? news : news.articles || news.items;
   const events = Array.isArray(timelines) ? timelines : timelines.events || timelines.stories;
   if (!Array.isArray(articles) || !Array.isArray(events) || !economy || !Array.isArray(economy.countries)) throw new Error('Content JSON has an unexpected shape.');
   if (events.some(event => !Array.isArray(event?.milestones) || event.milestones.length > 100)) throw new Error('Full timeline seed is incomplete or contains an invalid milestone list.');
-  if(!Array.isArray(reviewed.articles))throw new Error('Reviewed official briefs are missing.');
-  const combined = new Map([...articles, ...reviewed.articles, ...reviewedBriefs, ...newBriefs,
-    ...diplomacyBriefs, ...crisisBriefs, ...economicBriefs, ...publicInterestBriefs, ...releases.articles].map(record => [record.id, record]));
-  const eventIndex = new Map([...events, ...extendCrisisTimelines(events), ...diplomacyTimelines,
-    ...moreCrisisTimelines, ...economicTimelines, ...publicInterestTimelines]
-    .map(event => [event.id, event]));
-  for (const { articleId, point } of releases.timelineUpdates) {
-    const article = combined.get(articleId);
-    const event = eventIndex.get(article?.eventId);
-    if (!event) throw new Error('Official timeline update is missing its source article or event.');
-    if (event.milestones.some(milestone => milestone.sources?.some(source => source.url === article.source.url))) continue;
-    const record = { publisher:article.source.publisher, type:'Official record', title:article.originalHeadline,
-      url:article.source.url, published:point.date };
-    const milestones = [...event.milestones,{ ...point, sources:[record] }].sort((a,b) => a.date.localeCompare(b.date));
-    const coverageEnd = event.coverageEnd > point.date ? event.coverageEnd : point.date;
-    eventIndex.set(event.id,{ ...event, coverageEnd, milestones });
-  }
-  return { articles: [...combined.values()].filter(isImpactNews), events: [...eventIndex.values()], economy };
+  const combined=new Map([...articles, ...releases.articles].map(record=>[record.id,record]));
+  return { articles: [...combined.values()].filter(isImpactNews), events, economy };
 }
 export function importBatches({ articles, events, economy }) {
   const batches = [], maxBytes = 1500 * 1024;
