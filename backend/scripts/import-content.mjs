@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
 import { isImpactNews } from '../src/policy.js';
+import { loadReviewedReleases } from './reviewed-releases.mjs';
 
 // This explicit import backfills curated metadata; migrations never seed data.
 // The source release imports published snapshots.
@@ -13,7 +14,7 @@ export async function loadContent(root = new URL('../../web/', import.meta.url))
   };
   const [news, timelines, economy, releases] = await Promise.all([
     read('news-data.json'), read('timeline-data.json'), read('economy-data.json'),
-    read('reviewed-official-releases-2026-11-19.json', new URL('../../research/', import.meta.url), 'research/reviewed-official-releases-2026-11-19.json')
+    loadReviewedReleases()
   ]);
   const articles = Array.isArray(news) ? news : news.articles || news.items;
   const events = Array.isArray(timelines) ? timelines : timelines.events || timelines.stories;

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "fixtureSha256": "5ba26f0b02b400b753f46a2f41a7ae082f754e1315b84d6fc0b92958007bd76c",
+  "threshold": 0.64,
+  "bias": -2.03713045,
+  "weights": {
+    "jaccard": 0.85200557,
+    "containment": 1.34418021,
+    "phraseOverlap": 0.17519927,
+    "sharedTerms": 1.2926897,
+    "leadOverlap": 0.30867822,
+    "proximity": 1.22999643,
+    "numberConflict": -0.05587892
+  }
+}

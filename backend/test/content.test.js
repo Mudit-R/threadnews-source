@@ -54,6 +54,62 @@ test('the impact pool mixes recent categories and never accepts or needs reader 
   assert.equal((await get(env, '/api/news/impact?region=India')).response.status, 400);
 });
 
+test('coverage comparison limits access to recent, unretracted reports and selects one result per publisher', async () => {
+  const db = database(), env = { DB: db.DB, NEWS_FEED_DAYS: '1', NEWS_RETENTION_DAYS: '10', PUBLIC_ARTICLE_LINKS: 'true' };
+  const title = 'City council reopens central train station after overnight flood repairs';
+  const report = (id, publisher, days, source = {}, patch = {}) => fixture(id, {
+    title, publishedAt: ago(days),
+    source: { ...fixture(id).source, publisher, ...source },
+    ...patch
+  });
+  await storeArticles(env, [
+    report('anchor', 'Daily Post', 0.40),
+    report('duplicate-publisher', 'Daily-Post', 0.41),
+    report('second', 'Example Journal', 0.42, {
+      url: 'https://news.google.com/rss/articles/example',
+      publisherArticleUrl: 'https://journal.example.com/report?utm_source=feed', dateBasis: 'updated'
+    }),
+    report('same-outlet', 'Example Journal', 0.49),
+    report('same-url', 'Syndication Desk', 0.50, { publisherArticleUrl: 'https://journal.example.com/report' }),
+    report('release', 'City council', 0.39, { sourceType: 'Official source' }, { category: 'Infrastructure' }),
+    report('excluded', 'Hidden Times', 0.41),
+    report('older', 'Archive News', 1.04),
+    report('unrelated', 'Other Times', 0.43, {}, { title: 'New employment figures published by the statistics office' })
+  ], 'coverage-fixture', 'curated');
+  db.sqlite.exec("UPDATE news SET metadata_json=json_set(metadata_json,'$.editorialExcluded',1) WHERE id='excluded'");
+
+  const before = db.queries;
+  const { response, data } = await get(env, '/api/news/anchor/coverage');
+  assert.equal(response.status, 200);
+  assert.equal(db.queries - before, 2);
+  assert.equal(data.articleId, 'anchor');
+  assert.equal(data.windowHours, 36);
+  assert.deepEqual(data.matches.map(item => item.id), ['release', 'second']);
+  assert.equal(data.matches[0].official, true);
+  assert.equal(data.matches[1].url, 'https://journal.example.com/report');
+  assert.equal(data.matches[1].viaGoogleNews, false);
+  assert.equal(data.matches[1].dateBasis, 'updated');
+  assert.equal(data.matches[1].similarWording, true);
+  assert.ok(data.matches[1].matchedTerms.includes('council'));
+  assert.equal((await get(env, '/api/news/excluded/coverage')).response.status, 404);
+  assert.equal((await get(env, '/api/news/anchor/coverage?archive=1')).response.status, 403);
+  assert.equal((await get(env, '/api/news/anchor/coverage?archive=1', true)).response.status, 400);
+  assert.equal((await get(env, '/api/news/older/coverage')).data.matches.some(item => item.id === 'older'), false);
+});
+
+test('coverage comparison can abstain and rejects methods other than GET', async () => {
+  const db = database(), env = { DB: db.DB, NEWS_RETENTION_DAYS: '30', PUBLIC_ARTICLE_LINKS: 'true' };
+  await storeArticles(env, [fixture('historical', { publishedAt: ago(12) })], 'coverage-fixture', 'curated');
+  const before = db.queries;
+  const { response, data } = await get(env, '/api/news/historical/coverage');
+  assert.equal(response.status, 200);
+  assert.deepEqual(data.matches, []);
+  assert.equal(db.queries - before, 1);
+  const post = await handleContent(request('/api/news/historical/coverage', { method: 'POST' }), env, {});
+  assert.equal(post.status, 405);
+  assert.equal(post.headers.get('allow'), 'GET');
+});
+
 test('later automated headline refreshes preserve stronger reviewed text and its publication context while recording source lineage', async () => {
   const db = database(), env = { DB: db.DB };
   const reviewed = fixture('reviewed', { title: 'The reviewed account', summary: 'A source-reviewed brief.', digestBasis: 'article-reviewed', source: { publisher: 'Example News', url: 'https://news.example.com/reviewed', basis: 'article', sourceType: 'News report' } });

@@ -1,0 +1,88 @@
+{
+  "articles": [
+    {
+      "id": "india-construction-equipment-scheme-2026-11-25",
+      "title": "India approves ₹11,000 crore plan for domestic construction equipment",
+      "originalHeadline": "Cabinet approves Rs.11,000 crore Scheme for Enhancement of Construction and Infrastructure Equipment (CIE) Manufacturing Ecosystem",
+      "publishedAt": "2026-11-25T09:53:00Z",
+      "category": "Economy",
+      "region": "India",
+      "countries": ["IN"],
+      "keywords": ["manufacturing", "construction equipment", "investment", "infrastructure"],
+      "summary": "India’s Cabinet approved a ₹11,000 crore scheme to expand domestic manufacturing of construction and infrastructure equipment, including tunnel boring machines and port cranes. The plan gives manufacturers two financial years to set up facilities before sales-linked incentives begin in 2028–29. It reserves up to ₹375 crore for a dedicated testing facility. The Ministry of Heavy Industries will administer the scheme.",
+      "digestBasis": "official-primary-source",
+      "source": {
+        "publisher": "Press Information Bureau",
+        "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2341171&lang=1&reg=48",
+        "publisherArticleUrl": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2341171&lang=1&reg=48",
+        "sourceType": "Official source",
+        "basis": "article",
+        "dateBasis": "published",
+        "summaryMethod": "source-reviewed"
+      }
+    },
+    {
+      "id": "india-postal-operations-scheme-2026-11-25",
+      "title": "India extends postal modernisation plan with ₹1,141 crore in proposed funding",
+      "originalHeadline": "Cabinet approves continuation of Postal Operations Scheme with an outlay of Rs. 1,141 Crore for 16th Finance Commission Cycle (FY 2026-27 to FY 2030-31)",
+      "publishedAt": "2026-11-25T09:59:00Z",
+      "category": "Infrastructure",
+      "region": "India",
+      "countries": ["IN"],
+      "keywords": ["India Post", "rural access", "parcel delivery", "public services"],
+      "summary": "India’s Cabinet extended the Postal Operations Scheme through the 2030–31 financial year, with a proposed outlay of ₹1,141 crore. The government says the funding is intended to improve parcel handling, e-commerce logistics and digital services, while supporting access in rural areas. The announcement puts the network at about 165,000 post offices, including almost 150,000 in rural areas.",
+      "digestBasis": "official-primary-source",
+      "source": {
+        "publisher": "Press Information Bureau",
+        "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2341179&lang=1&reg=6",
+        "publisherArticleUrl": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2341179&lang=1&reg=6",
+        "sourceType": "Official source",
+        "basis": "article",
+        "dateBasis": "published",
+        "summaryMethod": "source-reviewed"
+      }
+    },
+    {
+      "id": "uk-ons-domestic-abuse-2026-11-25",
+      "title": "Survey estimates 4.7 million experienced domestic abuse in England and Wales",
+      "originalHeadline": "Domestic abuse in England and Wales overview: year ending March 2026",
+      "publishedAt": "2026-11-25T09:30:00Z",
+      "category": "Politics",
+      "region": "United Kingdom",
+      "countries": ["GB"],
+      "keywords": ["domestic abuse", "crime survey", "public safety", "England and Wales"],
+      "summary": "The Office for National Statistics estimates that 4.7 million people aged 16 and over in England and Wales experienced domestic abuse in the year to March 2026, about 9.6% of that population. The survey separately estimated that 3.9 million experienced abuse by a current or former partner. The bulletin also provides police figures, which measure cases reported to and recorded by the police.",
+      "digestBasis": "official-primary-source",
+      "source": {
+        "publisher": "Office for National Statistics",
+        "url": "https://www.ons.gov.uk/peoplepopulationandcommunity/crimeandjustice/bulletins/domesticabuseinenglandandwalesoverview/november2026",
+        "publisherArticleUrl": "https://www.ons.gov.uk/peoplepopulationandcommunity/crimeandjustice/bulletins/domesticabuseinenglandandwalesoverview/november2026",
+        "sourceType": "Official source",
+        "basis": "article",
+        "dateBasis": "published",
+        "summaryMethod": "source-reviewed"
+      }
+    },
+    {
+      "id": "eu-eurostat-household-investment-2026-11-24",
+      "title": "EU household investment fell to 8.1% of disposable income in 2025",
+      "originalHeadline": "Household investment rate in the EU at 8.1% in 2025",
+      "publishedAt": "2026-11-24",
+      "category": "Economy",
+      "region": "Europe",
+      "keywords": ["housing", "household investment", "disposable income", "Eurostat"],
+      "summary": "Eurostat puts EU household investment at 8.1% of gross disposable income in 2025, down from 8.2% in 2024 and the lowest rate since 2015. Among member states, Cyprus reported the highest rate at 15.3%, while Sweden reported the lowest at 4.7%. The measure mainly covers buying and renovating homes. Routine housing bills and financial investments fall outside it.",
+      "digestBasis": "official-primary-source",
+      "source": {
+        "publisher": "Eurostat",
+        "url": "https://ec.europa.eu/eurostat/en/web/products-eurostat-news/w/ddn-20261124-1",
+        "publisherArticleUrl": "https://ec.europa.eu/eurostat/en/web/products-eurostat-news/w/ddn-20261124-1",
+        "sourceType": "Official source",
+        "basis": "article",
+        "dateBasis": "day",
+        "summaryMethod": "source-reviewed"
+      }
+    }
+  ],
+  "timelineUpdates": []
+}

@@ -15,6 +15,8 @@ flowchart LR
   Claims --> Reader
 ~~~
 
+Open a recent article and expand **Compare coverage** to view similar reporting, shared headline terms, and original source links. The feature uses a lazy-loaded React and TypeScript panel, an indexed D1 query, and a Python-trained headline matcher. [Implementation and reproducible benchmark](docs/COVERAGE_COMPARISON.md).
+
 ## Architecture
 
 - **News ingestion.** Scheduled jobs collect metadata from publishers and public agencies. Stable identities, content hashes and source lineage preserve stronger evidence during refreshes.

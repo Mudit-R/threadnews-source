@@ -2,6 +2,7 @@ import { canonicalUrl, plainText, readLimited, sha256 } from './feed.js';
 import { enabledFeedIds, canonicalPublisher } from './feeds.js';
 import { CATEGORY_ALLOWLIST, isImpactNews, impactScore, normalizeCategory } from './policy.js';
 import { validateTrackedEvents, syncEventTracking, linkArticlesToEvents, linkRecentArticles, handleEventCoverage } from './events.js';
+import { compareCoverage } from './coverage-match.js';
 
 const DAY = 86400000;
 const MAX_BODY = 2 * 1024 * 1024;
@@ -496,17 +497,30 @@ async function topStories(request, env) {
   return json({ country, stories, days },200,{'cache-control':'public, max-age=120'});
 }
 
-async function singleArticle(request, env, options, id) {
+async function visibleArticle(request, env, options, id, now = new Date()) {
   identity(id, 'article id');
   const publicLink = env.PUBLIC_ARTICLE_LINKS === 'true';
   const params = new URLSearchParams();
   if (publicLink || new URL(request.url).searchParams.get('archive') === '1') params.set('archive', '1');
-  const query = buildContentQuery(params, env, { ...options, canAccessArchive:publicLink || options.canAccessArchive });
+  const query = buildContentQuery(params, env, { ...options, canAccessArchive:publicLink || options.canAccessArchive, now });
   const row = await env.DB.prepare(`SELECT ${COLS} FROM news${query.baseWhere} AND id=?`).bind(...query.baseArgs, id).first();
   // Outside-window records use the same result as an unknown identity. Archive
   // authorization is checked before this query, not inferred from a cursor/id.
-  if (!row) return json({ error: 'article_not_found' }, 404);
-  const article = rowArticle(row);
+  return row ? rowArticle(row) : null;
+}
+
+async function articleCoverage(request, env, options, id) {
+  if (new URL(request.url).search) fail('Coverage comparison does not accept parameters');
+  const now = new Date();
+  const article = await visibleArticle(request, env, options, id, now);
+  if (!article) return json({ error: 'article_not_found' }, 404);
+  const visibility = buildContentQuery(new URLSearchParams(), env, { now, cursor: false });
+  return json(await compareCoverage(env.DB, article, visibility));
+}
+
+async function singleArticle(request, env, options, id) {
+  const article = await visibleArticle(request, env, options, id);
+  if (!article) return json({ error: 'article_not_found' }, 404);
   if (new URL(request.url).searchParams.get('related') === '0') return json({ article });
   const related = await attachRelatedCoverage(env, [article]);
   return json({ article: related[0] });
@@ -725,6 +739,8 @@ export async function handleContent(request, env, ctx, { canAccessArchive = fals
       if (new URL(request.url).search) fail('This endpoint does not accept parameters');
       return await impactCandidates(env);
     }
+    const comparison = /^\/api\/news\/([^/]+)\/coverage$/.exec(path);
+    if (comparison) return await articleCoverage(request, env, { canAccessArchive }, decodeURIComponent(comparison[1]));
     if (path.startsWith('/api/news/')) return await singleArticle(request, env, { canAccessArchive }, decodeURIComponent(path.slice('/api/news/'.length)));
     if (path === '/api/facets') return await facets(request, env, { canAccessArchive });
     if (path === '/api/pipeline/status') return await pipeline(env);

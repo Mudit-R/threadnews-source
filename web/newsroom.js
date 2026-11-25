@@ -176,7 +176,7 @@ globalThis.createNewsroom = function createNewsroom(ui) {
   }
   async function loadArticle(id){
     if(completeArticles.has(id)||!connected&&articleCache.has(id))return articleCache.get(id);if(!connected||missingArticles.has(id))return null;if(articleRequests.has(id))return articleRequests.get(id);
-    const task=(async()=>{try{const payload=await apiJSON('/api/news/'+encodeURIComponent(id),{allowMissing:true});if(payload===null){missingArticles.add(id);articleCache.delete(id);return null;}const n=payload.article||payload;if(!validArticle(n))throw new Error('This article record is incomplete.');const article=normaliseArticle(n);articleCache.set(id,article);completeArticles.add(id);articleErrors.delete(id);rememberSaved('article',article);return article;}catch(error){articleErrors.set(id,error.message||'This article could not be loaded.');throw error;}finally{articleRequests.delete(id);}})();articleRequests.set(id,task);return task;
+    const task=(async()=>{try{const payload=await apiJSON('/api/news/'+encodeURIComponent(id)+'?related=0',{allowMissing:true});if(payload===null){missingArticles.add(id);articleCache.delete(id);return null;}const n=payload.article||payload;if(!validArticle(n))throw new Error('This article record is incomplete.');const article=normaliseArticle(n);articleCache.set(id,article);completeArticles.add(id);articleErrors.delete(id);rememberSaved('article',article);return article;}catch(error){articleErrors.set(id,error.message||'This article could not be loaded.');throw error;}finally{articleRequests.delete(id);}})();articleRequests.set(id,task);return task;
   }
   async function loadEvent(id){
     const existing=stories.find(s=>s.id===id);if(existing)return existing;if(!connected||missingEvents.has(id))return null;if(eventRequests.has(id))return eventRequests.get(id);
@@ -366,6 +366,16 @@ globalThis.createNewsroom = function createNewsroom(ui) {
     const coverage=timeline.coverageEnd?`<small>Selected chronology through ${fmt(timeline.coverageEnd)}.</small>`:'';
     return `<div class="history-bridge"><span class="eyebrow">THERE’S A LONGER STORY HERE</span><h2>${esc(timeline.shortTitle||timeline.title)}</h2><p>${esc(timeline.description||'')}</p>${range}<a class="button primary" href="/threads/${encodeURIComponent(timeline.id)}">Explore the timeline ${icon('arrow')}</a>${coverage}</div>`;
   }
+  function coveragePanel(n) {
+    if (!connected || !completeArticles.has(n.id)) return '';
+    return `<threadnews-coverage data-article-id="${esc(n.id)}" data-api-base="${esc(apiBase)}">
+      <details class="coverage-panel">
+        <summary><span><strong class="coverage-panel-title">Compare coverage</strong><span class="coverage-panel-subtitle">Find nearby reports from other publishers.</span></span></summary>
+        <div class="coverage-panel-body"><p role="status">Loading coverage comparison…</p></div>
+      </details>
+    </threadnews-coverage>`;
+  }
+
   function renderArticle(id){const n=articleCache.get(id)||news.find(n=>n.id===id);if(!n){notFound();return;}
     const timeline=archiveRows().find(s=>s.id===n.eventId),others=news.filter(x=>x.id!==id&&x.category===n.category).slice(0,3),digest=quickSummary(n),direct=Boolean(directPublisherURL(n.source)),viaGoogle=sourceIsGoogle(n);
     const digestText = digest ? `<section class="article-summary" aria-labelledby="article-summary-title"><h2 id="article-summary-title">${n.source.summaryMethod==='original-source-excerpt'?'Source excerpt':'Summary'}</h2><div class="article-summary-body"><p>${esc(digest)}</p></div><div class="article-summary-actions"><button class="button" type="button" data-summary-copy hidden>Copy summary</button><span role="status"></span></div></section>` : '';
@@ -380,6 +390,7 @@ globalThis.createNewsroom = function createNewsroom(ui) {
     <aside class="article-aside">${articleHistory(timeline,n)}<div class="source-principle">${icon('compass')}<h3>Fairness is a practice.</h3><p>Trace the claim, check the date, compare independent evidence, and keep uncertainty visible. Official does not automatically mean impartial.</p><a href="#/about">Our approach ${icon('up')}</a></div></aside></div>${others.length?`<section class="more-news"><div class="section-heading"><div><span class="eyebrow">A WIDER VIEW OF ${esc(n.category).toUpperCase()}</span><h2>Keep exploring.</h2></div></div><div class="news-grid">${others.map(x=>newsCard(x,true)).join('')}</div></section>`:''}`;document.title=`${n.title} — ThreadNews`;renderNav();
     const summaryPanel = $('#main .article-summary');
     if (summaryPanel) globalThis.ThreadNewsArticleSummary?.mount(summaryPanel, n, digest);
+    $('#main .primary-records')?.insertAdjacentHTML('beforebegin', coveragePanel(n));
   }
   function timelineCard(s){
     if(!s.recordType&&Array.isArray(s.milestones)&&s.milestones.length)return card(s);

@@ -1,0 +1,116 @@
+threadnews-coverage {
+  display: block;
+  margin-block: 1.5rem;
+}
+
+.coverage-panel {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+}
+
+.coverage-panel > summary {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1rem 1.2rem;
+  border-radius: inherit;
+  list-style: none;
+}
+
+.coverage-panel > summary::-webkit-details-marker { display: none; }
+.coverage-panel > summary:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+.coverage-panel > summary::after { margin-left: auto; content: '+'; font-size: 1.5rem; line-height: 1; }
+.coverage-panel[open] > summary::after { content: '−'; }
+
+.coverage-panel-title {
+  display: block;
+  font: 500 clamp(1.25rem, 2.6vw, 1.55rem) / 1.2 var(--serif);
+}
+
+.coverage-panel-subtitle,
+.coverage-panel-note,
+.coverage-report-meta,
+.coverage-shared {
+  font-size: 0.85rem;
+}
+
+.coverage-panel-subtitle,
+.coverage-panel-note,
+.coverage-report-meta time,
+.coverage-shared {
+  color: color-mix(in srgb, var(--ink) 78%, var(--paper));
+}
+
+.coverage-panel-body {
+  border-top: 1px solid var(--line);
+  padding: 1rem 1.2rem 1.2rem;
+}
+
+.coverage-panel-controls,
+.coverage-report-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.75rem;
+}
+
+.coverage-panel-controls {
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+
+.coverage-panel-controls select {
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 0.25rem;
+  margin-left: 0.25rem;
+  padding: 0.3rem;
+}
+
+.coverage-panel-error > button { margin-top: 0.75rem; }
+
+.coverage-report-list {
+  list-style: none;
+  margin: 0.7rem 0 0;
+  padding: 0;
+}
+
+.coverage-report {
+  padding: 0.9rem 0 0;
+  margin-top: 0.9rem;
+  border-top: 1px solid var(--line);
+  overflow-wrap: anywhere;
+}
+
+.coverage-report-meta { justify-content: flex-start; }
+.coverage-report-meta time { margin-left: auto; }
+.coverage-report-tag {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  padding-inline: 0.3rem;
+}
+
+.coverage-report h3 {
+  margin-block: 0.4rem;
+  font: 500 1.25rem / 1.3 var(--serif);
+}
+
+.coverage-report a:hover,
+.coverage-publisher-link { text-decoration: underline; text-underline-offset: 0.18em; }
+
+.coverage-publisher-link {
+  display: inline-block;
+  margin-top: 0.35rem;
+  font-weight: 600;
+}
+
+@media (max-width: 520px) {
+  .coverage-report-meta time { margin-left: 0; }
+  .coverage-panel > summary, .coverage-panel-body { padding-inline: 0.85rem; }
+}
